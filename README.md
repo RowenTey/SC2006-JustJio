@@ -37,6 +37,10 @@ $ git checkout -b <new_branch_name>
 ## 📖 References
 ### Flutter
 - https://blog.logrocket.com/why-use-go-backend-flutter/#developing-go-restful-backend
+- https://blog.logrocket.com/flutter-layouts-guide-margins-padding/
+- https://blog.logrocket.com/building-responsive-login-page-flutter/
+- https://blog.logrocket.com/complete-guide-implementing-overlays-flutter/
+- https://docs.flutter.dev/deployment/ios
 
 ### Go - Fiber & GORM, PostgreSQL
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
