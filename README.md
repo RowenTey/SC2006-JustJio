@@ -22,6 +22,18 @@ $ git clone https://github.com/RowenTey/SC2006-OneStart.git
 $ git checkout -b <new_branch_name>
 ```
 
+## 📂 Project Folder Structure
+
+#### Top Level Directory Layout
+
+```terminal
+.
+├── client               # flutter app
+├── server               # express app
+├── LICENSE
+└── README.md
+```
+
 ## 📖 References
 - https://blog.logrocket.com/why-use-go-backend-flutter/#developing-go-restful-backend
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
