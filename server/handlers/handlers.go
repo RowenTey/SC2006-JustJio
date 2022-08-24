@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"boilerplate/database"
-	"boilerplate/models"
+	"server/database"
+	"server/models"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -31,4 +31,8 @@ func UserCreate(c *fiber.Ctx) error {
 // NotFound returns custom 404 page
 func NotFound(c *fiber.Ctx) error {
 	return c.Status(404).SendFile("./static/private/404.html")
+}
+
+func HelloWorld(c *fiber.Ctx) error {
+	return c.SendString("Hello World!")
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"boilerplate/database"
-	"boilerplate/handlers"
+	"server/database"
+	"server/handlers"
 
 	"flag"
 	"log"
@@ -39,6 +39,7 @@ func main() {
 	// Bind handlers
 	v1.Get("/users", handlers.UserList)
 	v1.Post("/users", handlers.UserCreate)
+	v1.Get("/helloworld", handlers.HelloWorld)
 
 	// Setup static files
 	app.Static("/", "./static/public")
