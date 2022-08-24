@@ -29,7 +29,7 @@ $ git checkout -b <new_branch_name>
 ```terminal
 .
 ├── client               # flutter app
-├── server               # express app
+├── server               # go app
 ├── LICENSE
 └── README.md
 ```
