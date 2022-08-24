@@ -1,8 +1,8 @@
 package database
 
 import (
-	"boilerplate/models"
 	"fmt"
+	"server/models"
 	"sync"
 )
 
