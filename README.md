@@ -41,6 +41,7 @@ $ git checkout -b <new_branch_name>
 - https://blog.logrocket.com/building-responsive-login-page-flutter/
 - https://blog.logrocket.com/complete-guide-implementing-overlays-flutter/
 - https://docs.flutter.dev/deployment/ios
+- https://blog.logrocket.com/react-native-vs-flutter/
 
 ### Go - Fiber & GORM, PostgreSQL
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
