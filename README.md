@@ -1,4 +1,4 @@
-# SC2006
+# SC2006-OneStart
 Project for SC2006
 
 ## 🛠 Getting Started
