@@ -47,6 +47,7 @@ $ git checkout -b <new_branch_name>
 - https://blog.logrocket.com/complete-guide-implementing-overlays-flutter/
 - https://docs.flutter.dev/deployment/ios
 - https://blog.logrocket.com/react-native-vs-flutter/
+- https://github.com/iampawan/FlutterExampleApps
 
 ### Go - Fiber & GORM, PostgreSQL
 
