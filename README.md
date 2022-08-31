@@ -39,7 +39,7 @@ $ git checkout -b <new_branch_name>
 
 ## 📖 References
 
-### Flutter
+### React Native
 
 - https://blog.logrocket.com/why-use-go-backend-flutter/#developing-go-restful-backend
 - https://blog.logrocket.com/flutter-layouts-guide-margins-padding/
