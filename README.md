@@ -1,4 +1,4 @@
-# SC2006
+# SC2006-OneStart
 Project for SC2006
 
 ## 🛠 Getting Started
@@ -41,8 +41,10 @@ $ git checkout -b <new_branch_name>
 - https://blog.logrocket.com/building-responsive-login-page-flutter/
 - https://blog.logrocket.com/complete-guide-implementing-overlays-flutter/
 - https://docs.flutter.dev/deployment/ios
+- https://blog.logrocket.com/react-native-vs-flutter/
 
 ### Go - Fiber & GORM, PostgreSQL
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
 - https://blog.logrocket.com/building-microservices-go-fiber/
 - https://www.vultr.com/docs/how-to-create-a-golang-web-api-with-fiber-postgresql-and-gorm/
+- https://gowebexamples.com/
