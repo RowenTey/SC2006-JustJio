@@ -1,4 +1,4 @@
-# SC2006-OneStart
+# JustJio
 
 Project for SC2006
 
