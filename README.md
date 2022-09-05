@@ -1,4 +1,4 @@
-# SC2006-OneStart
+# JustJio
 
 Project for SC2006
 
@@ -39,18 +39,18 @@ $ git checkout -b <new_branch_name>
 
 ## 📖 References
 
-### Flutter
+### React Native
 
-- https://blog.logrocket.com/why-use-go-backend-flutter/#developing-go-restful-backend
-- https://blog.logrocket.com/flutter-layouts-guide-margins-padding/
-- https://blog.logrocket.com/building-responsive-login-page-flutter/
-- https://blog.logrocket.com/complete-guide-implementing-overlays-flutter/
-- https://docs.flutter.dev/deployment/ios
-- https://blog.logrocket.com/react-native-vs-flutter/
-- https://github.com/iampawan/FlutterExampleApps
+- Deployment: https://blog.logrocket.com/fastlane-build-test-ship-react-native-apps/
+- State management: https://blog.logrocket.com/use-redux-persist-react-native/
+- Push notifications: https://blog.logrocket.com/implement-push-notifications-react-native-onesignal/
+- Authentication: https://blog.logrocket.com/react-native-jwt-authentication-using-axios-interceptors/
+- Maps: https://blog.logrocket.com/react-native-maps-introduction/
 
 ### Go - Fiber & GORM, PostgreSQL
 
+- REST API, Docker, Gorm and PostgreSQL: https://www.youtube.com/watch?v=bFYZrEuEDLE&t=0s
+- https://www.karanpratapsingh.com/
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
 - https://blog.logrocket.com/building-microservices-go-fiber/
 - https://www.vultr.com/docs/how-to-create-a-golang-web-api-with-fiber-postgresql-and-gorm/
