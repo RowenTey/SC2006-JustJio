@@ -55,7 +55,3 @@ $ git checkout -b <new_branch_name>
 - https://blog.logrocket.com/building-microservices-go-fiber/
 - https://www.vultr.com/docs/how-to-create-a-golang-web-api-with-fiber-postgresql-and-gorm/
 - https://gowebexamples.com/
-
-### Payments
-
-- https://docs.paynow.pl/
