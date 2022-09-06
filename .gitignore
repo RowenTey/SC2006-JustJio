@@ -9,6 +9,10 @@
 .history
 .svn/
 migrate_working_dir/
+*.env
+.docker_build/
+*.exe
+/data
 
 # IntelliJ related
 *.iml
