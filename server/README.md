@@ -1,69 +1,76 @@
-# GoFiber Docker Boilerplate
+# Go-Fiber Boilerplate
+Golang Rest API boilerplate built with GORM, Go-Fiber, and a PostgreSQL database. Running in a docker container with Hot Reload.
 
-![Release](https://img.shields.io/github/release/gofiber/boilerplate.svg)
-[![Discord](https://img.shields.io/badge/discord-join%20channel-7289DA)](https://gofiber.io/discord)
-![Test](https://github.com/gofiber/boilerplate/workflows/Test/badge.svg)
-![Security](https://github.com/gofiber/boilerplate/workflows/Security/badge.svg)
-![Linter](https://github.com/gofiber/boilerplate/workflows/Linter/badge.svg)
-
-
-## IDE Development
-
-### Visual Studio Code
-
-Use the following plugins, in this boilerplate project:
-- Nome: Go
-  - ID: golang.go
-  - Descrição: Rich Go language support for Visual Studio Code
-  - Versão: 0.29.0
-  - Editor: Go Team at Google
-  - Link do Marketplace do VS: https://marketplace.visualstudio.com/items?itemName=golang.Go
-
-## Development
-
-### Start the application 
-
-
-```bash
-go run app.go
+# File structure
+```py
+database/
+  connect.go
+  database.go
+handlers/
+  auth.go
+  product.go
+middleware/
+  json.go
+  auth.go
+  security.go
+model/
+  user.go
+  product.go
+  session.go
+router/
+  router.go
+main.go
 ```
 
-### Use local container
+## Database
 
-```
-# Clean packages
-make clean-packages
+The database folder holds 2 files. The first file `connect.go` initalizes the database connection and migrates the registered models. If you are looking to add new models make sure to register them here for the database. The second file `database.go` initalizes the global DB variable that is referenced in other files.
 
-# Generate go.mod & go.sum files
-make requirements
+## Handlers
 
-# Generate docker image
-make build
+This folder is the place that holds the functions for each model. Here you will define each request and how it interacts with the database. These functions are used mapped by the router the the URL links.
 
-# Generate docker image with no cache
-make build-no-cache
+## Middleware
 
-# Run the projec in a local container
-make up
+The middleware folder contains a file for each middleware function. The security middleware is applied first to everything in `router.go` and applies general security middleware to the incoming requests. The JSON middleware serializes the incoming request so that it only allows JSON. This is applied after the hello world in `router.go`. Finally the Authentication middleware is applied indivually to requests that require the user to be logged in. 
 
-# Run local container in background
-make up-silent
+## Router
+The router file maps each incoming request to the corresponding function in `handlers`. It first applies the middleware and then groups the requests to each model and finally to the indiviual function.
 
-# Stop container
-make stop
+## Main.go
 
-# Start container
-make start
-```
+The main.go file functions by reading for enviroment variables and applying the CORS middleware. You can change the allowed request sites in the configuration. It then connects to the database by running the function from `database/connect.go` and finally initalizes the app through the router.
 
-## Production
+# Debug
 
-```bash
-docker build -t gofiber .
-docker run -d -p 3000:3000 gofiber
-```
+the port can be specified with an enviroment variable but will default to 3000 if not specified.
 
-Go to http://localhost:3000:
+## Database
 
+to run the database on docker use the following command: `docker run --name database -d -p 5432:5432 -e POSTGRES_PASSWORD=password postgres:alpine`. and to connect to the database you can set the enviroment variable of `DATABASE_URL="host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable"`
 
-![Go Fiber Docker Boilerplate](./go_fiber_boilerplate.gif)
+## Docker
+Docker build base image in first stage for development
+`docker build --target build -t base .`
+
+run dev container
+`docker run -p 3000:3000 --mount type=bind,source="C:\Users\schaefer\go\src\fiber",target=/go/src/app --name fiber -td base`
+
+rebuild and run package
+`docker exec -it web go run main.go`
+
+stop and remove container
+`docker stop fiber; docker rm fiber`
+
+## Recommended
+run a postgres databse in docker and use the [fiber command line](https://github.com/gofiber/cli) to hot reload your application. Note: you can hot reload using docker or the fiber command line
+
+# Dependencies
+
+Install dependencies with go
+
+`go mod tidy`
+
+# License
+
+[MIT](https://choosealicense.com/licenses/mit/)
