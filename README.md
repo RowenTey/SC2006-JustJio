@@ -55,3 +55,8 @@ $ git checkout -b <new_branch_name>
 - https://blog.logrocket.com/building-microservices-go-fiber/
 - https://www.vultr.com/docs/how-to-create-a-golang-web-api-with-fiber-postgresql-and-gorm/
 - https://gowebexamples.com/
+
+### Debugging
+
+- https://stackoverflow.com/questions/48629799/postgres-image-is-not-creating-database
+- https://github.com/docker-library/postgres/issues/203#issuecomment-255200501
