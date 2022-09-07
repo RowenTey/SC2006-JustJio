@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/NikSchaefer/go-fiber/model"
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +13,7 @@ func ConnectDB() {
 	var err error // define error here to prevent overshadowing the global DB
 
 	env := os.Getenv("DATABASE_URL")
-	DB, err = gorm.Open(postgres.Open(env), &gorm.Config{})
+	DB, err = gorm.Open(mysql.Open(env), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
