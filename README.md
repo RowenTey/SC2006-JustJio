@@ -30,6 +30,7 @@ $ git checkout -b <new_branch_name>
 
 ```terminal
 .
+├── deliverables        
 ├── client               # flutter app
 ├── server               # go app
 ├── .gitignore
