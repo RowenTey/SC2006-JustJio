@@ -86,8 +86,8 @@ const Styles = StyleSheet.create({
   },
 
   text: {
-    fontSize : 56,
-   
+    fontSize : 80,
+   // changed from 56 to 80 on fontsize
     fontFamily : "OleoScript-Bold",
     color : "#4E1164",
     
