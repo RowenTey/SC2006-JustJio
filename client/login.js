@@ -90,7 +90,7 @@ const Styles = StyleSheet.create({
         fontSize : 13,
         alignItems : 'center',
         textAlign : 'center',
-        marginVertical : 10,
+        marginVertical : 20,
     }
 
   });
