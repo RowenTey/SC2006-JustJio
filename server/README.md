@@ -1,25 +1,50 @@
-# Go-Fiber Boilerplate
-Golang Rest API boilerplate built with GORM, Go-Fiber, and a PostgreSQL database. Running in a docker container with Hot Reload.
+# JustJio-Server
 
-# File structure
-```py
-database/
-  connect.go
-  database.go
-handlers/
-  auth.go
-  product.go
-middleware/
-  json.go
-  auth.go
-  security.go
-model/
-  user.go
-  product.go
-  session.go
-router/
-  router.go
-main.go
+Server-side code for JustJio
+
+## 🛠 Getting Started
+
+From your command line go to the folder directory and run the following scripts in the terminal.
+
+1\. Login to PlanetScale
+
+```terminal
+pscale auth login
+```
+
+2\. Connect to database
+
+```terminal
+pscale connect sc2006-justjio main
+```
+
+3\. Install dependencies
+
+```terminal
+go mod tidy
+```
+
+3\. Run the code
+
+```terminal
+go run main.go
+```
+
+## 📂 Project Folder Structure
+
+#### Top Level Directory Layout
+
+```terminal
+.
+├── database        
+├── handlers               
+├── middleware           
+├── model
+├── router
+├── main.go
+├── go.mod
+├── go.sum
+└── README.md
 ```
 
 ## Database
@@ -41,7 +66,7 @@ The router file maps each incoming request to the corresponding function in `han
 
 The main.go file functions by reading for enviroment variables and applying the CORS middleware. You can change the allowed request sites in the configuration. It then connects to the database by running the function from `database/connect.go` and finally initalizes the app through the router.
 
-# Debug
+## Debug
 
 the port can be specified with an enviroment variable but will default to 3000 if not specified.
 
@@ -74,5 +99,3 @@ Install dependencies with go
 # License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-jnnjnjnj
