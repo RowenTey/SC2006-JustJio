@@ -36,9 +36,10 @@ go run main.go
 
 ```terminal
 .
-├── database        
-├── handlers               
-├── middleware           
+├── config
+├── database
+├── handlers
+├── middleware
 ├── model
 ├── router
 ├── main.go
@@ -57,9 +58,10 @@ This folder is the place that holds the functions for each model. Here you will 
 
 ## Middleware
 
-The middleware folder contains a file for each middleware function. The security middleware is applied first to everything in `router.go` and applies general security middleware to the incoming requests. The JSON middleware serializes the incoming request so that it only allows JSON. This is applied after the hello world in `router.go`. Finally the Authentication middleware is applied indivually to requests that require the user to be logged in. 
+The middleware folder contains a file for each middleware function. The security middleware is applied first to everything in `router.go` and applies general security middleware to the incoming requests. The JSON middleware serializes the incoming request so that it only allows JSON. This is applied after the hello world in `router.go`. Finally the Authentication middleware is applied indivually to requests that require the user to be logged in.
 
 ## Router
+
 The router file maps each incoming request to the corresponding function in `handlers`. It first applies the middleware and then groups the requests to each model and finally to the indiviual function.
 
 ## Main.go
@@ -75,6 +77,7 @@ the port can be specified with an enviroment variable but will default to 3000 i
 to run the database on docker use the following command: `docker run --name database -d -p 5432:5432 -e POSTGRES_PASSWORD=password postgres:alpine`. and to connect to the database you can set the enviroment variable of `DATABASE_URL="host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable"`
 
 ## Docker
+
 Docker build base image in first stage for development
 `docker build --target build -t base .`
 
@@ -88,6 +91,7 @@ stop and remove container
 `docker stop fiber; docker rm fiber`
 
 ## Recommended
+
 run a postgres databse in docker and use the [fiber command line](https://github.com/gofiber/cli) to hot reload your application. Note: you can hot reload using docker or the fiber command line
 
 # Dependencies
