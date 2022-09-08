@@ -1,14 +1,13 @@
-module github.com/NikSchaefer/go-fiber
+module sc2006-JustJio
 
 go 1.16
 
 require (
-	github.com/badoux/checkmail v1.2.1
-	github.com/gofiber/fiber/v2 v2.5.0
-	github.com/google/uuid v1.2.0
+	github.com/gofiber/fiber/v2 v2.17.0
+	github.com/gofiber/jwt/v2 v2.2.7
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.3.0
-	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
-	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
+	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90
 	gorm.io/driver/mysql v1.3.6
 	gorm.io/gorm v1.23.8
 )

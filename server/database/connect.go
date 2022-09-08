@@ -1,25 +1,31 @@
 package database
 
 import (
+	"fmt"
 	"log"
-	"os"
 
-	"github.com/NikSchaefer/go-fiber/model"
+	"sc2006-JustJio/config"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func ConnectDB() {
-	var err error // define error here to prevent overshadowing the global DB
+	// define error here to prevent overshadowing the global DB
+	var err error
 
-	env := os.Getenv("DATABASE_URL")
-	DB, err = gorm.Open(mysql.Open(env), &gorm.Config{})
+	dsn := config.Config("DATABASE_URL")
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
+		fmt.Println("Failed to connect database")
 		log.Fatal(err)
 	}
-	err = DB.AutoMigrate(&model.User{}, &model.Session{}, &model.Product{})
-	if err != nil {
-		log.Fatal(err)
-	}
+	fmt.Println("Connection opened to Database")
 
+	// err = DB.AutoMigrate(&model.User{})
+	// if err != nil {
+	// 	fmt.Println("Migration failed")
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println("Database Migrated")
 }
