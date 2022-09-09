@@ -1,26 +1,25 @@
 package middleware
 
 import (
-	"github.com/NikSchaefer/go-fiber/handlers"
-	"github.com/NikSchaefer/go-fiber/model"
+	"sc2006-JustJio/config"
+
 	"github.com/gofiber/fiber/v2"
+	jwtware "github.com/gofiber/jwt/v2"
 )
 
-func Authenticated(c *fiber.Ctx) error {
-	json := new(model.Session)
-	if err := c.BodyParser(json); err != nil {
-		return c.JSON(fiber.Map{
-			"code":    400,
-			"message": "Invalid Session Format",
-		})
+// Protected routes
+func Authenticated() fiber.Handler {
+	return jwtware.New(jwtware.Config{
+		SigningKey:   []byte(config.Config("SECRET")),
+		ErrorHandler: jwtError,
+	})
+}
+
+func jwtError(c *fiber.Ctx, err error) error {
+	if err.Error() == "Missing or malformed JWT" {
+		return c.Status(fiber.StatusBadRequest).
+			JSON(fiber.Map{"status": "error", "message": "Missing or malformed JWT", "data": nil})
 	}
-	user, err := handlers.GetUser(json.Sessionid)
-	if err != nil {
-		return c.JSON(fiber.Map{
-			"code":    404,
-			"message": "404: not found",
-		})
-	}
-	c.Locals("user", user)
-	return c.Next()
+	return c.Status(fiber.StatusUnauthorized).
+		JSON(fiber.Map{"status": "error", "message": "Invalid or expired JWT", "data": nil})
 }

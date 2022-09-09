@@ -1,25 +1,51 @@
-# Go-Fiber Boilerplate
-Golang Rest API boilerplate built with GORM, Go-Fiber, and a PostgreSQL database. Running in a docker container with Hot Reload.
+# JustJio-Server
 
-# File structure
-```py
-database/
-  connect.go
-  database.go
-handlers/
-  auth.go
-  product.go
-middleware/
-  json.go
-  auth.go
-  security.go
-model/
-  user.go
-  product.go
-  session.go
-router/
-  router.go
-main.go
+Server-side code for JustJio
+
+## 🛠 Getting Started
+
+From your command line go to the folder directory and run the following scripts in the terminal.
+
+1\. Login to PlanetScale
+
+```terminal
+pscale auth login
+```
+
+2\. Connect to database
+
+```terminal
+pscale connect sc2006-justjio main
+```
+
+3\. Install dependencies
+
+```terminal
+go mod tidy
+```
+
+3\. Run the code
+
+```terminal
+go run main.go
+```
+
+## 📂 Project Folder Structure
+
+#### Top Level Directory Layout
+
+```terminal
+.
+├── config
+├── database
+├── handlers
+├── middleware
+├── model
+├── router
+├── main.go
+├── go.mod
+├── go.sum
+└── README.md
 ```
 
 ## Database
@@ -32,16 +58,17 @@ This folder is the place that holds the functions for each model. Here you will 
 
 ## Middleware
 
-The middleware folder contains a file for each middleware function. The security middleware is applied first to everything in `router.go` and applies general security middleware to the incoming requests. The JSON middleware serializes the incoming request so that it only allows JSON. This is applied after the hello world in `router.go`. Finally the Authentication middleware is applied indivually to requests that require the user to be logged in. 
+The middleware folder contains a file for each middleware function. The security middleware is applied first to everything in `router.go` and applies general security middleware to the incoming requests. The JSON middleware serializes the incoming request so that it only allows JSON. This is applied after the hello world in `router.go`. Finally the Authentication middleware is applied indivually to requests that require the user to be logged in.
 
 ## Router
+
 The router file maps each incoming request to the corresponding function in `handlers`. It first applies the middleware and then groups the requests to each model and finally to the indiviual function.
 
 ## Main.go
 
 The main.go file functions by reading for enviroment variables and applying the CORS middleware. You can change the allowed request sites in the configuration. It then connects to the database by running the function from `database/connect.go` and finally initalizes the app through the router.
 
-# Debug
+## Debug
 
 the port can be specified with an enviroment variable but will default to 3000 if not specified.
 
@@ -50,6 +77,7 @@ the port can be specified with an enviroment variable but will default to 3000 i
 to run the database on docker use the following command: `docker run --name database -d -p 5432:5432 -e POSTGRES_PASSWORD=password postgres:alpine`. and to connect to the database you can set the enviroment variable of `DATABASE_URL="host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable"`
 
 ## Docker
+
 Docker build base image in first stage for development
 `docker build --target build -t base .`
 
@@ -63,6 +91,7 @@ stop and remove container
 `docker stop fiber; docker rm fiber`
 
 ## Recommended
+
 run a postgres databse in docker and use the [fiber command line](https://github.com/gofiber/cli) to hot reload your application. Note: you can hot reload using docker or the fiber command line
 
 # Dependencies
@@ -74,5 +103,3 @@ Install dependencies with go
 # License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-jnnjnjnj

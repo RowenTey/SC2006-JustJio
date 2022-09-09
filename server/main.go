@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/NikSchaefer/go-fiber/database"
-	"github.com/NikSchaefer/go-fiber/router"
+	"sc2006-JustJio/database"
+	"sc2006-JustJio/router"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -31,5 +31,5 @@ func main() {
 	database.ConnectDB()
 
 	router.Initalize(app)
-	log.Fatal(app.Listen(":" + getenv("PORT", "3000")))
+	log.Fatal(app.Listen(":" + getenv("PORT", "8080")))
 }

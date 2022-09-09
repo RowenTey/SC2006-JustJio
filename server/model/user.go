@@ -1,16 +1,15 @@
 package model
 
 import (
-	guuid "github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type User struct {
-	ID        guuid.UUID `gorm:"primaryKey" json:"-"`
-	Username  string     `json:"username"`
-	Email     string     `json:"email"`
-	Password  string     `json:"-"`
-	Sessions  []Session  `gorm:"foreignKey:UserRefer; constraint:OnUpdate:CASCADE, OnDelete:CASCADE;" json:"-"`
-	Products  []Product  `gorm:"foreignKey:UserRefer; constraint:OnUpdate:CASCADE, OnDelete:CASCADE;" json:"-"`
-	CreatedAt int64      `gorm:"autoCreateTime" json:"-" `
-	UpdatedAt int64      `gorm:"autoUpdateTime:milli" json:"-"`
+	// ID        guuid.UUID `gorm:"primaryKey" json:"-"`
+	gorm.Model
+	Username  string `gorm:"unique_index;not null" json:"username"`
+	Email     string `gorm:"unique_index;not null" json:"email"`
+	Password  string `gorm:"not null" json:"password"`
+	CreatedAt int64  `gorm:"autoCreateTime" json:"-" `
+	UpdatedAt int64  `gorm:"autoUpdateTime:milli" json:"-"`
 }
