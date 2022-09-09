@@ -18,10 +18,10 @@ cd <folder-name>
 git clone https://github.com/RowenTey/SC2006-OneStart.git
 ```
 
-3\. Checkout into a new branch for development
+3\. Checkout into *dev* branch for development
 
 ```terminal
-git checkout -b <new_branch_name>
+git checkout dev
 ```
 
 ## 📂 Project Folder Structure
