@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -49,6 +49,7 @@ func GetUser(c *fiber.Ctx) error {
 	id := c.Params("id")
 	db := database.DB
 	var user model.User
+
 	db.Find(&user, id)
 	if user.Username == "" {
 		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
@@ -56,72 +57,45 @@ func GetUser(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
 }
 
-// CreateUser -> new user
-func CreateUser(c *fiber.Ctx) error {
-	type NewUser struct {
-		Username string `json:"username"`
-		Email    string `json:"email"`
+// UpdateUser -> update user
+func UpdateUser(c *fiber.Ctx) error {
+	type UpdateUserInput struct {
+		Name string `json:"name"`
 	}
 
-	db := database.DB
-	user := new(model.User)
-	if err := c.BodyParser(user); err != nil {
+	var uui UpdateUserInput
+	if err := c.BodyParser(&uui); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
-	hash, err := hashPassword(user.Password)
-	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
+	id := c.Params("id")
+	token := c.Locals("user").(*jwt.Token)
+
+	if !validToken(token, id) {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Invalid token id", "data": nil})
 	}
 
-	user.Password = hash
-	if err := db.Create(&user).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
-	}
+	db := database.DB
+	var user model.User
 
-	newUser := NewUser{
-		Email:    user.Email,
-		Username: user.Username,
-	}
+	db.First(&user, id)
+	user.Name = uui.Name
+	db.Save(&user)
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Created user", "data": newUser})
+	return c.JSON(fiber.Map{"status": "success", "message": "User successfully updated", "data": user})
 }
-
-// UpdateUser -> update user
-// func UpdateUser(c *fiber.Ctx) error {
-// 	type UpdateUserInput struct {
-// 		Names string `json:"names"`
-// 	}
-// 	var uui UpdateUserInput
-// 	if err := c.BodyParser(&uui); err != nil {
-// 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
-// 	}
-// 	id := c.Params("id")
-// 	token := c.Locals("user").(*jwt.Token)
-
-// 	if !validToken(token, id) {
-// 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Invalid token id", "data": nil})
-// 	}
-
-// 	db := database.DB
-// 	var user model.User
-
-// 	db.First(&user, id)
-// 	user.Names = uui.Names
-// 	db.Save(&user)
-
-// 	return c.JSON(fiber.Map{"status": "success", "message": "User successfully updated", "data": user})
-// }
 
 // DeleteUser -> delete user
 func DeleteUser(c *fiber.Ctx) error {
 	type PasswordInput struct {
 		Password string `json:"password"`
 	}
+
 	var pi PasswordInput
 	if err := c.BodyParser(&pi); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
+
 	id := c.Params("id")
 	token := c.Locals("user").(*jwt.Token)
 
@@ -137,7 +111,7 @@ func DeleteUser(c *fiber.Ctx) error {
 	var user model.User
 
 	db.First(&user, id)
-
 	db.Delete(&user)
+
 	return c.JSON(fiber.Map{"status": "success", "message": "User successfully deleted", "data": nil})
 }
