@@ -31,7 +31,7 @@ git checkout dev
 ```terminal
 .
 ├── deliverables        
-├── client               # flutter app
+├── client               # flutter app test123
 ├── server               # go app
 ├── .gitignore
 ├── LICENSE
