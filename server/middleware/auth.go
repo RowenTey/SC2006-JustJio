@@ -4,7 +4,7 @@ import (
 	"sc2006-JustJio/config"
 
 	"github.com/gofiber/fiber/v2"
-	jwtware "github.com/gofiber/jwt/v2"
+	jwtware "github.com/gofiber/jwt/v3"
 )
 
 // Protected routes
