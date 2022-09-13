@@ -27,7 +27,7 @@ go mod tidy
 3\. Run the code
 
 ```terminal
-go run main.go
+air
 ```
 
 ## 📂 Project Folder Structure
@@ -47,6 +47,10 @@ go run main.go
 ├── go.sum
 └── README.md
 ```
+
+# Username: bn4864q3jzym28kd47tc
+
+# Password: pscale_pw_k4yqAz6O4WF9vJYkRKvDA9ygTlyhhldsYJaFsC6P0Hz
 
 ## Database
 
@@ -103,3 +107,5 @@ Install dependencies with go
 # License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+[image.png](image.png)
