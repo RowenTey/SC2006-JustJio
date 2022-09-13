@@ -18,9 +18,11 @@ func Initalize(router *fiber.App) {
 	router.Use(middleware.Json)
 
 	users := router.Group("/users")
-	users.Post("/", handlers.CreateUser)
-	users.Delete("/", middleware.Authenticated(), handlers.DeleteUser)
+	users.Post("/", handlers.SignUp)
 	users.Post("/login", handlers.Login)
+	users.Get("/:id", handlers.GetUser)
+	users.Delete("/:id", middleware.Authenticated(), handlers.DeleteUser)
+	users.Patch("/:id", middleware.Authenticated(), handlers.UpdateUser)
 
 	router.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{
