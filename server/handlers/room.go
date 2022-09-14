@@ -29,6 +29,7 @@ func GetRooms(c *fiber.Ctx) error {
 func CreateRoom(c *fiber.Ctx) error {
 	roomsDB := database.DB.Table("rooms")
 	usersDB := database.DB.Table("users")
+
 	room := new(model.Room)
 	if err := c.BodyParser(room); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
@@ -112,7 +113,7 @@ func JoinRoom(c *fiber.Ctx) error {
 	}
 
 	roomsDB.Save(&room)
-	usersDB.Save(&room)
+	usersDB.Save(&user)
 
 	fmt.Println("User " + user.Username + " joined room " + room.Name + " successfully.")
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": room})

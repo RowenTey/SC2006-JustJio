@@ -9,7 +9,6 @@ type Room struct {
 	Name           string         `gorm:"not null" json:"name"`
 	Time           string         `gorm:"not null" json:"time"`
 	Venue          string         `gorm:"not null" json:"venue"`
-	Date           datatypes.Date `json:"date"`
 	Host           string         `gorm:"not null" json:"host"`
 	AttendeesCount int            `gorm:"default:1" json:"attendeesCount"`
 	URL            string         `json:"url"`
@@ -17,4 +16,5 @@ type Room struct {
 	UpdatedAt      int64          `gorm:"autoUpdateTime:milli" json:"-"`
 	Attendees      datatypes.JSON `json:"attendees"`
 	PartyItems     datatypes.JSON `json:"partyItems"`
+	// Date           datatypes.Date `json:"date"`
 }
