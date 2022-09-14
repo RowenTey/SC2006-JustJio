@@ -2,6 +2,16 @@
 
 Project for SC2006
 
+<!-- ## 🧠 The Team 
+| Name              |                     Area of Focus                     |GitHub Acount|
+|---|:---:|---|
+| Tey Kai Seong |        Back-End, Deployment        |@RowenTey|
+| Amabel  |    Designer     |@|
+| Aloysius |       Designer        |@| 
+| Eldrick |       Front-End        |@|
+| Zhi Heng |       Front-End        |@|
+| Harish |       Front-End        |@| -->
+
 ## 🛠 Getting Started
 
 > From your command line go to the folder directory and run the following scripts in the terminal.
