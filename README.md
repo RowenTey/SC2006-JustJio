@@ -24,7 +24,7 @@ git clone https://github.com/RowenTey/SC2006-OneStart.git
 cd SC2006-OneStart
 ```
 
-4\. Checkout into _dev_ branch for development
+4\. Checkout into `dev` branch for development
 
 ```terminal
 git checkout dev
