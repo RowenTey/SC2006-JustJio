@@ -31,7 +31,7 @@ git checkout dev
 ```terminal
 .
 ├── deliverables        
-├── client               # flutter app test123
+├── client               # flutter app
 ├── server               # go app
 ├── .gitignore
 ├── LICENSE
@@ -56,8 +56,3 @@ git checkout dev
 - https://blog.logrocket.com/building-microservices-go-fiber/
 - https://www.vultr.com/docs/how-to-create-a-golang-web-api-with-fiber-postgresql-and-gorm/
 - https://gowebexamples.com/
-
-### Debugging
-
-- https://stackoverflow.com/questions/48629799/postgres-image-is-not-creating-database
-- https://github.com/docker-library/postgres/issues/203#issuecomment-255200501
