@@ -18,7 +18,13 @@ cd <folder-name>
 git clone https://github.com/RowenTey/SC2006-OneStart.git
 ```
 
-3\. Checkout into *dev* branch for development
+3\. Go to project directory
+
+```terminal
+cd SC2006-OneStart
+```
+
+4\. Checkout into _dev_ branch for development
 
 ```terminal
 git checkout dev
@@ -30,8 +36,8 @@ git checkout dev
 
 ```terminal
 .
-├── deliverables        
-├── client               # flutter app
+├── deliverables
+├── client               # react native app
 ├── server               # go app
 ├── .gitignore
 ├── LICENSE
