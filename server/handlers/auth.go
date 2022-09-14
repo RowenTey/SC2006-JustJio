@@ -129,7 +129,7 @@ func Login(c *fiber.Ctx) error {
 	claims["user_email"] = ud.Email
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
-	t, err := token.SignedString([]byte(config.Config("SECRET")))
+	t, err := token.SignedString([]byte(config.Config("JWT_SECRET")))
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
