@@ -12,10 +12,22 @@ From your command line go to the folder directory and run the following scripts 
 go mod tidy
 ```
 
-2\. Run the code
+2\. Make a copy of `.env` and populate the environment variables inside
+
+```terminal
+copy .env.example .env
+```
+
+3\. Run the code
 
 ```terminal
 air
+```
+
+or if you don't have `air` installed
+
+```terminal
+go run main.go
 ```
 
 ## 📂 Project Folder Structure
