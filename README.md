@@ -64,7 +64,7 @@ git checkout dev
 - Authentication: https://blog.logrocket.com/react-native-jwt-authentication-using-axios-interceptors/
 - Maps: https://blog.logrocket.com/react-native-maps-introduction/
 
-### Go - Fiber & GORM, PostgreSQL
+### Go - Fiber & GORM, MySQL
 
 - REST API, Docker, Gorm and PostgreSQL: https://www.youtube.com/watch?v=bFYZrEuEDLE&t=0s
 - https://www.karanpratapsingh.com/
