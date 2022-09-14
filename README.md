@@ -70,3 +70,4 @@ git checkout dev
 - https://www.karanpratapsingh.com/
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
 - https://gowebexamples.com/
+- OAuth https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth
