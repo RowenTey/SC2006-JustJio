@@ -6,25 +6,13 @@ Server-side code for JustJio
 
 From your command line go to the folder directory and run the following scripts in the terminal.
 
-1\. Login to PlanetScale
-
-```terminal
-pscale auth login
-```
-
-2\. Connect to database
-
-```terminal
-pscale connect sc2006-justjio main
-```
-
-3\. Install dependencies
+1\. Install dependencies
 
 ```terminal
 go mod tidy
 ```
 
-3\. Run the code
+2\. Run the code
 
 ```terminal
 air
@@ -47,10 +35,6 @@ air
 ├── go.sum
 └── README.md
 ```
-
-# Username: bn4864q3jzym28kd47tc
-
-# Password: pscale_pw_k4yqAz6O4WF9vJYkRKvDA9ygTlyhhldsYJaFsC6P0Hz
 
 ## Database
 
@@ -80,32 +64,6 @@ the port can be specified with an enviroment variable but will default to 3000 i
 
 to run the database on docker use the following command: `docker run --name database -d -p 5432:5432 -e POSTGRES_PASSWORD=password postgres:alpine`. and to connect to the database you can set the enviroment variable of `DATABASE_URL="host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable"`
 
-## Docker
-
-Docker build base image in first stage for development
-`docker build --target build -t base .`
-
-run dev container
-`docker run -p 3000:3000 --mount type=bind,source="C:\Users\schaefer\go\src\fiber",target=/go/src/app --name fiber -td base`
-
-rebuild and run package
-`docker exec -it web go run main.go`
-
-stop and remove container
-`docker stop fiber; docker rm fiber`
-
-## Recommended
-
-run a postgres databse in docker and use the [fiber command line](https://github.com/gofiber/cli) to hot reload your application. Note: you can hot reload using docker or the fiber command line
-
-# Dependencies
-
-Install dependencies with go
-
-`go mod tidy`
-
 # License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-[image.png](image.png)
