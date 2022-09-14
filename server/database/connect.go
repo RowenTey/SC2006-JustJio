@@ -25,7 +25,7 @@ func ConnectDB() {
 	}
 	fmt.Println("Connection opened to Database")
 
-	err = DB.AutoMigrate(&model.User{})
+	err = DB.AutoMigrate(&model.User{}, &model.Room{})
 	if err != nil {
 		fmt.Println("Migration failed")
 		fmt.Println(err.Error())

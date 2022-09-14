@@ -10,6 +10,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/joho/godotenv v1.3.0
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90
+	gorm.io/datatypes v1.0.7
 	gorm.io/driver/mysql v1.3.6
 	gorm.io/gorm v1.23.8
 )
