@@ -1,6 +1,6 @@
 # JustJio
 
-![landing](./client/assets/JustJio.png)
+![landing](./client/assets/JustJio.gif)
 
 Project for SC2006
 
