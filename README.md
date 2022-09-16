@@ -1,13 +1,15 @@
 # JustJio
 
+![landing](./client/assets/JustJio.png)
+
 Project for SC2006
 
-<!-- ## 🧠 The Team 
+<!-- ## 🧠 The Team
 | Name              |                     Area of Focus                     |GitHub Acount|
 |---|:---:|---|
 | Tey Kai Seong |        Back-End, Deployment        |@RowenTey|
 | Amabel  |    Designer     |@|
-| Aloysius |       Designer        |@| 
+| Aloysius |       Designer        |@|
 | Eldrick |       Front-End        |@|
 | Zhi Heng |       Front-End        |@|
 | Harish |       Front-End        |@| -->
