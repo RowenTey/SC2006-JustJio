@@ -1,4 +1,4 @@
-# 🎊 JustJio
+# JustJio
 
 Project for SC2006
 
