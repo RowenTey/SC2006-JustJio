@@ -1,10 +1,22 @@
 # JustJio
 
+![landing](./client/assets/JustJio.gif)
+
 Project for SC2006
+
+<!-- ## 🧠 The Team
+| Name              |                     Area of Focus                     |GitHub Acount|
+|---|:---:|---|
+| Tey Kai Seong |        Back-End, Deployment        |@RowenTey|
+| Amabel  |    Designer     |@|
+| Aloysius |       Designer        |@|
+| Eldrick |       Front-End        |@|
+| Zhi Heng |       Front-End        |@|
+| Harish |       Front-End        |@| -->
 
 ## 🛠 Getting Started
 
-From your command line go to the folder directory and run the following scripts in the terminal.
+> From your command line go to the folder directory and run the following scripts in the terminal.
 
 1\. Go to folder directory
 
@@ -18,7 +30,13 @@ cd <folder-name>
 git clone https://github.com/RowenTey/SC2006-OneStart.git
 ```
 
-3\. Checkout into *dev* branch for development
+3\. Go to project directory
+
+```terminal
+cd SC2006-OneStart
+```
+
+4\. Checkout into `dev` branch for development
 
 ```terminal
 git checkout dev
@@ -30,8 +48,8 @@ git checkout dev
 
 ```terminal
 .
-├── deliverables        
-├── client               # flutter app
+├── deliverables
+├── client               # react native app
 ├── server               # go app
 ├── .gitignore
 ├── LICENSE
@@ -48,16 +66,10 @@ git checkout dev
 - Authentication: https://blog.logrocket.com/react-native-jwt-authentication-using-axios-interceptors/
 - Maps: https://blog.logrocket.com/react-native-maps-introduction/
 
-### Go - Fiber & GORM, PostgreSQL
+### Go - Fiber & GORM, MySQL
 
 - REST API, Docker, Gorm and PostgreSQL: https://www.youtube.com/watch?v=bFYZrEuEDLE&t=0s
 - https://www.karanpratapsingh.com/
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
-- https://blog.logrocket.com/building-microservices-go-fiber/
-- https://www.vultr.com/docs/how-to-create-a-golang-web-api-with-fiber-postgresql-and-gorm/
 - https://gowebexamples.com/
-
-### Debugging
-
-- https://stackoverflow.com/questions/48629799/postgres-image-is-not-creating-database
-- https://github.com/docker-library/postgres/issues/203#issuecomment-255200501
+- OAuth https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth
