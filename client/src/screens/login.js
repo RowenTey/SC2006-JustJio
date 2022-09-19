@@ -15,28 +15,33 @@ import {
   
   } from 'react-native';
 
-  export default class Login extends Component<{}> {
+  export default class Signin extends Component<{}> {
     render(){
         return(
             <View style = {Styles.container}>
                 <Text style = {Styles.text}>JustJio</Text>
-                <TextInput style = {Styles.box} >Enter your username</TextInput>
+                <TextInput style = {Styles.box} placeholder = "Enter your username" placeholderTextColor={"#4E1164"} ></TextInput>
+                <TextInput style = {Styles.box} placeholder = "Enter password" placeholderTextColor={"#4E1164"} secureTextEntry = {true}></TextInput>
+                <TouchableOpacity >
+                <Text style = {Styles.confirmationbox} >Login</Text>
+                </TouchableOpacity>
+                <Text style = {Styles.minibold}>Forgot password</Text>
+                <View style = {Styles.smalltext}>
+                <Text style = {Styles.signin}>Dont have an account?</Text>
+                <Text style = {Styles.signin}> Sign up</Text>
 
-                <TextInput style = {Styles.box} >Enter your phone number</TextInput>
-                <TextInput style = {Styles.box} >Enter your email</TextInput>
-                <TextInput style = {Styles.box} >Enter password</TextInput>
-                <TextInput style = {Styles.box} >Confirm password</TextInput>
-                <TextInput style = {Styles.confirmationbox} >Register</TextInput>
-                <Text style = {Styles.smalltext}>Already have an account? Sign in</Text>
+                </View>
+               
+
+                
             </View>
         )
     }
+
+
   }
 
-
-
-  
-const Styles = StyleSheet.create({
+  const Styles = StyleSheet.create({
     header: {
       width : '100%' ,
       height : '15%',
@@ -68,21 +73,28 @@ const Styles = StyleSheet.create({
     smalltext : {
       fontSize : 13,
       color : "#4E1164",
+      flexDirection : 'row',
+      bottom : -160,
+
     },
 
     box : {
         width : 300,
+        justifyContent : 'flex-end',
         backgroundColor : "white",
         marginVertical : 10,
         color : '#6C6C6B',
         fontSize : 13,
         paddingHorizontal : 16,
+        bottom : -120,
        
     },
 
     confirmationbox : {
         borderRadius : 25,
         width : 300,
+        height :40,
+        paddingVertical : 10,
         backgroundColor : "#4E1164",
         marginVertical : 10,
         color : 'white',
@@ -91,10 +103,27 @@ const Styles = StyleSheet.create({
         alignItems : 'center',
         textAlign : 'center',
         marginVertical : 20,
-    }
+        bottom : -160,
+    },
+
+    signin : {
+      color : '#4E1164',
+      fontsize : 16,
+      fontweight : '500',
+      
+      
+    },
+
+    minibold : {
+      fontSize : 13,
+      color : "#4E1164",
+      flexDirection : 'row',
+      fontWeight : 'bold',
+      bottom : -60,
+     
+    },
+    
+
+    
 
   });
-
-
-  
-  
