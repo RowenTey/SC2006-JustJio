@@ -32,4 +32,27 @@ func ConnectDB() {
 	} else {
 		fmt.Println("Database migrated")
 	}
+
+	seedDB(DB)
+	fmt.Println("Database seeded")
+}
+
+func seedDB(db *gorm.DB) {
+	users := []model.User{
+		{Username: "test123", Password: "test123", Email: "test@test.com"},
+		{Username: "test1234", Password: "test1234", Email: "test4@test.com"},
+		{Username: "test1235", Password: "test1235", Email: "test5@test.com"},
+	}
+	for _, u := range users {
+		db.Create(&u)
+	}
+
+	rooms := []model.Room{
+		{Name: "ks birthday", Time: "5pm", Venue: "ntu hall 9", Host: "test123"},
+		{Name: "ww birthday", Time: "10pm", Venue: "ss2", Host: "test1233"},
+		{Name: "steven birthday", Time: "9am", Venue: "elmina", Host: "test1235"},
+	}
+	for _, r := range rooms {
+		db.Create(&r)
+	}
 }
