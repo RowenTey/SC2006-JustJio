@@ -68,6 +68,7 @@ git checkout dev
 
 ### Go - Fiber & GORM, MySQL
 
+- Database: https://app.planetscale.com/rowen/sc2006-justjio
 - REST API, Docker, Gorm and PostgreSQL: https://www.youtube.com/watch?v=bFYZrEuEDLE&t=0s
 - https://www.karanpratapsingh.com/
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
