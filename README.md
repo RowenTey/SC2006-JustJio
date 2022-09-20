@@ -48,7 +48,7 @@ git checkout dev
 
 ```terminal
 .
-├── deliverables
+├── deliverables         # lab deliverables
 ├── client               # react native app
 ├── server               # go app
 ├── .gitignore
