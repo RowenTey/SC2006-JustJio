@@ -4,28 +4,27 @@
 
 Project for SC2006
 
-<!-- ## 🧠 The Team
-| Name              |                     Area of Focus                     |GitHub Acount|
-|---|:---:|---|
-| Tey Kai Seong |        Back-End, Deployment        |@RowenTey|
-| Amabel  |    Designer     |@|
-| Aloysius |       Designer        |@|
-| Eldrick |       Front-End        |@|
-| Zhi Heng |       Front-End        |@|
-| Harish |       Front-End        |@| -->
 
 ## 🛠 Getting Started
 
-1\. Go to client folder directory
+1\. Install Android studio. 
+
+https://developer.android.com/studio
+
+
+2\. Download Android 10.0 (Q) SDK under SDK tools
+
+
+3\. Create a virtual machine [default is Pixel 4 with API 29]
+
+
+4\. Go to the client directory
 
 ```terminal
 cd SC2006-OneStart/client
 ```
 
-2\. Run your android emulator 
-
-
-3\. Start the react-native environment
+5\. Start the React-native environment directory
 
 ```terminal
 npm start android
