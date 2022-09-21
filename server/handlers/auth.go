@@ -9,7 +9,6 @@ import (
 	"sc2006-JustJio/database"
 	"sc2006-JustJio/model"
 
-	"gorm.io/datatypes"
 	"gorm.io/gorm"
 
 	"github.com/go-sql-driver/mysql"
@@ -57,24 +56,21 @@ func SignUp(c *fiber.Ctx) error {
 	db := database.DB.Table("users")
 	user := new(model.User)
 	if err := c.BodyParser(user); err != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
 	hash, err := hashPassword(user.Password)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
 	}
 	user.Password = hash
-
-	user.AttendingRooms = datatypes.JSON([]byte(`{"name": []}`))
-	user.HostRooms = datatypes.JSON([]byte(`{"name": []}`))
 
 	var mysqlErr *mysql.MySQLError
 	if err := db.Create(&user).Error; err != nil {
 		if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 {
-			return c.Status(400).JSON(fiber.Map{"status": "error", "message": "User already exists", "data": err})
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "User already exists", "data": err})
 		}
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
 	}
 
 	newUser := NewUser{
@@ -90,7 +86,6 @@ func SignUp(c *fiber.Ctx) error {
 // Login get user and password
 func Login(c *fiber.Ctx) error {
 	type LoginInput struct {
-		// can be username or email
 		Username string `json:"username"`
 		Password string `json:"password"`
 	}
