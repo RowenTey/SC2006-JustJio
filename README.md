@@ -21,7 +21,7 @@ Project for SC2006
 1\. Go to folder directory
 
 ```terminal
-cd <folder-name>
+cd <FOLDER-NAME>
 ```
 
 2\. Clone the repo
@@ -40,6 +40,12 @@ cd SC2006-OneStart
 
 ```terminal
 git checkout dev
+```
+
+5\. Change directory to `client` or `server` 
+
+```terminal
+cd <PROJECT-PATH> 
 ```
 
 ## 📂 Project Folder Structure
