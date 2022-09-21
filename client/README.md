@@ -16,8 +16,17 @@ Project for SC2006
 
 ## 🛠 Getting Started
 
-1\. Go to folder directory
+1\. Go to client folder directory
 
 ```terminal
-cd <folder-name>
+cd SC2006-OneStart/client
+```
+
+2\. Run your android emulator 
+
+
+3\. Start the react-native environment
+
+```terminal
+npm start android
 ```
