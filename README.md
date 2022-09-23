@@ -1,6 +1,6 @@
 # JustJio 
 
-![landing](./client/assets/JustJio.gif)
+![landing](./client/assets/gifs/JustJio.gif)
 
 Project for SC2006
 
@@ -54,7 +54,7 @@ cd <PROJECT-PATH>
 
 ```terminal
 .
-├── deliverables
+├── deliverables         # lab deliverables
 ├── client               # react native app
 ├── server               # go app
 ├── .gitignore
