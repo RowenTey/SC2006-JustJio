@@ -16,22 +16,16 @@ Project for SC2006
 
 ## 🛠 Getting Started
 
-1\. Go to client folder directory
-
-```terminal
-cd SC2006-OneStart/client
-```
-
-2\. Install dependencies
+1\. Install dependencies
 
 ```terminal
 npm install
 ```
 
-3\. Run your android emulator 
+2\. Run your android emulator 
 
 
-4\. Start the react-native environment
+3\. Start the react-native environment
 
 ```terminal
 npm start android
