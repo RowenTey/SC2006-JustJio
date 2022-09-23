@@ -22,10 +22,16 @@ Project for SC2006
 cd SC2006-OneStart/client
 ```
 
-2\. Run your android emulator 
+2\. Install dependencies
+
+```terminal
+npm install
+```
+
+3\. Run your android emulator 
 
 
-3\. Start the react-native environment
+4\. Start the react-native environment
 
 ```terminal
 npm start android
