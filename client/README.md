@@ -2,9 +2,10 @@
 
 ![landing](./assets/gifs/JustJio-Client.gif)
 
-Project for SC2006
+Client-side code for JustJio
 
 ## 🛠 Getting Started
+> From your command line go to the project client directory and run the following scripts in the terminal.
 
 1\. Install [Android studio](https://developer.android.com/studio)
 
@@ -15,7 +16,7 @@ Project for SC2006
 4\. Install dependencies
 
 ```terminal
-npm Install
+npm install
 ```
 
 5\. Start the react-native development server
