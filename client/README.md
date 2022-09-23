@@ -1,27 +1,23 @@
 # JustJio
 
-![landing](./client/assets/JustJio.gif)
+![landing](./assets/JustJio-Client.gif)
 
 Project for SC2006
 
-
 ## 🛠 Getting Started
 
-1\. Install Android studio. 
+1\. Install Android studio.
 
 https://developer.android.com/studio
 
-
 2\. Download Android 10.0 (Q) SDK under SDK tools
 
+3\. Create a virtual machine (default is Pixel 4 with API 29)
 
-3\. Create a virtual machine [default is Pixel 4 with API 29]
-
-
-4\. Go to the client directory
+4\. Install dependencies
 
 ```terminal
-cd SC2006-OneStart/client
+npm Install
 ```
 
 5\. Start the React-native environment directory
