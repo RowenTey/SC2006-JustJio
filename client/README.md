@@ -1,14 +1,12 @@
-# JustJio
+# JustJio-Client
 
-![landing](./assets/JustJio-Client.gif)
+![landing](./assets/gifs/JustJio-Client.gif)
 
 Project for SC2006
 
 ## 🛠 Getting Started
 
-1\. Install Android studio.
-
-https://developer.android.com/studio
+1\. Install [Android studio](https://developer.android.com/studio)
 
 2\. Download Android 10.0 (Q) SDK under SDK tools
 
@@ -20,7 +18,7 @@ https://developer.android.com/studio
 npm Install
 ```
 
-5\. Start the React-native environment directory
+5\. Start the react-native development server
 
 ```terminal
 npm start android
