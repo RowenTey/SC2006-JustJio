@@ -9,6 +9,7 @@
 import React, {Component} from 'react';
 import Signup from './src/screens/registration';
 import Signin from './src/screens/login';
+import Trans from './src/screens/transaction_hist';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -32,7 +33,7 @@ const App = () => {
   return (
     <>
       <View style={Styles.container}>
-        <Signin/>
+        <Trans/>
       </View>
     </>
   );
