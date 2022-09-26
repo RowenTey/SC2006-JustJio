@@ -26,7 +26,7 @@ const App = () => {
   return (
     <>
       <View style={Styles.container}>
-        <Trans/>
+        <Signin/>
       </View>
     </>
   );

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 
 import {
   StyleSheet,
@@ -8,34 +8,51 @@ import {
   TextInput,
 } from 'react-native';
 
-export default class Signin extends Component {
-  render() {
-    return (
-      <View style={Styles.container}>
-        <Text style={Styles.text}>JustJio</Text>
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter your username"
-          placeholderTextColor={'#4E1164'}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter password"
-          placeholderTextColor={'#4E1164'}
-          secureTextEntry={true}
-        />
-        <TouchableOpacity>
-          <Text style={Styles.confirmationbox}>Login</Text>
-        </TouchableOpacity>
-        <Text style={Styles.minibold}>Forgot password</Text>
-        <View style={Styles.smalltext}>
-          <Text style={Styles.signin}>Dont have an account?</Text>
-          <Text style={Styles.signin}> Sign up</Text>
-        </View>
-      </View>
-    );
+const Signin = ({value, setvalue}) =>{
+
+  const [username, setUsername ] = useState('')
+  const [password, setPassword ] = useState('')
+  const buttonPressed = () => {
+    console.warn('Signing in')
   }
+
+  return (
+    <View style={Styles.container}>
+      <TextInput style={Styles.text}>JustJio</TextInput>
+      
+      
+      <TextInput style = {Styles.box} placeholder = "Enter Username" placeholderTextColor={ '#4E1164'} secureTextEntry = {false}
+      value = {value}
+      >
+        
+      </TextInput>
+
+      <TextInput style = {Styles.box} placeholder = "Enter password" placeholderTextColor={ '#4E1164'} secureTextEntry = {true}
+      value = {value}
+      >
+        
+      </TextInput>
+
+      <TouchableOpacity>
+        <Text style={Styles.confirmationbox} onPress= {buttonPressed}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity>
+      <Text style={Styles.minibold}>Forgot password</Text>
+      </TouchableOpacity>
+      
+      <View style={Styles.smalltext}>
+        <Text style={Styles.signin}>Dont have an account?</Text>
+        <TouchableOpacity>
+        <Text style={Styles.signin}> Sign up</Text>
+        </TouchableOpacity>
+        
+      </View>
+    </View>
+  );
 }
+export default Signin
+
+
 
 const Styles = StyleSheet.create({
   header: {
