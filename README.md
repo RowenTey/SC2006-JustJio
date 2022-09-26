@@ -1,6 +1,6 @@
-# JustJio
+# JustJio 
 
-![landing](./client/assets/JustJio.gif)
+![landing](./client/assets/gifs/JustJio.gif)
 
 Project for SC2006
 
@@ -21,7 +21,7 @@ Project for SC2006
 1\. Go to folder directory
 
 ```terminal
-cd <folder-name>
+cd <FOLDER-NAME>
 ```
 
 2\. Clone the repo
@@ -42,13 +42,19 @@ cd SC2006-OneStart
 git checkout dev
 ```
 
+5\. Change directory to `client` or `server` 
+
+```terminal
+cd <PROJECT-PATH> 
+```
+
 ## 📂 Project Folder Structure
 
 #### Top Level Directory Layout
 
 ```terminal
 .
-├── deliverables
+├── deliverables         # lab deliverables
 ├── client               # react native app
 ├── server               # go app
 ├── .gitignore
@@ -74,3 +80,6 @@ git checkout dev
 - https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
 - https://gowebexamples.com/
 - OAuth https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth
+
+
+
