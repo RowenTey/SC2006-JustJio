@@ -4,7 +4,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 const Home = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <View>
         <Text>Welcome, user!</Text>
       </View>
@@ -29,4 +29,11 @@ const Home = () => {
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E9D7FD',
+  },
+});

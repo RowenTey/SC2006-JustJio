@@ -7,12 +7,13 @@
  * @flow strict-local
  */
 
-import React, {Component} from 'react';
+import React from 'react';
 
-import Signup from './src/screens/registration';
-import Signin from './src/screens/login';
+import Signup from './src/screens/Registration';
+import Signin from './src/screens/Login';
 import TransactionHistory from './src/screens/TransactionHistory';
 import Home from './src/screens/Home';
+import Navigation from './src/navigation';
 
 import {
   SafeAreaView,
@@ -24,47 +25,43 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import Temp from './src/screens/homescreen';
-import Navigation from './src/navigation';
 
 const App = () => {
   return (
-    <>
-      <View style={styles.container}>
-        <Signin />
-        {/* <TransactionHistory />
-        <Signin />
-        <Signup /> */}
-      </View>
-    </>
+    // <>
+    //   <View style={styles.container}>
+    //     <Navigation />
+    //   </View>
+    // </>
+    <Navigation />
   );
 };
 
 export default App;
 
-const styles = StyleSheet.create({
-  header: {
-    width: '100%',
-    height: '15%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E9D7FD',
-  },
+// const styles = StyleSheet.create({
+//   header: {
+//     width: '100%',
+//     height: '15%',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     backgroundColor: '#E9D7FD',
+//   },
 
-  head: {
-    backgroundColor: '#E9D7FD',
-  },
+//   head: {
+//     backgroundColor: '#E9D7FD',
+//   },
 
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E9D7FD',
-  },
+//   container: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     backgroundColor: '#E9D7FD',
+//   },
 
-  text: {
-    fontSize: 56,
-    fontFamily: 'OleoScript-Bold',
-    color: '#4E1164',
-  },
-});
+//   text: {
+//     fontSize: 56,
+//     fontFamily: 'OleoScript-Bold',
+//     color: '#4E1164',
+//   },
+// });

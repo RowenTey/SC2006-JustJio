@@ -8,7 +8,12 @@ import {
   TextInput,
 } from 'react-native';
 
-const Signup = () => {
+const Signup = ({navigation}) => {
+  const onSignIn = () => {
+    console.warn('Signin page');
+    navigation.navigate('signin');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>JustJio</Text>
@@ -44,7 +49,10 @@ const Signup = () => {
       </TouchableOpacity>
       <View style={styles.smalltext}>
         <Text style={styles.smalltext}>Already have an account?</Text>
-        <Text style={styles.signin}> Sign in</Text>
+        <Text style={styles.signin} onPress={onSignIn}>
+          {' '}
+          Sign in
+        </Text>
       </View>
     </View>
   );

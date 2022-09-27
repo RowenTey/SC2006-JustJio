@@ -1,50 +1,23 @@
-import React, {Component} from 'react';
-import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    useColorScheme,
-    View,
-    TouchableOpacity,
-  } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native'
-import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Signup from '../screens/registration';
-import {Signin} from '../screens/login';
-import Home from '../screens/homescreen';
+import Signin from '../screens/Login';
+import Signup from '../screens/Registration';
+import Home from '../screens/Home';
 
+const Navigation = () => {
+  const Stack = createNativeStackNavigator();
 
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="signin">
+        <Stack.Screen name="signin" component={Signin} />
+        <Stack.Screen name="signup" component={Signup} />
+        <Stack.Screen name="home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-  const Navigation = () =>{
-    const Stack = createNativeStackNavigator();
-
-
-    return(
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name='signin' component={Signin}>
-
-            </Stack.Screen>
-
-
-          </Stack.Navigator>
-
-        </NavigationContainer>
-
-
-
-
-    )
-      
-
-    
-
-      
-
-    }
-
-
-  export default Navigation;
+export default Navigation;
