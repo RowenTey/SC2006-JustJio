@@ -10,6 +10,7 @@ import React, {Component} from 'react';
 import Signup from './src/screens/registration';
 import Signin from './src/screens/login';
 import Trans from './src/screens/transaction_hist';
+import home from './src/screens/homescreen';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -21,6 +22,8 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
+import Home from './src/screens/homescreen';
+import Navigation from './src/navigation';
 
 const App = () => {
   return (

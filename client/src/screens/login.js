@@ -1,4 +1,5 @@
 import React, {Component, useState} from 'react';
+import {useForm, Controller} from 'react-hook-form'
 
 import {
   StyleSheet,
@@ -8,12 +9,21 @@ import {
   TextInput,
 } from 'react-native';
 
-const Signin = ({value, setvalue}) =>{
+import {useNavigation } from '@react-navigation/native'
+const Signin = () =>{
 
-  const [username, setUsername ] = useState('')
-  const [password, setPassword ] = useState('')
-  const buttonPressed = () => {
+  const {control , handleSubmit, formState:{errors}} = useForm();
+
+
+  const LoginPressed = data => { // Function for backend to check if data is right then approve :)
     console.warn('Signing in')
+    console.log(data) // Use the data to check 
+  }
+
+  
+  console.log(errors)
+  const SignupPressed = () =>{
+    console.warn('SignUp page')
   }
 
   return (
@@ -21,20 +31,30 @@ const Signin = ({value, setvalue}) =>{
       <TextInput style={Styles.text}>JustJio</TextInput>
       
       
-      <TextInput style = {Styles.box} placeholder = "Enter Username" placeholderTextColor={ '#4E1164'} secureTextEntry = {false}
-      value = {value}
-      >
-        
-      </TextInput>
 
-      <TextInput style = {Styles.box} placeholder = "Enter password" placeholderTextColor={ '#4E1164'} secureTextEntry = {true}
-      value = {value}
-      >
-        
-      </TextInput>
+      <Controller 
+        control={control}
+        name = "Username"
+        rules={{required : true}}
+        render={({field : {value,onChange,onBlur} , fieldState : {error}}) =>
+         (<TextInput style = {[Styles.box, { borderColor: error ? 'red' :'white'}]} value = {value} onChangeText= {onChange} onBlur = {onBlur} placeholder = "Enter your Username" placeholderTextColor={ '#4E1164'} secureTextEntry={false}/>)}
+      
+      
+      />
+      
+      <Controller
+      control = {control}
+      name = "Password"
+      rules={{required : true}}
+      render={({field : {value,onChange,onBlur}, fieldState : {error}}) =>
+      (<TextInput style = {[Styles.box, {borderColor: error ? 'red' : 'white' }]} value = {value} onChangeText= {onChange} onBlur = {onBlur} placeholder = "Enter your password" placeholderTextColor={ '#4E1164'} secureTextEntry={true}/>)}
+      
+      
+      />
+      
 
       <TouchableOpacity>
-        <Text style={Styles.confirmationbox} onPress= {buttonPressed}>Login</Text>
+        <Text style={Styles.confirmationbox} onPress= {handleSubmit(LoginPressed)}>Login</Text>
       </TouchableOpacity>
       <TouchableOpacity>
       <Text style={Styles.minibold}>Forgot password</Text>
@@ -43,14 +63,14 @@ const Signin = ({value, setvalue}) =>{
       <View style={Styles.smalltext}>
         <Text style={Styles.signin}>Dont have an account?</Text>
         <TouchableOpacity>
-        <Text style={Styles.signin}> Sign up</Text>
+        <Text style={Styles.signin} onPress = {SignupPressed}> Sign up</Text>
         </TouchableOpacity>
         
       </View>
     </View>
   );
 }
-export default Signin
+export  default Signin;
 
 
 
@@ -92,11 +112,12 @@ const Styles = StyleSheet.create({
     width: 300,
     justifyContent: 'flex-end',
     backgroundColor: 'white',
-    marginVertical: 10,
+    marginVertical: 20,
     color: '#6C6C6B',
     fontSize: 13,
     paddingHorizontal: 16,
-    bottom: -120,
+    borderWidth : 1,
+    borderColor : 'white',
   },
 
   confirmationbox: {
