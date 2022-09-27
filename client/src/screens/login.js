@@ -24,7 +24,7 @@ const Signin = ({navigation}) => {
     navigation.navigate('home');
   };
 
-  console.log(errors);
+  // console.log(errors);
   const onSignup = () => {
     console.warn('Signup page');
     navigation.navigate('signup');
