@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -7,10 +8,12 @@
  */
 
 import React, {Component} from 'react';
-import Signup from './src/screens/registration';
-import Signin from './src/screens/login';
-import Trans from './src/screens/transaction_hist';
-import type {Node} from 'react';
+
+import Signup from './src/screens/Registration';
+import Signin from './src/screens/Login';
+import TransactionHistory from './src/screens/TransactionHistory';
+import Home from './src/screens/Home';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -25,14 +28,19 @@ import {
 const App = () => {
   return (
     <>
-      <View style={Styles.container}>
-        <Trans/>
+      <View style={styles.container}>
+        <Home />
+        {/* <TransactionHistory />
+        <Signin />
+        <Signup /> */}
       </View>
     </>
   );
 };
 
-const Styles = StyleSheet.create({
+export default App;
+
+const styles = StyleSheet.create({
   header: {
     width: '100%',
     height: '15%',
@@ -58,5 +66,3 @@ const Styles = StyleSheet.create({
     color: '#4E1164',
   },
 });
-
-export default App;

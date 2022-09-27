@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import {
   StyleSheet,
@@ -8,51 +8,51 @@ import {
   TextInput,
 } from 'react-native';
 
-export default class Signup extends Component {
-  render() {
-    return (
-      <View style={Styles.container}>
-        <Text style={Styles.text}>JustJio</Text>
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter your username"
-          placeholderTextColor={'#4E1164'}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter your phone number"
-          placeholderTextColor={'#4E1164'}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter your email"
-          placeholderTextColor={'#4E1164'}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter password"
-          placeholderTextColor={'#4E1164'}
-          secureTextEntry={true}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Confirm password"
-          placeholderTextColor={'#4E1164'}
-          secureTextEntry={true}
-        />
-        <TouchableOpacity>
-          <Text style={Styles.confirmationbox}>Register</Text>
-        </TouchableOpacity>
-        <View style={Styles.smalltext}>
-          <Text style={Styles.smalltext}>Already have an account?</Text>
-          <Text style={Styles.signin}> Sign in</Text>
-        </View>
+const Signup = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>JustJio</Text>
+      <TextInput
+        style={styles.box}
+        placeholder="Enter your username"
+        placeholderTextColor={'#4E1164'}
+      />
+      <TextInput
+        style={styles.box}
+        placeholder="Enter your phone number"
+        placeholderTextColor={'#4E1164'}
+      />
+      <TextInput
+        style={styles.box}
+        placeholder="Enter your email"
+        placeholderTextColor={'#4E1164'}
+      />
+      <TextInput
+        style={styles.box}
+        placeholder="Enter password"
+        placeholderTextColor={'#4E1164'}
+        secureTextEntry={true}
+      />
+      <TextInput
+        style={styles.box}
+        placeholder="Confirm password"
+        placeholderTextColor={'#4E1164'}
+        secureTextEntry={true}
+      />
+      <TouchableOpacity>
+        <Text style={styles.confirmationbox}>Register</Text>
+      </TouchableOpacity>
+      <View style={styles.smalltext}>
+        <Text style={styles.smalltext}>Already have an account?</Text>
+        <Text style={styles.signin}> Sign in</Text>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
-const Styles = StyleSheet.create({
+export default Signup;
+
+const styles = StyleSheet.create({
   header: {
     width: '100%',
     height: '15%',
