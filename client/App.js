@@ -8,20 +8,12 @@
  */
 
 import React, {Component} from 'react';
-<<<<<<< HEAD
+
 import Signup from './src/screens/registration';
 import Signin from './src/screens/login';
-import Trans from './src/screens/transaction_hist';
-import home from './src/screens/homescreen';
-import type {Node} from 'react';
-=======
-
-import Signup from './src/screens/Registration';
-import Signin from './src/screens/Login';
 import TransactionHistory from './src/screens/TransactionHistory';
 import Home from './src/screens/Home';
 
->>>>>>> 7e948834272848131dcf630bbc11c94064b967b9
 import {
   SafeAreaView,
   ScrollView,
@@ -32,22 +24,17 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import Home from './src/screens/homescreen';
+import Temp from './src/screens/homescreen';
 import Navigation from './src/navigation';
 
 const App = () => {
   return (
     <>
-<<<<<<< HEAD
-      <View style={Styles.container}>
-        <Signin/>
-=======
       <View style={styles.container}>
-        <Home />
+        <Signin />
         {/* <TransactionHistory />
         <Signin />
         <Signup /> */}
->>>>>>> 7e948834272848131dcf630bbc11c94064b967b9
       </View>
     </>
   );

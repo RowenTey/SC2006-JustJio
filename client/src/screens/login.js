@@ -1,18 +1,13 @@
-<<<<<<< HEAD
-import React, {Component, useState} from 'react';
-import {useForm, Controller} from 'react-hook-form'
-=======
 import React from 'react';
->>>>>>> 7e948834272848131dcf630bbc11c94064b967b9
-
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TextInput,
-} from 'react-native';
 
+} from 'react-native';
+import {useForm, Controller} from 'react-hook-form'
 import {useNavigation } from '@react-navigation/native'
 const Signin = () =>{
 
@@ -35,7 +30,6 @@ const Signin = () =>{
       <TextInput style={Styles.text}>JustJio</TextInput>
       
       
-
       <Controller 
         control={control}
         name = "Username"
@@ -78,9 +72,8 @@ export  default Signin;
 
 
 
-export default Signin;
 
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
   header: {
     width: '100%',
     height: '15%',
@@ -138,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     alignItems: 'center',
     textAlign: 'center',
-    bottom: -150,
+    bottom: -130,
   },
 
   signin: {
