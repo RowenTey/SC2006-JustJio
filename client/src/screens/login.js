@@ -79,9 +79,9 @@ const Signin = ({navigation}) => {
       </TouchableOpacity>
 
       <View style={Styles.smalltext}>
-        <Text style={Styles.signin}>Don't have an account?</Text>
+        <Text style={Styles.signup}>Don't have an account?</Text>
         <TouchableOpacity>
-          <Text style={Styles.signin} onPress={onSignup}>
+          <Text style={Styles.signupLink} onPress={onSignup}>
             {' '}
             Sign up
           </Text>
@@ -154,10 +154,18 @@ const Styles = StyleSheet.create({
     bottom: -90,
   },
 
-  signin: {
+  signup: {
     color: '#4E1164',
     fontsize: 16,
     fontweight: '500',
+  },
+
+  signupLink: {
+    color: '#4E1164',
+    fontsize: 16,
+    fontweight: '500',
+    textDecorationLine: 'underline',
+    fontWeight: '700',
   },
 
   minibold: {
