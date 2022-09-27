@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import React, {Component, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form'
+=======
+import React from 'react';
+>>>>>>> 7e948834272848131dcf630bbc11c94064b967b9
 
 import {
   StyleSheet,
@@ -74,7 +78,9 @@ export  default Signin;
 
 
 
-const Styles = StyleSheet.create({
+export default Signin;
+
+const styles = StyleSheet.create({
   header: {
     width: '100%',
     height: '15%',
@@ -132,7 +138,7 @@ const Styles = StyleSheet.create({
     fontSize: 13,
     alignItems: 'center',
     textAlign: 'center',
-    bottom: -160,
+    bottom: -150,
   },
 
   signin: {
@@ -146,6 +152,6 @@ const Styles = StyleSheet.create({
     color: '#4E1164',
     flexDirection: 'row',
     fontWeight: 'bold',
-    bottom: -60,
+    bottom: -135,
   },
 });
