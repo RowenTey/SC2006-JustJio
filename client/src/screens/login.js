@@ -1,6 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useContext, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import {
   StyleSheet,
   Text,
@@ -76,10 +75,19 @@ const Signin = ({ navigation }) => {
     <View style={styles.container}>
       <TextInput style={styles.text}>JustJio</TextInput>
 
-      
-      <CustomInput placeholder={"Enter your Username"} name = "username" rules={{ required: 'Username is required' }} control = {control} />
-      <CustomInput placeholder={"Enter your Password"} name = "password" rules={{ required: 'Password is required' }} control = {control} secureTextEntry = {true}/>
-
+      <CustomInput
+        placeholder={'Enter your username'}
+        name="username"
+        rules={{ required: 'Username is required' }}
+        control={control}
+      />
+      <CustomInput
+        placeholder={'Enter your password'}
+        name="password"
+        rules={{ required: 'Password is required' }}
+        control={control}
+        secureTextEntry={true}
+      />
 
       <TouchableOpacity>
         <Text style={styles.confirmationbox} onPress={handleSubmit(onLogin)}>

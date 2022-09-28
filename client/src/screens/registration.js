@@ -1,13 +1,6 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useContext, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import { useForm } from 'react-hook-form';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { AxiosContext } from '../context/axios';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
@@ -25,8 +18,9 @@ const initialState = {
 };
 
 const Signup = ({ navigation }) => {
-  const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  const ALPHA_NUMERIC =  /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  const EMAIL_REGEX =
+    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const ALPHA_NUMERIC = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
   const {
     control,
@@ -36,15 +30,11 @@ const Signup = ({ navigation }) => {
   } = useForm({ initialState });
   const { publicAxios } = useContext(AxiosContext);
   const [loading, setLoading] = useState(false);
-  const password = watch('Password');
+  const passwordCheck = watch('password');
 
   const onSignup = async formData => {
     setLoading(true);
-    const { username, phoneNum, email, password, confirmPassword } = formData;
-    if (password !== confirmPassword) {
-      console.warn('Passwords do not match!');
-      return;
-    }
+    const { username, phoneNum, email, password } = formData;
 
     signUpData = {
       username,
@@ -84,24 +74,61 @@ const Signup = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.text}>JustJio</Text>
 
-      <CustomInput placeholder={"Enter your Username"} name = "username" rules={{ required: 'Username is required' }} control = {control} />
-
-
-      <CustomInput placeholder={"Enter your Phone number"} name = "phonenumber" rules={{ required: 'Phonenumber is required' }} control = {control} />  
-
-
-      <CustomInput placeholder={"Enter your Email"} name = "email" rules={{ required: 'Email ID is required' , pattern : {value : EMAIL_REGEX , message : "This is an invalid email ID"}}} control = {control} />
-
-
-      <CustomInput placeholder={"Enter your Password"} name = "Password"  control = {control} secureTextEntry ={true} 
-      rules = {{required : 'Password is required', minLength : {value : 8 , message : "Password should be minimum of 8 characters"}, pattern : {value : ALPHA_NUMERIC , message : "Password has to contain letters, numbers & symbols "}}}
+      <CustomInput
+        placeholder={'Enter your username'}
+        name="username"
+        rules={{ required: 'Username is required' }}
+        control={control}
       />
 
+      <CustomInput
+        placeholder={'Enter your phone number'}
+        name="phoneNum"
+        rules={{ required: 'Phone Number is required' }}
+        control={control}
+      />
 
-      <CustomInput placeholder={"Confirm your Pasword"} name = "ConfirmPassword"  rules={{
-            validate: value => value === password || 'Passwords do not match',
-          }} control = {control} secureTextEntry ={true}/>
+      <CustomInput
+        placeholder={'Enter your email'}
+        name="email"
+        rules={{
+          required: 'Email is required',
+          pattern: {
+            value: EMAIL_REGEX,
+            message: 'Invalid email',
+          },
+        }}
+        control={control}
+      />
 
+      <CustomInput
+        placeholder={'Enter your password'}
+        name="password"
+        control={control}
+        secureTextEntry={true}
+        rules={{
+          required: 'Password is required',
+          minLength: {
+            value: 8,
+            message: 'Password should be minimum of 8 characters',
+          },
+          pattern: {
+            value: ALPHA_NUMERIC,
+            message: 'Password has to contain letters, numbers & symbols ',
+          },
+        }}
+      />
+
+      <CustomInput
+        placeholder={'Confirm your pasword'}
+        name="confirmPassword"
+        rules={{
+          validate: value =>
+            value === passwordCheck || 'Passwords do not match',
+        }}
+        control={control}
+        secureTextEntry={true}
+      />
 
       <TouchableOpacity>
         <Text style={styles.confirmationbox} onPress={handleSubmit(onSignup)}>
