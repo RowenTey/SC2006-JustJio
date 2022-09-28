@@ -7,6 +7,7 @@ Client-side code for JustJio
 ## 🛠 Getting Started
 > From your command line go to the project client directory and run the following scripts in the terminal.
 
+
 1\. Install [Android studio](https://developer.android.com/studio)
 
 2\. Download Android 10.0 (Q) SDK under SDK tools
