@@ -11,7 +11,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func hashPassword(password string) (string, error) {
+func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
 }
@@ -94,11 +94,7 @@ func UpdateUser(c *fiber.Ctx) error {
 		user.Name = updatedUserInput.Value
 		break
 	case "phoneNum":
-		phone_num, err := strconv.Atoi(updatedUserInput.Value)
-		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Invalid phone number", "data": err})
-		}
-		user.Phone_Num = phone_num
+		user.Phone_Num = updatedUserInput.Value
 		break
 	default:
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Invalid data", "data": updatedUserInput.Field})

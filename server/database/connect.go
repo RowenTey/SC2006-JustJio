@@ -33,7 +33,7 @@ func ConnectDB() {
 		fmt.Println("Database migrated")
 	}
 
-	// seedDB(DB)
+	seedDB(DB)
 	fmt.Println("Database seeded")
 }
 
