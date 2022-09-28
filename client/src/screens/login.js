@@ -35,6 +35,7 @@ const Signin = ({ navigation }) => {
     try {
       console.log('Login data', formData);
       const response = await publicAxios.post('/auth', formData);
+      console.log('Response status', response.status);
       const { token } = response.data;
       authContext.setAuthState({
         accessToken: token,
