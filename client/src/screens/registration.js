@@ -77,6 +77,7 @@ const Signup = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>JustJio</Text>
+
       <Controller
         control={control}
         name="username"
@@ -92,6 +93,7 @@ const Signup = ({navigation}) => {
           />
         )}
       />
+
       <Controller
         control={control}
         name="phoneNum"
@@ -107,6 +109,7 @@ const Signup = ({navigation}) => {
           />
         )}
       />
+
       <Controller
         control={control}
         name="email"
@@ -122,6 +125,7 @@ const Signup = ({navigation}) => {
           />
         )}
       />
+
       <Controller
         control={control}
         name="password"
@@ -137,6 +141,7 @@ const Signup = ({navigation}) => {
           />
         )}
       />
+
       <Controller
         control={control}
         name="confirmPassword"
@@ -152,11 +157,13 @@ const Signup = ({navigation}) => {
           />
         )}
       />
+
       <TouchableOpacity>
         <Text style={styles.confirmationbox} onPress={handleSubmit(onSignup)}>
           Register
         </Text>
       </TouchableOpacity>
+
       <View style={styles.smalltext}>
         <Text style={styles.smalltext}>Already have an account?</Text>
         <Text style={styles.signin} onPress={onSignIn}>

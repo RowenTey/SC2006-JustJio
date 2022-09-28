@@ -47,6 +47,7 @@ const Signin = ({navigation}) => {
           token,
         }),
       );
+
       console.log('Logged in', response.data);
       setLoading(false);
       navigation.navigate('home');
