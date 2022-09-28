@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
-import {useForm, Controller} from 'react-hook-form';
+import React, { useContext, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import {
   StyleSheet,
   Text,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {AxiosContext} from '../context/axios';
+import { AxiosContext } from '../context/axios';
 import Spinner from '../components/Spinner';
 
 var signUpData = {
@@ -23,18 +23,18 @@ const initialState = {
   confirmPassword: '',
 };
 
-const Signup = ({navigation}) => {
+const Signup = ({ navigation }) => {
   const {
     control,
     handleSubmit,
     formState: {},
-  } = useForm({initialState});
-  const {publicAxios} = useContext(AxiosContext);
+  } = useForm({ initialState });
+  const { publicAxios } = useContext(AxiosContext);
   const [loading, setLoading] = useState(false);
 
   const onSignup = async formData => {
     setLoading(true);
-    const {username, phoneNum, email, password, confirmPassword} = formData;
+    const { username, phoneNum, email, password, confirmPassword } = formData;
     if (password !== confirmPassword) {
       console.warn('Passwords do not match!');
       return;
@@ -81,10 +81,10 @@ const Signup = ({navigation}) => {
       <Controller
         control={control}
         name="username"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
+        rules={{ required: true }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
             value={value}
             onChangeText={onChange}
             placeholder="Enter your username"
@@ -97,10 +97,10 @@ const Signup = ({navigation}) => {
       <Controller
         control={control}
         name="phoneNum"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
+        rules={{ required: true }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
             value={value}
             onChangeText={onChange}
             placeholder="Enter your phone number"
@@ -113,10 +113,10 @@ const Signup = ({navigation}) => {
       <Controller
         control={control}
         name="email"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
+        rules={{ required: true }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
             value={value}
             onChangeText={onChange}
             placeholder="Enter your email"
@@ -129,10 +129,10 @@ const Signup = ({navigation}) => {
       <Controller
         control={control}
         name="password"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
+        rules={{ required: true }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
             value={value}
             onChangeText={onChange}
             placeholder="Enter your password"
@@ -145,10 +145,10 @@ const Signup = ({navigation}) => {
       <Controller
         control={control}
         name="confirmPassword"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
+        rules={{ required: true }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
             value={value}
             onChangeText={onChange}
             placeholder="Confirm password"

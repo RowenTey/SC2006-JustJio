@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
-import {useForm, Controller} from 'react-hook-form';
+import React, { useContext, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import {
   StyleSheet,
   Text,
@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {AuthContext} from '../context/auth';
-import {AxiosContext} from '../context/axios';
+import { AuthContext } from '../context/auth';
+import { AxiosContext } from '../context/axios';
 import * as KeyChain from 'react-native-keychain';
 import Spinner from '../components/Spinner';
 
@@ -18,14 +18,14 @@ const initialState = {
   password: '',
 };
 
-const Signin = ({navigation}) => {
+const Signin = ({ navigation }) => {
   const {
     control,
     handleSubmit,
     formState: {},
-  } = useForm({defaultValues: initialState});
+  } = useForm({ defaultValues: initialState });
   const authContext = useContext(AuthContext);
-  const {publicAxios} = useContext(AxiosContext);
+  const { publicAxios } = useContext(AxiosContext);
   const [loading, setLoading] = useState(false);
 
   // Function for backend to check if data is right then approve :)
@@ -35,7 +35,7 @@ const Signin = ({navigation}) => {
     try {
       console.log('Login data', formData);
       const response = await publicAxios.post('/auth', formData);
-      const {token} = response.data;
+      const { token } = response.data;
       authContext.setAuthState({
         accessToken: token,
         authenticated: true,
@@ -78,10 +78,10 @@ const Signin = ({navigation}) => {
       <Controller
         control={control}
         name="username"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
+        rules={{ required: true }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
             value={value}
             onChangeText={onChange}
             placeholder="Enter your username"
@@ -94,10 +94,10 @@ const Signin = ({navigation}) => {
       <Controller
         control={control}
         name="password"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
+        rules={{ required: true }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
             value={value}
             onChangeText={onChange}
             placeholder="Enter your password"
