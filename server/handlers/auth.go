@@ -122,6 +122,10 @@ func Login(c *fiber.Ctx) error {
 
 	token := jwt.New(jwt.SigningMethodHS256)
 
+	/*
+		Create JWT token
+		expires in 3 days
+	*/
 	claims := token.Claims.(jwt.MapClaims)
 	claims["username"] = userData.Username
 	claims["user_id"] = userData.UID
