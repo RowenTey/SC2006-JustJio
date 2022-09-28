@@ -11,6 +11,7 @@ type Room struct {
 	Name           string         `gorm:"not null" json:"name"`
 	Time           string         `gorm:"not null" json:"time"`
 	Venue          string         `gorm:"not null" json:"venue"`
+	Date           string         `gorm:"not null" json:"date"`
 	Host           string         `gorm:"not null" json:"host"`
 	AttendeesCount int            `gorm:"default:1" json:"attendeesCount"`
 	URL            string         `json:"url"`
