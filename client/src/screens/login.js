@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import {
   StyleSheet,
@@ -8,42 +8,81 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import {AuthContext} from '../context/auth';
+import {AxiosContext} from '../context/axios';
+import * as KeyChain from 'react-native-keychain';
+import Spinner from '../components/Spinner';
+
+const initialState = {
+  username: '',
+  password: '',
+};
 
 const Signin = ({navigation}) => {
   const {
     control,
     handleSubmit,
-    formState: {errors},
-  } = useForm();
+    formState: {},
+  } = useForm({defaultValues: initialState});
+  const authContext = useContext(AuthContext);
+  const {publicAxios} = useContext(AxiosContext);
+  const [loading, setLoading] = useState(false);
 
   // Function for backend to check if data is right then approve :)
-  const onLogin = data => {
+  const onLogin = async formData => {
     console.warn('Signing in');
-    // Use the data to check
-    console.log(data);
-    navigation.navigate('home');
+    setLoading(true);
+    try {
+      console.log('Login data', formData);
+      const response = await publicAxios.post('/auth', formData);
+      const {token} = response.data;
+      authContext.setAuthState({
+        accessToken: token,
+        authenticated: true,
+      });
+
+      await KeyChain.setGenericPassword(
+        'token',
+        JSON.stringify({
+          token,
+        }),
+      );
+      console.log('Logged in', response.data);
+      setLoading(false);
+      navigation.navigate('home');
+    } catch (error) {
+      setLoading(false);
+      console.log('Login failed', error);
+      if (error.response) {
+        console.log('Error response', error.response.data);
+      } else if (error.request) {
+        console.log('Error request', error.request);
+      }
+    }
   };
 
-  // console.log(errors);
   const onSignup = () => {
     console.warn('Signup page');
     navigation.navigate('signup');
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
-    <View style={Styles.container}>
-      <TextInput style={Styles.text}>JustJio</TextInput>
+    <View style={styles.container}>
+      <TextInput style={styles.text}>JustJio</TextInput>
 
       <Controller
         control={control}
-        name="Username"
+        name="username"
         rules={{required: true}}
-        render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+        render={({field: {value, onChange}, fieldState: {error}}) => (
           <TextInput
-            style={[Styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
             value={value}
             onChangeText={onChange}
-            onBlur={onBlur}
             placeholder="Enter your username"
             placeholderTextColor={'#4E1164'}
             secureTextEntry={false}
@@ -53,14 +92,13 @@ const Signin = ({navigation}) => {
 
       <Controller
         control={control}
-        name="Password"
+        name="password"
         rules={{required: true}}
-        render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+        render={({field: {value, onChange}, fieldState: {error}}) => (
           <TextInput
-            style={[Styles.box, {borderColor: error ? 'red' : 'white'}]}
+            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
             value={value}
             onChangeText={onChange}
-            onBlur={onBlur}
             placeholder="Enter your password"
             placeholderTextColor={'#4E1164'}
             secureTextEntry={true}
@@ -69,19 +107,19 @@ const Signin = ({navigation}) => {
       />
 
       <TouchableOpacity>
-        <Text style={Styles.confirmationbox} onPress={onLogin}>
+        <Text style={styles.confirmationbox} onPress={handleSubmit(onLogin)}>
           Login
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity>
-        <Text style={Styles.minibold}>Forgot password</Text>
+        <Text style={styles.minibold}>Forgot password</Text>
       </TouchableOpacity>
 
-      <View style={Styles.smalltext}>
-        <Text style={Styles.signup}>Don't have an account?</Text>
+      <View style={styles.smalltext}>
+        <Text style={styles.signup}>Don't have an account?</Text>
         <TouchableOpacity>
-          <Text style={Styles.signupLink} onPress={onSignup}>
+          <Text style={styles.signupLink} onPress={onSignup}>
             {' '}
             Sign up
           </Text>
@@ -93,7 +131,7 @@ const Signin = ({navigation}) => {
 
 export default Signin;
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -163,7 +201,6 @@ const Styles = StyleSheet.create({
   signupLink: {
     color: '#4E1164',
     fontsize: 16,
-    fontweight: '500',
     textDecorationLine: 'underline',
     fontWeight: '700',
   },
