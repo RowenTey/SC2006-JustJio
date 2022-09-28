@@ -28,9 +28,9 @@ const Signin = ({ navigation }) => {
   const { publicAxios } = useContext(AxiosContext);
   const [loading, setLoading] = useState(false);
 
-  // Function for backend to check if data is right then approve :)
+  // function for backend to check if data is right then approve :)
   const onLogin = async formData => {
-    console.warn('Signing in');
+    // console.warn('Signing in');
     setLoading(true);
     try {
       console.log('Login data', formData);
@@ -63,7 +63,7 @@ const Signin = ({ navigation }) => {
   };
 
   const onSignup = () => {
-    console.warn('Signup page');
+    // console.warn('Signup page');
     navigation.navigate('Signup');
   };
 

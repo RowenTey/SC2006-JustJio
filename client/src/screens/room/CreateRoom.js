@@ -2,11 +2,11 @@ import React from 'react';
 
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-const Home = ({ navigation }) => {
+const CreateRoom = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.header}>Welcome, user!</Text>
+      <View>
+        <Text>Welcome, user!</Text>
       </View>
       <View>
         <Text>TO GIVE:</Text>
@@ -18,9 +18,7 @@ const Home = ({ navigation }) => {
         <Text>Create Room</Text>
       </TouchableOpacity>
       <TouchableOpacity>
-        <Text onPress={() => navigation.navigate('TransactionHistory')}>
-          Room Invitations
-        </Text>
+        <Text>Room Invitations</Text>
       </TouchableOpacity>
       <View>
         <Text>Party Rooms</Text>
@@ -29,7 +27,7 @@ const Home = ({ navigation }) => {
   );
 };
 
-export default Home;
+export default CreateRoom;
 
 const styles = StyleSheet.create({
   container: {
@@ -37,24 +35,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#E9D7FD',
-  },
-
-  top: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E9D7FD',
-    minHeight: '10%',
-    maxHeight: '10%',
-  },
-
-  header: {
-    fontSize: 25,
-    top: 10,
-    fontFamily: 'OleoScript-Bold',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#4E1164',
   },
 });
