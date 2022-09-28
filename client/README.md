@@ -1,31 +1,26 @@
-# JustJio
+# JustJio-Client
 
-![landing](./client/assets/JustJio.gif)
+![landing](./assets/gifs/JustJio-Client.gif)
 
-Project for SC2006
-
-<!-- ## 🧠 The Team
-| Name              |                     Area of Focus                     |GitHub Acount|
-|---|:---:|---|
-| Tey Kai Seong |        Back-End, Deployment        |@RowenTey|
-| Amabel  |    Designer     |@|
-| Aloysius |       Designer        |@|
-| Eldrick |       Front-End        |@|
-| Zhi Heng |       Front-End        |@|
-| Harish |       Front-End        |@| -->
+Client-side code for JustJio
 
 ## 🛠 Getting Started
+> From your command line go to the project client directory and run the following scripts in the terminal.
 
-1\. Install dependencies
+
+1\. Install [Android studio](https://developer.android.com/studio)
+
+2\. Download Android 10.0 (Q) SDK under SDK tools
+
+3\. Create a virtual machine (default is Pixel 4 with API 29)
+
+4\. Install dependencies
 
 ```terminal
 npm install
 ```
 
-2\. Run your android emulator 
-
-
-3\. Start the react-native environment
+5\. Start the react-native development server
 
 ```terminal
 npm start android

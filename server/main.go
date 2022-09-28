@@ -29,7 +29,6 @@ func main() {
 	}))
 
 	database.ConnectDB()
-
 	router.Initalize(app)
 	log.Fatal(app.Listen(":" + getenv("PORT", "8080")))
 }

@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
-
+/* eslint-disable react-native/no-inline-styles */
+import React, {useContext, useState} from 'react';
+import {useForm, Controller} from 'react-hook-form';
 import {
   StyleSheet,
   Text,
@@ -7,52 +8,169 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import {AxiosContext} from '../context/axios';
+import Spinner from '../components/Spinner';
 
-export default class Signup extends Component {
-  render() {
-    return (
-      <View style={Styles.container}>
-        <Text style={Styles.text}>JustJio</Text>
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter your username"
-          placeholderTextColor={'#4E1164'}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter your phone number"
-          placeholderTextColor={'#4E1164'}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter your email"
-          placeholderTextColor={'#4E1164'}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Enter password"
-          placeholderTextColor={'#4E1164'}
-          secureTextEntry={true}
-        />
-        <TextInput
-          style={Styles.box}
-          placeholder="Confirm password"
-          placeholderTextColor={'#4E1164'}
-          secureTextEntry={true}
-        />
-        <TouchableOpacity>
-          <Text style={Styles.confirmationbox}>Register</Text>
-        </TouchableOpacity>
-        <View style={Styles.smalltext}>
-          <Text style={Styles.smalltext}>Already have an account?</Text>
-          <Text style={Styles.signin}> Sign in</Text>
-        </View>
-      </View>
-    );
+var signUpData = {
+  username: '',
+  phoneNum: '',
+  email: '',
+  password: '',
+};
+
+const initialState = {
+  ...signUpData,
+  confirmPassword: '',
+};
+
+const Signup = ({navigation}) => {
+  const {
+    control,
+    handleSubmit,
+    formState: {},
+  } = useForm({initialState});
+  const {publicAxios} = useContext(AxiosContext);
+  const [loading, setLoading] = useState(false);
+
+  const onSignup = async formData => {
+    setLoading(true);
+    const {username, phoneNum, email, password, confirmPassword} = formData;
+    if (password !== confirmPassword) {
+      console.warn('Passwords do not match!');
+      return;
+    }
+
+    signUpData = {
+      username,
+      phoneNum,
+      email,
+      password,
+    };
+    console.warn('Signing up');
+    try {
+      console.log('Signup data', formData);
+      const response = await publicAxios.post('/auth/signup', signUpData);
+
+      console.log('Signed up', response.data);
+      setLoading(false);
+      navigation.navigate('signin');
+    } catch (error) {
+      setLoading(false);
+      console.log('Signup failed', error);
+      if (error.response) {
+        console.log('Error response', error.response.data);
+      } else if (error.request) {
+        console.log('Error request', error.request);
+      }
+    }
+  };
+
+  const onSignIn = () => {
+    console.warn('Signin page');
+    navigation.navigate('signin');
+  };
+
+  if (loading) {
+    return <Spinner />;
   }
-}
 
-const Styles = StyleSheet.create({
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>JustJio</Text>
+      <Controller
+        control={control}
+        name="username"
+        rules={{required: true}}
+        render={({field: {value, onChange}, fieldState: {error}}) => (
+          <TextInput
+            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your username"
+            placeholderTextColor={'#4E1164'}
+            secureTextEntry={false}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="phoneNum"
+        rules={{required: true}}
+        render={({field: {value, onChange}, fieldState: {error}}) => (
+          <TextInput
+            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your phone number"
+            placeholderTextColor={'#4E1164'}
+            secureTextEntry={false}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="email"
+        rules={{required: true}}
+        render={({field: {value, onChange}, fieldState: {error}}) => (
+          <TextInput
+            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your email"
+            placeholderTextColor={'#4E1164'}
+            secureTextEntry={false}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="password"
+        rules={{required: true}}
+        render={({field: {value, onChange}, fieldState: {error}}) => (
+          <TextInput
+            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your password"
+            placeholderTextColor={'#4E1164'}
+            secureTextEntry={true}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="confirmPassword"
+        rules={{required: true}}
+        render={({field: {value, onChange}, fieldState: {error}}) => (
+          <TextInput
+            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Confirm password"
+            placeholderTextColor={'#4E1164'}
+            secureTextEntry={true}
+          />
+        )}
+      />
+      <TouchableOpacity>
+        <Text style={styles.confirmationbox} onPress={handleSubmit(onSignup)}>
+          Register
+        </Text>
+      </TouchableOpacity>
+      <View style={styles.smalltext}>
+        <Text style={styles.smalltext}>Already have an account?</Text>
+        <Text style={styles.signin} onPress={onSignIn}>
+          {' '}
+          Sign in
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+export default Signup;
+
+const styles = StyleSheet.create({
   header: {
     width: '100%',
     height: '15%',
@@ -111,6 +229,7 @@ const Styles = StyleSheet.create({
   signin: {
     color: '#4E1164',
     fontsize: 16,
-    fontweight: '500',
+    textDecorationLine: 'underline',
+    fontWeight: '700',
   },
 });

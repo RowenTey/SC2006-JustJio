@@ -11,11 +11,11 @@ func Initalize(router *fiber.App) {
 
 	// router.Use(middleware.Security)
 
+	router.Use(middleware.Json)
+
 	router.Get("/", func(c *fiber.Ctx) error {
 		return c.Status(200).SendString("Hello, World!")
 	})
-
-	router.Use(middleware.Json)
 
 	auth := router.Group("/auth")
 	auth.Post("/signup", handlers.SignUp)
