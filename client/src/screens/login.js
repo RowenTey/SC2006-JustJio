@@ -12,6 +12,7 @@ import { AuthContext } from '../context/auth';
 import { AxiosContext } from '../context/axios';
 import * as KeyChain from 'react-native-keychain';
 import Spinner from '../components/Spinner';
+import CustomInput from '../components/CustomInput';
 
 const initialState = {
   username: '',
@@ -75,37 +76,10 @@ const Signin = ({ navigation }) => {
     <View style={styles.container}>
       <TextInput style={styles.text}>JustJio</TextInput>
 
-      <Controller
-        control={control}
-        name="username"
-        rules={{ required: true }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <TextInput
-            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Enter your username"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={false}
-          />
-        )}
-      />
+      
+      <CustomInput placeholder={"Enter your Username"} name = "username" rules={{ required: 'Username is required' }} control = {control} />
+      <CustomInput placeholder={"Enter your Password"} name = "password" rules={{ required: 'Password is required' }} control = {control} secureTextEntry = {true}/>
 
-      <Controller
-        control={control}
-        name="password"
-        rules={{ required: true }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <TextInput
-            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Enter your password"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={true}
-          />
-        )}
-      />
 
       <TouchableOpacity>
         <Text style={styles.confirmationbox} onPress={handleSubmit(onLogin)}>

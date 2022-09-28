@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { AxiosContext } from '../context/axios';
 import Spinner from '../components/Spinner';
+import CustomInput from '../components/CustomInput';
 
 var signUpData = {
   username: '',
@@ -24,13 +25,18 @@ const initialState = {
 };
 
 const Signup = ({ navigation }) => {
+  const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const ALPHA_NUMERIC =  /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
   const {
     control,
     handleSubmit,
     formState: {},
+    watch,
   } = useForm({ initialState });
   const { publicAxios } = useContext(AxiosContext);
   const [loading, setLoading] = useState(false);
+  const password = watch('Password');
 
   const onSignup = async formData => {
     setLoading(true);
@@ -78,85 +84,24 @@ const Signup = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.text}>JustJio</Text>
 
-      <Controller
-        control={control}
-        name="username"
-        rules={{ required: true }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <TextInput
-            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Enter your username"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={false}
-          />
-        )}
+      <CustomInput placeholder={"Enter your Username"} name = "username" rules={{ required: 'Username is required' }} control = {control} />
+
+
+      <CustomInput placeholder={"Enter your Phone number"} name = "phonenumber" rules={{ required: 'Phonenumber is required' }} control = {control} />  
+
+
+      <CustomInput placeholder={"Enter your Email"} name = "email" rules={{ required: 'Email ID is required' , pattern : {value : EMAIL_REGEX , message : "This is an invalid email ID"}}} control = {control} />
+
+
+      <CustomInput placeholder={"Enter your Password"} name = "Password"  control = {control} secureTextEntry ={true} 
+      rules = {{required : 'Password is required', minLength : {value : 8 , message : "Password should be minimum of 8 characters"}, pattern : {value : ALPHA_NUMERIC , message : "Password has to contain letters, numbers & symbols "}}}
       />
 
-      <Controller
-        control={control}
-        name="phoneNum"
-        rules={{ required: true }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <TextInput
-            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Enter your phone number"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={false}
-          />
-        )}
-      />
 
-      <Controller
-        control={control}
-        name="email"
-        rules={{ required: true }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <TextInput
-            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Enter your email"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={false}
-          />
-        )}
-      />
+      <CustomInput placeholder={"Confirm your Pasword"} name = "ConfirmPassword"  rules={{
+            validate: value => value === password || 'Passwords do not match',
+          }} control = {control} secureTextEntry ={true}/>
 
-      <Controller
-        control={control}
-        name="password"
-        rules={{ required: true }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <TextInput
-            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Enter your password"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={true}
-          />
-        )}
-      />
-
-      <Controller
-        control={control}
-        name="confirmPassword"
-        rules={{ required: true }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <TextInput
-            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Confirm password"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={true}
-          />
-        )}
-      />
 
       <TouchableOpacity>
         <Text style={styles.confirmationbox} onPress={handleSubmit(onSignup)}>
