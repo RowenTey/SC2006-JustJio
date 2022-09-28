@@ -50,7 +50,7 @@ const Signin = ({ navigation }) => {
 
       console.log('Logged in', response.data);
       setLoading(false);
-      navigation.navigate('home');
+      navigation.navigate('Home');
     } catch (error) {
       setLoading(false);
       console.log('Login failed', error);
@@ -64,7 +64,7 @@ const Signin = ({ navigation }) => {
 
   const onSignup = () => {
     console.warn('Signup page');
-    navigation.navigate('signup');
+    navigation.navigate('Signup');
   };
 
   if (loading) {
