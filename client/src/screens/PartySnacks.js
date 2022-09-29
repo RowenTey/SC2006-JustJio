@@ -22,7 +22,6 @@ const PartySnacks = () => {
         <Text style={Styles.details}>Sheng Shiong Commonwealth</Text>
         <Text style={Styles.details}>5 km</Text>
         <Text style={Styles.details}>$</Text>
-        {/* <Image source={require('../assets/images/shengshiongcommonwealth.png')} /> */}
       </TouchableOpacity>
 
       <TouchableOpacity style={Styles.box}>
@@ -56,7 +55,6 @@ const PartySnacks = () => {
       </TouchableOpacity>
 
       <View style={Styles.bottombar}>
-        {/* <Image source={require('./assets/icons/home.png')} /> */}
       </View>
 
     </View>
@@ -80,7 +78,8 @@ const Styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: 'center',
-    paddingVertical: 30,
+    paddingVertical: 20,
+    height: 80,
   },
 
   bottombar: {
@@ -88,7 +87,7 @@ const Styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: 'center',
-    paddingVertical: 30,
+    height: 60,
   },
 
   details: {
@@ -99,6 +98,7 @@ const Styles = StyleSheet.create({
   bigtext: {
     color: "#4E1164",
     fontWeight: '800',
+    fontSize: 20,
   },
 
   smalltext: {
@@ -112,5 +112,10 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#EEEEEE',
     width: "100%",
+  },
+
+  images: {
+    width: 100,
+    height: 100,
   },
 });
