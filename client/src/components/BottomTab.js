@@ -1,9 +1,9 @@
-import React from "react";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Home from "../screens/Home";
-import TransactionHistory from "../screens/TransactionHistory";
-import { NavigationContainer } from "@react-navigation/native";
+import Home from '../screens/Home';
+import TransactionHistory from '../screens/TransactionHistory';
+import { NavigationContainer } from '@react-navigation/native';
 
 const TabBar = () => {
   const Tab = createBottomTabNavigator();
@@ -12,10 +12,7 @@ const TabBar = () => {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen
-          name="TransactionHistory"
-          component={TransactionHistory}
-        />
+        <Tab.Screen name="TransactionHistory" component={TransactionHistory} />
       </Tab.Navigator>
     </NavigationContainer>
   );
