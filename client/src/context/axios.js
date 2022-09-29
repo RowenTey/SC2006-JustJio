@@ -1,19 +1,19 @@
-import React, {createContext, useContext} from 'react';
+import React, { createContext, useContext } from 'react';
 import axios from 'axios';
-import {AuthContext} from './auth';
+import { AuthContext } from './auth';
 
 const AxiosContext = createContext();
-const {Provider} = AxiosContext;
+const { Provider } = AxiosContext;
 
-const AxiosProvider = ({children}) => {
+const AxiosProvider = ({ children }) => {
   const authContext = useContext(AuthContext);
 
   const authAxios = axios.create({
-    baseURL: 'http://192.168.1.121:8080',
+    baseURL: 'http://192.168.5.130:8080',
   });
 
   const publicAxios = axios.create({
-    baseURL: 'http://192.168.1.121:8080',
+    baseURL: 'http://192.168.5.130:8080',
   });
 
   authAxios.interceptors.request.use(
@@ -40,4 +40,4 @@ const AxiosProvider = ({children}) => {
   );
 };
 
-export {AxiosContext, AxiosProvider};
+export { AxiosContext, AxiosProvider };

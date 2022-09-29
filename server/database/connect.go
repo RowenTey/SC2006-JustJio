@@ -33,8 +33,12 @@ func ConnectDB() {
 		fmt.Println("Database migrated")
 	}
 
-	seedDB(DB)
-	fmt.Println("Database seeded")
+	var userCount int64
+	if DB.Table("users").Count(&userCount); userCount == 0 {
+		fmt.Println("User count", userCount)
+		seedDB(DB)
+		fmt.Println("Database seeded")
+	}
 }
 
 func seedDB(db *gorm.DB) {

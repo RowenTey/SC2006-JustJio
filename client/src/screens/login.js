@@ -1,6 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
-import {useForm, Controller} from 'react-hook-form';
+import React, { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   StyleSheet,
   Text,
@@ -8,34 +7,36 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {AuthContext} from '../context/auth';
-import {AxiosContext} from '../context/axios';
+import { AuthContext } from '../context/auth';
+import { AxiosContext } from '../context/axios';
 import * as KeyChain from 'react-native-keychain';
 import Spinner from '../components/Spinner';
+import CustomInput from '../components/CustomInput';
 
 const initialState = {
   username: '',
   password: '',
 };
 
-const Signin = ({navigation}) => {
+const Signin = ({ navigation }) => {
   const {
     control,
     handleSubmit,
     formState: {},
-  } = useForm({defaultValues: initialState});
+  } = useForm({ defaultValues: initialState });
   const authContext = useContext(AuthContext);
-  const {publicAxios} = useContext(AxiosContext);
+  const { publicAxios } = useContext(AxiosContext);
   const [loading, setLoading] = useState(false);
 
-  // Function for backend to check if data is right then approve :)
+  // function for backend to check if data is right then approve :)
   const onLogin = async formData => {
-    console.warn('Signing in');
+    // console.warn('Signing in');
     setLoading(true);
     try {
       console.log('Login data', formData);
       const response = await publicAxios.post('/auth', formData);
-      const {token} = response.data;
+      console.log('Response status', response.status);
+      const { token } = response.data;
       authContext.setAuthState({
         accessToken: token,
         authenticated: true,
@@ -47,9 +48,10 @@ const Signin = ({navigation}) => {
           token,
         }),
       );
+
       console.log('Logged in', response.data);
       setLoading(false);
-      navigation.navigate('home');
+      navigation.navigate('Home');
     } catch (error) {
       setLoading(false);
       console.log('Login failed', error);
@@ -62,8 +64,8 @@ const Signin = ({navigation}) => {
   };
 
   const onSignup = () => {
-    console.warn('Signup page');
-    navigation.navigate('signup');
+    // console.warn('Signup page');
+    navigation.navigate('Signup');
   };
 
   if (loading) {
@@ -74,36 +76,18 @@ const Signin = ({navigation}) => {
     <View style={styles.container}>
       <TextInput style={styles.text}>JustJio</TextInput>
 
-      <Controller
-        control={control}
+      <CustomInput
+        placeholder={'Enter your username'}
         name="username"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
-          <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Enter your username"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={false}
-          />
-        )}
-      />
-
-      <Controller
+        rules={{ required: 'Username is required' }}
         control={control}
+      />
+      <CustomInput
+        placeholder={'Enter your password'}
         name="password"
-        rules={{required: true}}
-        render={({field: {value, onChange}, fieldState: {error}}) => (
-          <TextInput
-            style={[styles.box, {borderColor: error ? 'red' : 'white'}]}
-            value={value}
-            onChangeText={onChange}
-            placeholder="Enter your password"
-            placeholderTextColor={'#4E1164'}
-            secureTextEntry={true}
-          />
-        )}
+        rules={{ required: 'Password is required' }}
+        control={control}
+        secureTextEntry={true}
       />
 
       <TouchableOpacity>
