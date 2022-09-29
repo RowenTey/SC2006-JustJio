@@ -7,6 +7,8 @@ import Signup from '../screens/Registration';
 import Home from '../screens/Home';
 import TransactionHistory from '../screens/TransactionHistory';
 import Splash from '../screens/Splash';
+import PartySnacks from '../screens/PartySnacks';
+
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -14,7 +16,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Splash"
+        initialRouteName="PartySnacks"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
@@ -23,6 +25,10 @@ const Navigation = () => {
         <Stack.Screen
           name="TransactionHistory"
           component={TransactionHistory}
+        />
+        <Stack.Screen
+          name="PartySnacks"
+          component={PartySnacks}
         />
       </Stack.Navigator>
     </NavigationContainer>
