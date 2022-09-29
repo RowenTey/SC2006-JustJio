@@ -15,7 +15,7 @@ const Home = ({ navigation }) => {
         <Text>TO GET:</Text>
       </View>
       <TouchableOpacity>
-        <Text>Create Room</Text>
+        <Text onPress={() => navigation.navigate('Splash')}>Create Room</Text>
       </TouchableOpacity>
       <TouchableOpacity>
         <Text onPress={() => navigation.navigate('TransactionHistory')}>

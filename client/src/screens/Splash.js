@@ -14,22 +14,25 @@ const Splash = ({ navigation }) => {
     try {
       const value = await Keychain.getGenericPassword();
       const jwt = JSON.parse(value.password);
-      console.log('JWT token: ' + jwt.accessToken);
+      console.log('JWT token: ' + jwt.token);
 
-      authContext.setAuthState({
-        accessToken: jwt.accessToken || null,
-        authenicated: jwt.accessToken !== null,
-      });
+      if (jwt.token) {
+        authContext.setAuthState({
+          accessToken: jwt.token,
+          authenticated: true,
+        });
+      }
     } catch (error) {
       console.log(`Keychain error: ${error.message}`);
       authContext.setAuthState({
         accessToken: null,
-        authenicated: false,
+        authenticated: false,
       });
     }
 
+    console.log('AuthState: ' + JSON.stringify(authContext.authState));
     setLoading(false);
-    if (authContext?.authState.authenicated) {
+    if (authContext?.authState.authenticated === true) {
       navigation.navigate('Home');
     } else {
       navigation.navigate('Signin');
@@ -46,7 +49,9 @@ const Splash = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>JustJio</Text>
+      <Text style={styles.text} onPress={() => loadJWT()}>
+        JustJio
+      </Text>
     </View>
   );
 };
