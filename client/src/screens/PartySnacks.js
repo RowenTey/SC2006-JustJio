@@ -109,7 +109,7 @@ const Styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#EEEEEE',
     width: "100%",
   },
