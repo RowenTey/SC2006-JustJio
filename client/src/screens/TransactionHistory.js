@@ -16,12 +16,14 @@ const TransactionHistory = () => {
       <View style={styles.top}>
         <Text style={styles.header}>Transaction History</Text>
       </View>
+
       <View style={styles.middle}>
         <TransactionList date="28 aug" list={list1} />
         <TransactionList date="27 aug" list={list2} />
       </View>
+
       <View style={styles.bottom}>
-        <Text style={styles.smalltext}>Nav Bar</Text>
+        <Text style={styles.smallText}>Nav Bar</Text>
       </View>
     </View>
   );
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
     color: '#FF0000',
   },
 
-  smalltext: {
+  smallText: {
     fontSize: 13,
     color: '#4E1164',
     flexDirection: 'row',

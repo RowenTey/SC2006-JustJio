@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 const Home = ({ navigation }) => {
   return (
@@ -8,22 +9,42 @@ const Home = ({ navigation }) => {
       <View style={styles.top}>
         <Text style={styles.header}>Welcome, user!</Text>
       </View>
-      <View>
-        <Text>TO GIVE:</Text>
-      </View>
-      <View>
-        <Text>TO GET:</Text>
-      </View>
-      <TouchableOpacity>
-        <Text onPress={() => navigation.navigate('Splash')}>Create Room</Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text onPress={() => navigation.navigate('TransactionHistory')}>
-          Room Invitations
-        </Text>
-      </TouchableOpacity>
-      <View>
-        <Text>Party Rooms</Text>
+
+      <View style={styles.middle}>
+        <View style={styles.transactions}>
+          <View>
+            <Text>TO GIVE:</Text>
+          </View>
+          <View>
+            <Text>TO GET:</Text>
+          </View>
+        </View>
+
+        <View style={styles.roomFunctions}>
+          <TouchableOpacity>
+            <Image
+              source={require('../../assets/images/add.png')}
+              style={{
+                width: 40,
+                height: 40,
+                backgroundColor: '#4E1164',
+                padding: 15,
+              }}
+            />
+            <Text onPress={() => navigation.navigate('Splash')}>
+              Create Room
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text onPress={() => navigation.navigate('TransactionHistory')}>
+              Room Invitations
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.rooms}>
+          <Text>Party Rooms</Text>
+        </View>
       </View>
     </View>
   );
@@ -41,8 +62,8 @@ const styles = StyleSheet.create({
 
   top: {
     flex: 1,
+    right: 60,
     flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#E9D7FD',
     minHeight: '10%',
@@ -51,10 +72,41 @@ const styles = StyleSheet.create({
 
   header: {
     fontSize: 25,
-    top: 10,
+    bottom: 10,
     fontFamily: 'OleoScript-Bold',
-    alignItems: 'center',
-    justifyContent: 'center',
     color: '#4E1164',
+  },
+
+  middle: {
+    flex: 2,
+    flexDirection: 'column',
+    backgroundColor: '#f0ecec',
+    alignItems: 'center',
+    width: '100%',
+    maxHeight: '83%',
+  },
+
+  transactions: {
+    flexDirection: 'row',
+    borderColor: 'red',
+    borderWidth: 5,
+    width: '80%',
+    justifyContent: 'space-between',
+    padding: 20,
+    marginVertical: 20,
+  },
+
+  roomFunctions: {
+    flexDirection: 'row',
+    borderColor: 'red',
+    borderWidth: 5,
+    width: '80%',
+    justifyContent: 'space-between',
+    padding: 20,
+    marginVertical: 20,
+  },
+
+  rooms: {
+    marginTop: 30,
   },
 });
