@@ -1,21 +1,10 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-//for images being imported in no need to specify dimensions
-//for images online need to specify dimensions such as width: height: uri:(image url)
-import CustomInput from '../components/CustomInput';
-import { Button } from 'react-native-paper';
+// for images being imported in no need to specify dimensions
+// for images online need to specify dimensions such as width: height: uri:(image url)
 
-var roomdata = {
+var roomData = {
   eventname: '',
   date: '',
   time: '',
@@ -24,7 +13,7 @@ var roomdata = {
 };
 
 const CreateRoom = () => {
-  //still need to define logic of ensuring have event name, date , time and venue
+  // still need to define logic of ensuring have event name, date, time and venue
   return (
     <View style={styles.container}>
       <View style={styles.title}>
