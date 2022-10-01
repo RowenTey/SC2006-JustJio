@@ -120,7 +120,7 @@ const Signup = ({ navigation }) => {
       />
 
       <CustomInput
-        placeholder={'Confirm your pasword'}
+        placeholder={'Confirm your password'}
         name="confirmPassword"
         rules={{
           validate: value =>
