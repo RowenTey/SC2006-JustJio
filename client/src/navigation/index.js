@@ -8,6 +8,7 @@ import Home from '../screens/Home';
 import TransactionHistory from '../screens/TransactionHistory';
 import Splash from '../screens/Splash';
 import PartySnacks from '../screens/PartySnacks';
+import CreateRoom from '../screens/CreateRoom';
 
 
 const Navigation = () => {
@@ -16,7 +17,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="PartySnacks"
+        initialRouteName="CreateRoom"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
@@ -29,6 +30,10 @@ const Navigation = () => {
         <Stack.Screen
           name="PartySnacks"
           component={PartySnacks}
+        />
+        <Stack.Screen
+          name="CreateRoom"
+          component={CreateRoom}
         />
       </Stack.Navigator>
     </NavigationContainer>
