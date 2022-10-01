@@ -1,7 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+
+const ICONS = {
+  add: require('../../assets/images/add.png'),
+  mail: require('../../assets/images/mail.png'),
+};
 
 const Home = ({ navigation }) => {
   return (
@@ -21,29 +25,35 @@ const Home = ({ navigation }) => {
         </View>
 
         <View style={styles.roomFunctions}>
-          <TouchableOpacity>
-            <Image
-              source={require('../../assets/images/add.png')}
-              style={{
-                width: 40,
-                height: 40,
-                backgroundColor: '#4E1164',
-                padding: 15,
-              }}
-            />
-            <Text onPress={() => navigation.navigate('Splash')}>
-              Create Room
-            </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Splash')}>
+            <View style={styles.roomFunctionButtons}>
+              <Image
+                source={ICONS.add}
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+              />
+            </View>
+            <Text style={styles.roomFunctionText}>Create Room</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text onPress={() => navigation.navigate('TransactionHistory')}>
-              Room Invitations
-            </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('TransactionHistory')}>
+            <View style={[styles.roomFunctionButtons, { marginStart: 18 }]}>
+              <Image
+                source={ICONS.mail}
+                style={{
+                  width: 40,
+                  height: 30,
+                }}
+              />
+            </View>
+            <Text style={styles.roomFunctionText}>Room Invitations</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.rooms}>
-          <Text>Party Rooms</Text>
+          <Text style={styles.roomsTitle}>Party Rooms</Text>
         </View>
       </View>
     </View>
@@ -103,10 +113,32 @@ const styles = StyleSheet.create({
     width: '80%',
     justifyContent: 'space-between',
     padding: 20,
+    paddingHorizontal: 30,
     marginVertical: 20,
+  },
+
+  roomFunctionText: {
+    fontWeight: 'bold',
+  },
+
+  roomFunctionButtons: {
+    alignItems: 'center',
+    backgroundColor: '#4E1164',
+    padding: 15,
+    paddingVertical: 18,
+    borderRadius: 15,
+    width: 70,
+    marginStart: 6,
+    marginBottom: 5,
   },
 
   rooms: {
     marginTop: 30,
+  },
+
+  roomsTitle: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#4E1164',
   },
 });

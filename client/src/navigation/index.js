@@ -10,30 +10,23 @@ import Splash from '../screens/Splash';
 import PartySnacks from '../screens/PartySnacks';
 import CreateRoom from '../screens/CreateRoom';
 
-
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="CreateRoom"
+        initialRouteName="Home"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="PartySnacks" component={PartySnacks} />
+        <Stack.Screen name="CreateRoom" component={CreateRoom} />
         <Stack.Screen
           name="TransactionHistory"
           component={TransactionHistory}
-        />
-        <Stack.Screen
-          name="PartySnacks"
-          component={PartySnacks}
-        />
-        <Stack.Screen
-          name="CreateRoom"
-          component={CreateRoom}
         />
       </Stack.Navigator>
     </NavigationContainer>

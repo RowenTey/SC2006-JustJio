@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 // for images online need to specify dimensions such as width: height: uri:(image url)
 
 var roomData = {
-  eventname: '',
+  eventName: '',
   date: '',
   time: '',
   venue: '',
