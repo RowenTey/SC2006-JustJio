@@ -9,6 +9,7 @@ import TransactionHistory from '../screens/TransactionHistory';
 import Splash from '../screens/Splash';
 import PartySnacks from '../screens/PartySnacks';
 import CreateRoom from '../screens/CreateRoom';
+import RoomsPage from '../screens/RoomsPage';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -24,6 +25,7 @@ const Navigation = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="PartySnacks" component={PartySnacks} />
         <Stack.Screen name="CreateRoom" component={CreateRoom} />
+        <Stack.Screen name="RoomsPage" component={RoomsPage} />
         <Stack.Screen
           name="TransactionHistory"
           component={TransactionHistory}
