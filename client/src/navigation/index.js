@@ -27,8 +27,14 @@ const Navigation = () => {
         <Stack.Screen name="PartySnacks" component={PartySnacks} />
         <Stack.Screen name="CreateRoom" component={CreateRoom} />
         <Stack.Screen name="RoomsPage" component={RoomsPage} />
-        <Stack.Screen name="TransactionHistory" component={TransactionHistory}/>
-        <Stack.Screen name="JoinRoom" component={JoinRoom}/>
+        <Stack.Screen
+          name="TransactionHistory"
+          component={TransactionHistory}
+        />
+        <Stack.Screen
+          name="JoinRoom"
+          component={JoinRoom}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -14,6 +14,7 @@ import JoinRoom from './src/screens/JoinRoom';    //if doing new page, remember 
 import TransactionHistory from './src/screens/TransactionHistory';
 import Home from './src/screens/Home';
 import RoomsPage from './src/screens/RoomsPage';
+import PartyGames from './src/screens/PartyGames';
 import {
   SafeAreaView,
   ScrollView,
