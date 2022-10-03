@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { AxiosContext } from '../context/axios';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
@@ -43,14 +43,14 @@ const CreateRoom = ({ navigation }) => {
     };
 
     try {
-      console.log('Room data', formData);
-      const response = await authAxios.post('/auth/createroom', roomData);
-      console.log('Create Room Successful', response.data);
+      console.log('Room data', roomData);
+      const response = await authAxios.post('/rooms', roomData);
+      console.log('Room created successfully', response.data);
       setLoading(false);
-      navigation.navigate('Room');
+      // navigation.navigate('Room');
     } catch (error) {
       setLoading(false);
-      console.log('Create Room failed', error);
+      console.log('Failed to create room', error);
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
@@ -71,46 +71,64 @@ const CreateRoom = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            style={styles.back}
+            source={require('../../assets/images/back.png')}
+          />
+        </TouchableOpacity>
         <Text style={styles.header}>Create Room</Text>
       </View>
 
-      <CustomInput
-        placeholder={'Name of Event:'}
-        name="eventName"
-        rules={{ required: 'Event name is required' }}
-        control={control}
-      />
+      <View style={styles.form}>
+        <CustomInput
+          placeholder={'Name of Event:'}
+          placeholderTextColor="#000"
+          name="eventName"
+          rules={{ required: 'Event name is required' }}
+          control={control}
+          textStyles={styles.roomText}
+        />
 
-      <CustomInput
-        placeholder={'Date: dd/mm/yyyy'}
-        name="date"
-        rules={{ required: 'Date is required' }}
-        control={control}
-      />
+        <CustomInput
+          placeholder={'Date: dd/mm/yyyy'}
+          placeholderTextColor="#000"
+          name="date"
+          rules={{ required: 'Date is required' }}
+          control={control}
+          textStyles={styles.roomText}
+        />
 
-      <CustomInput
-        placeholder={'Time:'}
-        name="time"
-        rules={{ required: 'Time is required' }}
-        control={control}
-      />
+        <CustomInput
+          placeholder={'Time:'}
+          placeholderTextColor="#000"
+          name="time"
+          rules={{ required: 'Time is required' }}
+          control={control}
+          textStyles={styles.roomText}
+        />
 
-      <CustomInput
-        placeholder={'Venue: '}
-        name="venue"
-        rules={{ required: 'Venue is required' }}
-        control={control}
-      />
+        <CustomInput
+          placeholder={'Venue: '}
+          placeholderTextColor="#000"
+          name="venue"
+          rules={{ required: 'Venue is required' }}
+          control={control}
+          textStyles={styles.roomText}
+        />
 
-      <CustomInput
-        placeholder={'Invitees: usernames '}
-        name="invitees"
-        control={control}
-      />
+        <CustomInput
+          placeholder={'Invitees: usernames'}
+          placeholderTextColor="#000"
+          name="invitees"
+          control={control}
+          textStyles={styles.roomText}
+        />
+      </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity style={styles.confirmationBox}>
         <Text
-          style={styles.confirmationbox}
+          style={styles.confirmationText}
           onPress={handleSubmit(onCreateRoom)}>
           Create Room
         </Text>
@@ -122,17 +140,6 @@ const CreateRoom = ({ navigation }) => {
 export default CreateRoom;
 
 const styles = StyleSheet.create({
-  title: {
-    // top of the content
-    backgroundColor: '#E9D7FD',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
-    height: 80,
-    flexDirection: 'row',
-  },
-
   container: {
     // the background colour of the entire application
     flex: 0.65,
@@ -142,51 +149,74 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 
-  box: {
-    //white boxes to key in the event details
-    width: 300,
-    backgroundColor: 'white',
-    color: '#6C6C6B',
-    fontSize: 13,
-    marginVertical: 8,
-    marginHorizontal: 16,
+  title: {
+    // top of the content
+    backgroundColor: '#E9D7FD',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+    flexDirection: 'row',
+  },
+
+  back: {
+    // back arrow
+    position: 'relative',
+    top: 8,
+    right: 75,
   },
 
   header: {
-    // text details of the text
+    // text details of the header
     fontSize: 25,
     top: 10,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-ExtraBold',
     alignItems: 'center',
     justifyContent: 'center',
     color: '#4E1164',
   },
 
-  roomText: {
-    // text that is written in the boxes
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
+  form: {
+    // form div
+    marginTop: 15,
   },
 
-  // change the text to grey in the same line
+  box: {
+    // white boxes to key in the event details
+    width: 300,
+    backgroundColor: 'white',
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+
+  roomText: {
+    // text that is written in the boxes
+    fontSize: 13,
+    fontFamily: 'Poppins-Bold',
+    color: '#4E1164',
+  },
+
   highlightGrey: {
+    // change the text to grey in the same line
     color: 'grey',
   },
 
   confirmationBox: {
+    // button
     borderRadius: 25,
     width: 180,
     height: 35,
     paddingVertical: 5,
     backgroundColor: '#E9D7FD',
-    marginVertical: 10,
-    color: '#4E1164',
-    fontFamily: 'Poppins-Bold',
-    fontWeight: 'bold',
-    fontSize: 18,
+    marginVertical: 18,
     alignItems: 'center',
     textAlign: 'center',
-    bottom: -10,
+  },
+
+  confirmationText: {
+    // button text
+    color: '#4E1164',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 18,
   },
 });
