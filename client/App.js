@@ -13,6 +13,7 @@ import CreateRoom from './src/screens/CreateRoom';
 import JoinRoom from './src/screens/JoinRoom';    //if doing new page, remember to update here as well
 import TransactionHistory from './src/screens/TransactionHistory';
 import Home from './src/screens/Home';
+import RoomsPage from './src/screens/RoomsPage';
 import {
   SafeAreaView,
   ScrollView,

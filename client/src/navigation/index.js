@@ -10,6 +10,7 @@ import Splash from '../screens/Splash';
 import PartySnacks from '../screens/PartySnacks';
 import CreateRoom from '../screens/CreateRoom';
 import JoinRoom from '../screens/JoinRoom';
+import RoomsPage from '../screens/RoomsPage';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -23,22 +24,11 @@ const Navigation = () => {
         <Stack.Screen name="Signin" component={Signin} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen
-          name="TransactionHistory"
-          component={TransactionHistory}
-        />
-        <Stack.Screen
-          name="PartySnacks"
-          component={PartySnacks}
-        />
-        <Stack.Screen
-          name="CreateRoom"    //as well as create additional screen page when starting your page.
-          component={CreateRoom}
-        />
-        <Stack.Screen
-          name="JoinRoom"
-          component={JoinRoom}
-        />
+        <Stack.Screen name="PartySnacks" component={PartySnacks} />
+        <Stack.Screen name="CreateRoom" component={CreateRoom} />
+        <Stack.Screen name="RoomsPage" component={RoomsPage} />
+        <Stack.Screen name="TransactionHistory" component={TransactionHistory}/>
+        <Stack.Screen name="JoinRoom" component={JoinRoom}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

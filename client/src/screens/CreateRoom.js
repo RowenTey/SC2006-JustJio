@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form';
 import CustomInput from '../components/CustomInput';
 import { Button } from 'react-native';
 
-var roomdata = {
-  eventname: '',
+var roomData = {
+  eventName: '',
   date: '',
   time: '',
   venue: '',
@@ -75,7 +75,7 @@ const CreateRoom = ({navigation}) => { //still need to define logic of ensuring 
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text style={styles.header}>Create Room</Text> 
+        <Text style={styles.header}>Create Room</Text>
       </View>
     
     
@@ -128,18 +128,20 @@ const CreateRoom = ({navigation}) => { //still need to define logic of ensuring 
 export default CreateRoom;
 
 const styles = StyleSheet.create({
-  title: { //top of the content 
-    backgroundColor: "#E9D7FD",
-    width: "100%",
-    justifyContent: "center",
+  title: {
+    //top of the content
+    backgroundColor: '#E9D7FD',
+    width: '100%',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 20,
     height: 80,
-    flexDirection : 'row',
+    flexDirection: 'row',
   },
 
-  container: { //the background colour of the entire application
-    flex : 0.65,
+  container: {
+    //the background colour of the entire application
+    flex: 0.65,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#EEEEEE',
@@ -155,8 +157,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 
-
-  header: { //text details of the text
+  header: {
+    //text details of the text
     fontSize: 25,
     top: 10,
     fontFamily: 'OleoScript-Bold',
@@ -165,15 +167,16 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
-  roomtext: { //text that is written in the boxes
+  roomtext: {
+    //text that is written in the boxes
     fontSize: 20,
     fontFamily: 'OleoScript',
     fontWeight: 'bold',
     color: 'black',
   },
 
-  highlightgrey: //change the text to grey in the same line
-  {
+  //change the text to grey in the same line
+  highlightgrey: {
     color: 'grey',
   },
 
@@ -192,6 +195,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     bottom: -10,
   },
-
 
 });
