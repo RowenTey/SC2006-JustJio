@@ -9,6 +9,7 @@ const CustomInput = ({
   rules = {},
   placeholder,
   secureTextEntry,
+  defaultValue,
 }) => {
   return (
     <Controller
@@ -28,6 +29,7 @@ const CustomInput = ({
             placeholderTextColor={'#4E1164'}
             style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
             secureTextEntry={secureTextEntry}
+            defaultValue={defaultValue}
           />
           {error && (
             <Text style={{ color: 'red', alignSelf: 'auto' }}>
