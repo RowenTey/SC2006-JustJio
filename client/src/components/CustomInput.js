@@ -8,8 +8,9 @@ const CustomInput = ({
   name,
   rules = {},
   placeholder,
+  placeholderTextColor,
   secureTextEntry,
-  defaultValue,
+  textStyles,
 }) => {
   return (
     <Controller
@@ -26,10 +27,13 @@ const CustomInput = ({
             onChangeText={onChange}
             onBlur={onBlur}
             placeholder={placeholder}
-            placeholderTextColor={'#4E1164'}
-            style={[styles.box, { borderColor: error ? 'red' : 'white' }]}
+            placeholderTextColor={placeholderTextColor}
+            style={[
+              styles.box,
+              textStyles,
+              { borderColor: error ? 'red' : 'white' },
+            ]}
             secureTextEntry={secureTextEntry}
-            defaultValue={defaultValue}
           />
           {error && (
             <Text style={{ color: 'red', alignSelf: 'auto' }}>
@@ -55,14 +59,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     backgroundColor: 'white',
     marginVertical: 10,
-    color: '#6C6C6B',
     fontSize: 13,
     paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: 'white',
   },
-
-  input: {},
 });
 
 export default CustomInput;
