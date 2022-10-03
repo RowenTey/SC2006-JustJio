@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const RoomsPage = () => {
   const list1 = [
-    ['Friday', '26 Dec', "Graduation Party", "1800", "Bob's House", "22"],
+    ['Friday', '26 Dec', 'Graduation Party', '1800', "Bob's House", '22'],
     ['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark'],
   ];
   const list2 = [
