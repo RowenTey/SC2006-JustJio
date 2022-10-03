@@ -22,32 +22,32 @@ const CreateRoom = () => {
 
       <View style={styles.container2}>
         <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomtext}>Name of Event:</Text>
+          <Text style={styles.roomText}>Name of Event:</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomtext}>
-            Date: <Text style={styles.highlightgrey}>dd/mm/yyyy</Text>
+          <Text style={styles.roomText}>
+            Date: <Text style={styles.highlightGrey}>dd/mm/yyyy</Text>
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomtext}>Time:</Text>
+          <Text style={styles.roomText}>Time:</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomtext}>Venue:</Text>
+          <Text style={styles.roomText}>Venue:</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomtext}>
-            Invitees: <Text style={styles.highlightgrey}> usernames</Text>
+          <Text style={styles.roomText}>
+            Invitees: <Text style={styles.highlightGrey}> usernames</Text>
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity>
           <Text
-            style={styles.confirmationbox}
+            style={styles.confirmationBox}
             onPress={console.log('Successful click')}>
             Create Room
           </Text>
@@ -61,7 +61,7 @@ export default CreateRoom;
 
 const styles = StyleSheet.create({
   title: {
-    //top of the content
+    // top of the content
     backgroundColor: '#E9D7FD',
     width: '100%',
     justifyContent: 'center',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    //the background colour of the entire application
+    // the background colour of the entire application
     flex: 0.65,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
 
   container2: {
-    //the main part of the application
+    // the main part of the application
     flex: 1,
     padding: 10,
     alignItems: 'center',
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
 
   box: {
-    //white boxes to key in the event details
+    // white boxes to key in the event details
     width: 331,
     backgroundColor: 'white',
     color: '#6C6C6B',
@@ -102,29 +102,28 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    //text details of the text
+    // text details of the text
     fontSize: 25,
     top: 10,
-    fontFamily: 'OleoScript-Bold',
+    fontWeight: 'bold',
     alignItems: 'center',
     justifyContent: 'center',
     color: '#4E1164',
   },
 
-  roomtext: {
-    //text that is written in the boxes
+  roomText: {
+    // text that is written in the boxes
     fontSize: 20,
-    fontFamily: 'OleoScript',
     fontWeight: 'bold',
     color: 'black',
   },
 
-  //change the text to grey in the same line
-  highlightgrey: {
+  // change the text to grey in the same line
+  highlightGrey: {
     color: 'grey',
   },
 
-  confirmationbox: {
+  confirmationBox: {
     borderRadius: 25,
     width: 180,
     height: 35,
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9D7FD',
     marginVertical: 10,
     color: '#4E1164',
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins-Bold',
     fontWeight: 'bold',
     fontSize: 18,
     alignItems: 'center',

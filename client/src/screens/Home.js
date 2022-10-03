@@ -37,8 +37,7 @@ const Home = ({ navigation }) => {
             </View>
             <Text style={styles.roomFunctionText}>Create Room</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('TransactionHistory')}>
+          <TouchableOpacity onPress={() => navigation.navigate('CreateRoom')}>
             <View style={[styles.roomFunctionButtons, { marginStart: 18 }]}>
               <Image
                 source={ICONS.mail}
