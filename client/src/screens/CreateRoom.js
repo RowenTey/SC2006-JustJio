@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-
-// for images being imported in no need to specify dimensions
-// for images online need to specify dimensions such as width: height: uri:(image url)
+import { AxiosContext } from '../context/axios';
+import { useForm } from 'react-hook-form';
+import Spinner from '../components/Spinner';
+import CustomInput from '../components/CustomInput';
+//for images being imported in no need to specify dimensions
+//for images online need to specify dimensions such as width: height: uri:(image url)
 
 var roomData = {
   eventName: '',
@@ -12,47 +15,106 @@ var roomData = {
   invitees: '',
 };
 
-const CreateRoom = () => {
-  // still need to define logic of ensuring have event name, date, time and venue
+const initialState = {
+  ...roomData,
+};
+
+const CreateRoom = ({ navigation }) => {
+  //still need to define logic of ensuring have event name, date , time and venu
+
+  const {
+    control,
+    handleSubmit,
+    formState: {},
+  } = useForm({ initialState });
+
+  const { authAxios } = useContext(AxiosContext);
+  const [loading, setLoading] = useState(false);
+
+  const onCreateRoom = async formData => {
+    setLoading(true);
+    const { eventName, date, time, venue } = formData;
+
+    roomData = {
+      name: eventName,
+      date,
+      time,
+      venue,
+    };
+
+    try {
+      console.log('Room data', formData);
+      const response = await authAxios.post('/auth/createroom', roomData);
+      console.log('Create Room Successful', response.data);
+      setLoading(false);
+      navigation.navigate('Room');
+    } catch (error) {
+      setLoading(false);
+      console.log('Create Room failed', error);
+      if (error.response) {
+        console.log('Error response', error.response.data);
+      } else if (error.request) {
+        console.log('Error request', error.request);
+      }
+    }
+  };
+
+  const successCreateRoom = () => {
+    // console.warn('Room page');
+    navigation.navigate('Room');
+  };
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>
         <Text style={styles.header}>Create Room</Text>
       </View>
 
-      <View style={styles.container2}>
-        <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomText}>Name of Event:</Text>
-        </TouchableOpacity>
+      <CustomInput
+        placeholder={'Name of Event:'}
+        name="eventName"
+        rules={{ required: 'Event name is required' }}
+        control={control}
+      />
 
-        <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomText}>
-            Date: <Text style={styles.highlightGrey}>dd/mm/yyyy</Text>
-          </Text>
-        </TouchableOpacity>
+      <CustomInput
+        placeholder={'Date: dd/mm/yyyy'}
+        name="date"
+        rules={{ required: 'Date is required' }}
+        control={control}
+      />
 
-        <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomText}>Time:</Text>
-        </TouchableOpacity>
+      <CustomInput
+        placeholder={'Time:'}
+        name="time"
+        rules={{ required: 'Time is required' }}
+        control={control}
+      />
 
-        <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomText}>Venue:</Text>
-        </TouchableOpacity>
+      <CustomInput
+        placeholder={'Venue: '}
+        name="venue"
+        rules={{ required: 'Venue is required' }}
+        control={control}
+      />
 
-        <TouchableOpacity style={styles.box}>
-          <Text style={styles.roomText}>
-            Invitees: <Text style={styles.highlightGrey}> usernames</Text>
-          </Text>
-        </TouchableOpacity>
+      <CustomInput
+        placeholder={'Invitees: usernames '}
+        name="invitees"
+        control={control}
+      />
 
-        <TouchableOpacity>
-          <Text
-            style={styles.confirmationBox}
-            onPress={console.log('Successful click')}>
-            Create Room
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity>
+        <Text
+          style={styles.confirmationbox}
+          onPress={handleSubmit(onCreateRoom)}>
+          Create Room
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -80,23 +142,12 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 
-  container2: {
-    // the main part of the application
-    flex: 1,
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#EEEEEE',
-    height: '100%',
-  },
-
   box: {
-    // white boxes to key in the event details
-    width: 331,
+    //white boxes to key in the event details
+    width: 300,
     backgroundColor: 'white',
     color: '#6C6C6B',
     fontSize: 13,
-    padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
   },
@@ -137,11 +188,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     bottom: -10,
-  },
-
-  backarrow: {
-    position: 'absolute',
-    margin: 8,
-    borderRadius: 10,
   },
 });

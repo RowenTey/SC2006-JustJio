@@ -42,7 +42,6 @@ const Signup = ({ navigation }) => {
       email,
       password,
     };
-    // console.warn('Signing up');
     try {
       console.log('Signup data', formData);
       const response = await publicAxios.post('/auth/signup', signUpData);
@@ -62,7 +61,6 @@ const Signup = ({ navigation }) => {
   };
 
   const onSignIn = () => {
-    // console.warn('Signin page');
     navigation.navigate('Signin');
   };
 
@@ -120,7 +118,7 @@ const Signup = ({ navigation }) => {
       />
 
       <CustomInput
-        placeholder={'Confirm your pasword'}
+        placeholder={'Confirm your password'}
         name="confirmPassword"
         rules={{
           validate: value =>

@@ -9,6 +9,7 @@ import TransactionHistory from '../screens/TransactionHistory';
 import Splash from '../screens/Splash';
 import PartySnacks from '../screens/PartySnacks';
 import CreateRoom from '../screens/CreateRoom';
+import JoinRoom from '../screens/JoinRoom';
 import RoomsPage from '../screens/RoomsPage';
 
 const Navigation = () => {
@@ -17,7 +18,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="CreateRoom" //change this also when doing your page
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
@@ -29,6 +30,10 @@ const Navigation = () => {
         <Stack.Screen
           name="TransactionHistory"
           component={TransactionHistory}
+        />
+        <Stack.Screen
+          name="JoinRoom"
+          component={JoinRoom}
         />
       </Stack.Navigator>
     </NavigationContainer>
