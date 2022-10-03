@@ -9,7 +9,7 @@ import TransactionHistory from '../screens/TransactionHistory';
 import Splash from '../screens/Splash';
 import PartySnacks from '../screens/PartySnacks';
 import CreateRoom from '../screens/CreateRoom';
-
+import JoinRoom from '../screens/JoinRoom';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -17,7 +17,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="CreateRoom"
+        initialRouteName="CreateRoom" //change this also when doing your page
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
@@ -32,8 +32,12 @@ const Navigation = () => {
           component={PartySnacks}
         />
         <Stack.Screen
-          name="CreateRoom"
+          name="CreateRoom"    //as well as create additional screen page when starting your page.
           component={CreateRoom}
+        />
+        <Stack.Screen
+          name="JoinRoom"
+          component={JoinRoom}
         />
       </Stack.Navigator>
     </NavigationContainer>

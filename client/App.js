@@ -10,6 +10,7 @@ import React, {Component} from 'react';
 import Signup from './src/screens/registration';
 import Signin from './src/screens/login';
 import CreateRoom from './src/screens/CreateRoom';
+import JoinRoom from './src/screens/JoinRoom';    //if doing new page, remember to update here as well
 import TransactionHistory from './src/screens/TransactionHistory';
 import Home from './src/screens/Home';
 import {
@@ -34,7 +35,7 @@ const App = () => {
   return (
     <>
       <View style={Styles.container}>
-        <CreateRoom/>
+        <CreateRoom/> {/*//change this everytime when working on your page */}
       </View>
     </>
   );
