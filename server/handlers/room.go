@@ -69,13 +69,14 @@ func CreateRoom(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
+	token := c.Locals("user").(*jwt.Token)
+	room.Host = getUser(token, "username")
+
 	if err := db.Table("rooms").Create(&room).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in room table", "data": err})
 	}
 
 	// create roomUser relationship
-	token := c.Locals("user").(*jwt.Token)
-
 	roomID_str := strconv.FormatUint(uint64(room.ID), 10)
 	userID_str := getUser(token, "user_id")
 

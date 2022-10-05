@@ -9,6 +9,7 @@ import TransactionHistory from '../screens/TransactionHistory';
 import Splash from '../screens/Splash';
 import PartySnacks from '../screens/PartySnacks';
 import CreateRoom from '../screens/CreateRoom';
+// import JoinRoom from '../screens/JoinRoom';
 import RoomsPage from '../screens/RoomsPage';
 
 const Navigation = () => {
@@ -30,6 +31,7 @@ const Navigation = () => {
           name="TransactionHistory"
           component={TransactionHistory}
         />
+        {/* <Stack.Screen name="JoinRoom" component={JoinRoom} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

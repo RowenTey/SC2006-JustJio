@@ -1,98 +1,124 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 
-function PartyGames(props) {
+const PartyGames = () => {
   return (
-    <View style = {styles.container}>
+    <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.header}>Party Games</Text>
       </View>
       <ScrollView style={styles.middle}>
         <View style={styles.gameContainer}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://s.hdnux.com/photos/01/25/42/54/22424372/4/ratio3x2_1200.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://s.hdnux.com/photos/01/25/42/54/22424372/4/ratio3x2_1200.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Beer Pong</Text>
         </View>
         <View style={styles.gameContainer}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://www.brightful.me/content/images/size/w2000/2020/09/shutterstock_1400121068.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://www.brightful.me/content/images/size/w2000/2020/09/shutterstock_1400121068.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Charades</Text>
         </View>
         <View style={styles.gameContainer}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             resizeMode="stretch"
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://cdn.appuals.com/wp-content/uploads/2021/10/intro-1.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://cdn.appuals.com/wp-content/uploads/2021/10/intro-1.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Cards Against Humanity</Text>
         </View>
         <View style={styles.gameContainer}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://www.lovehkfilm.com/reviews_2/ab5734/bet_to_basic_a.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://www.lovehkfilm.com/reviews_2/ab5734/bet_to_basic_a.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Mahjong</Text>
         </View>
         <View style={styles.gameContainer}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://i.ytimg.com/vi/Qm5-zohOKFc/maxresdefault.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://i.ytimg.com/vi/Qm5-zohOKFc/maxresdefault.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Heads Up</Text>
         </View>
         <View style={styles.gameContainer}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Musical Chairs</Text>
         </View>
         <View style={styles.gameContainer}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Musical Chairs</Text>
         </View>
         <View style={styles.gameContainer}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Musical Chairs</Text>
         </View>
         <View style={styles.gameContainerLast}>
-          <Image style={styles.gameImage}
+          <Image
+            style={styles.gameImage}
             source={{
-            width: 92,
-            height: 67,
-            uri: "https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg" }} />
+              width: 92,
+              height: 67,
+              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
+            }}
+          />
           <Text style={styles.gameText}>Musical Chairs</Text>
         </View>
       </ScrollView>
       <View style={styles.bottom}>
-        <Text style={styles.smalltext}>Nav Bar</Text>
+        <Text style={styles.smallText}>Nav Bar</Text>
       </View>
     </View>
   );
-}
+};
 
 export default PartyGames;
 
 const styles = StyleSheet.create({
-
   container: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -172,8 +198,8 @@ const styles = StyleSheet.create({
     minHeight: '7%',
     maxHeight: '7%',
   },
-  
-  smalltext: {
+
+  smallText: {
     fontSize: 13,
     color: '#4E1164',
     flexDirection: 'row',

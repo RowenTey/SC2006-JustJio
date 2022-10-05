@@ -42,7 +42,6 @@ const Signup = ({ navigation }) => {
       email,
       password,
     };
-    // console.warn('Signing up');
     try {
       console.log('Signup data', formData);
       const response = await publicAxios.post('/auth/signup', signUpData);
@@ -62,7 +61,6 @@ const Signup = ({ navigation }) => {
   };
 
   const onSignIn = () => {
-    // console.warn('Signin page');
     navigation.navigate('Signin');
   };
 
@@ -76,20 +74,25 @@ const Signup = ({ navigation }) => {
 
       <CustomInput
         placeholder={'Enter your username'}
+        placeholderTextColor="#4E1164"
         name="username"
         rules={{ required: 'Username is required' }}
         control={control}
+        textStyles={styles.inputText}
       />
 
       <CustomInput
         placeholder={'Enter your phone number'}
+        placeholderTextColor="#4E1164"
         name="phoneNum"
         rules={{ required: 'Phone Number is required' }}
         control={control}
+        textStyles={styles.inputText}
       />
 
       <CustomInput
         placeholder={'Enter your email'}
+        placeholderTextColor="#4E1164"
         name="email"
         rules={{
           required: 'Email is required',
@@ -99,10 +102,12 @@ const Signup = ({ navigation }) => {
           },
         }}
         control={control}
+        textStyles={styles.inputText}
       />
 
       <CustomInput
         placeholder={'Enter your password'}
+        placeholderTextColor="#4E1164"
         name="password"
         control={control}
         secureTextEntry={true}
@@ -117,10 +122,12 @@ const Signup = ({ navigation }) => {
             message: 'Password has to contain letters, numbers & symbols ',
           },
         }}
+        textStyles={styles.inputText}
       />
 
       <CustomInput
-        placeholder={'Confirm your pasword'}
+        placeholder={'Confirm your password'}
+        placeholderTextColor="#4E1164"
         name="confirmPassword"
         rules={{
           validate: value =>
@@ -128,16 +135,17 @@ const Signup = ({ navigation }) => {
         }}
         control={control}
         secureTextEntry={true}
+        textStyles={styles.inputText}
       />
 
       <TouchableOpacity>
-        <Text style={styles.confirmationbox} onPress={handleSubmit(onSignup)}>
+        <Text style={styles.confirmationBox} onPress={handleSubmit(onSignup)}>
           Register
         </Text>
       </TouchableOpacity>
 
-      <View style={styles.smalltext}>
-        <Text style={styles.smalltext}>Already have an account?</Text>
+      <View style={styles.smallText}>
+        <Text style={styles.smallText}>Already have an account?</Text>
         <Text style={styles.signin} onPress={onSignIn}>
           {' '}
           Sign in
@@ -176,22 +184,19 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
-  smalltext: {
+  smallText: {
     fontSize: 13,
     color: '#4E1164',
     flexDirection: 'row',
   },
 
-  box: {
-    width: 300,
-    backgroundColor: 'white',
-    marginVertical: 10,
+  inputText: {
     color: '#6C6C6B',
+    fontFamily: 'Poppins-Bold',
     fontSize: 13,
-    paddingHorizontal: 16,
   },
 
-  confirmationbox: {
+  confirmationBox: {
     borderRadius: 25,
     width: 300,
     height: 40,

@@ -78,29 +78,33 @@ const Signin = ({ navigation }) => {
 
       <CustomInput
         placeholder={'Enter your username'}
+        placeholderTextColor="#4E1164"
         name="username"
         rules={{ required: 'Username is required' }}
         control={control}
+        textStyles={styles.inputText}
       />
       <CustomInput
         placeholder={'Enter your password'}
+        placeholderTextColor="#4E1164"
         name="password"
         rules={{ required: 'Password is required' }}
         control={control}
         secureTextEntry={true}
+        textStyles={styles.inputText}
       />
 
       <TouchableOpacity>
-        <Text style={styles.confirmationbox} onPress={handleSubmit(onLogin)}>
+        <Text style={styles.confirmationBox} onPress={handleSubmit(onLogin)}>
           Login
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity>
-        <Text style={styles.minibold}>Forgot password</Text>
+        <Text style={styles.miniBold}>Forgot password</Text>
       </TouchableOpacity>
 
-      <View style={styles.smalltext}>
+      <View style={styles.smallText}>
         <Text style={styles.signup}>Don't have an account?</Text>
         <TouchableOpacity>
           <Text style={styles.signupLink} onPress={onSignup}>
@@ -142,26 +146,20 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
-  smalltext: {
+  smallText: {
     fontSize: 13,
     color: '#4E1164',
     flexDirection: 'row',
     bottom: -110,
   },
 
-  box: {
-    width: 300,
-    justifyContent: 'flex-end',
-    backgroundColor: 'white',
-    marginVertical: 20,
+  inputText: {
     color: '#6C6C6B',
+    fontFamily: 'Poppins',
     fontSize: 13,
-    paddingHorizontal: 16,
-    borderWidth: 1,
-    borderColor: 'white',
   },
 
-  confirmationbox: {
+  confirmationBox: {
     borderRadius: 25,
     width: 300,
     height: 40,
@@ -189,7 +187,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
-  minibold: {
+  miniBold: {
     fontSize: 13,
     color: '#4E1164',
     flexDirection: 'row',
