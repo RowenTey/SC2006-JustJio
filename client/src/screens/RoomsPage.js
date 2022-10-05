@@ -2,14 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const RoomsPage = () => {
-  const list1 = [
-    ['Friday', '26 Dec', "Graduation Party", "1800", "Bob's House", "22"],
+  const details = 
+    ['Friday', '26 Dec', "Graduation Party", "1800", "Bob's House", "22"];
+
+  const memberList = [
     ['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark'],
   ];
-  const list2 = [
-    ['ammaeudos', '2342', true],
-    ['dobin', '45', false],
-  ];
+
 
   return (
     <View style={styles.container}>
@@ -18,12 +17,11 @@ const RoomsPage = () => {
       </View>
 
       <View style={styles.middle}>
-        <Text style={styles.smallText}>Upcoming Event</Text>
-        <View style={styles.oneDate}>
-          <EventDetail list={list1} />
+        
+        <View style={styles.event}>
+          <Text style={styles.upcomingEvent}>Upcoming Event</Text>
+          <EventDetail list={details} />
         </View>
-        <Text style={styles.smallText}>Members</Text>
-        <GuestList list={list2} />
       </View>
 
       <View style={styles.bottom}>
@@ -34,25 +32,38 @@ const RoomsPage = () => {
 };
 
 const EventDetail = props => {
-  return (
-    <View>
-      <Text style={styles.date}>{props.date}</Text>
-      <View>
-        {props.list.map(listItem => (
-          <Box
-            key={listItem[0]}
-            day={listItem[0]}
-            date={listItem[1]}
-            eventName={listItem[2]}
-            time={listItem[3]}
-            venue={listItem[4]}
-            noOfParticpants={listItem[5]}
-          />
-        ))}
+    let styleSheet = '';
+  
+    return (
+      <View style={styles.whiteBox}>
+        <View style={styles.left}>
+            <View style={styles.date}>
+              <Text>Friday</Text>
+              <Text>26 Dec</Text>
+            </View>
+            <View style={styles.eventText}>
+              <Text style={styles.event}>Graduation Party!</Text>
+            </View>
+          </View>
+        <View style={styles.right}>
+          <View style={styles.purple}>
+            <View style={styles.purpleBox}>
+              <Text style={styles.purpleBoxText}>Time:</Text>
+              <Text style={styles.purpleBoxText}>1800</Text>
+            </View>
+            <View style={styles.purpleBox}>
+              <Text style={styles.purpleBoxText}>Venue:</Text>
+              <Text style={styles.purpleBoxText}>Bob's house</Text>
+            </View>
+            <View style={styles.purpleBoxLast}>
+              <Text style={styles.purpleBoxText}>Attendees count:</Text>
+              <Text style={styles.count}>22</Text>
+            </View>
+          </View>
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  };
 
 const GuestList = props => {
   return (
@@ -74,11 +85,7 @@ const GuestList = props => {
 
 const Box = props => {
   let styleSheet = '';
-  if (props.isReceive) {
-    styleSheet = styles.amountReceive;
-  } else {
-    styleSheet = styles.amountGive;
-  }
+
 
   return (
     <View>
@@ -144,7 +151,8 @@ const styles = StyleSheet.create({
     maxHeight: '7%',
   },
 
-  oneDate: {
+
+  members: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#E9D7FD',
@@ -153,12 +161,95 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
 
-  date: {
+  event: {
+    flexDirection: 'column',
     fontSize: 15,
-    left: 3,
-    fontFamily: 'OleoScript-Bold',
-    color: '#4E1164',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    minHeight: '30%',
+    maxHeight: '30%',
+    top: 30,
   },
+
+  whiteBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    width: '75%',
+    minHeight: '80%',
+    maxHeight: '80%',
+    borderRadius: 20,
+    justifyContent: 'space-evenly',
+  },
+
+  left: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    width: '50%',
+    minHeight: '100%',
+    maxHeight: '100%',
+  },
+
+  date: {
+    flexDirection: 'column',
+    fontSize: 15,
+    fontFamily: 'OleoScript-Bold',
+    justifyContent: 'flex-start',
+  },
+
+
+
+  eventText: {
+    flexDirection: 'row',
+    fontSize: 15,
+    fontFamily: 'OleoScript-Bold',
+    alignItems: 'center',
+  },
+
+  
+  right: {
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    width: '50%',
+    minHeight: '100%',
+    maxHeight: '100%',
+    alignItems: 'center',
+  },
+
+  purple: {
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+  },
+
+  purpleBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#4E1164',
+    borderRadius: 10,
+    width: "95%",
+  },
+
+  purpleBoxText: {
+  
+    fontSize: 15,
+    color: '#FFFFFF',
+  },
+
+  purpleBoxLast: {
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#4E1164',
+    borderRadius: 10,
+    alignItems: 'center',
+    width: "95%",
+  },
+
+  count: {
+    fontSize: 20,
+    color: '#FFFFFF',
+  },
+
 
   name: {
     fontSize: 20,
@@ -167,23 +258,19 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
 
-  amountReceive: {
-    fontSize: 20,
-    top: 12,
-    left: 140,
-    color: '#00FF00',
-  },
 
-  amountGive: {
-    fontSize: 20,
-    top: 12,
-    left: 140,
-    color: '#FF0000',
+
+  upcomingEvent: {
+    fontSize: 13,
+    color: '#4E1164',
+    flexDirection: 'column',
+    top: -5,
+    left: -140,
   },
 
   smallText: {
     fontSize: 13,
     color: '#4E1164',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
 });
