@@ -2,15 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const RoomsPage = () => {
-<<<<<<< HEAD
   const details = 
     ['Friday', '26 Dec', "Graduation Party", "1800", "Bob's House", "22"];
 
-  const memberList = [
-=======
-  const list1 = [
-    ['Friday', '26 Dec', 'Graduation Party', '1800', "Bob's House", '22'],
->>>>>>> 238c63221b2323fad44ac89601e88e1eed27e21b
+  const MemberList = [
     ['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark'],
   ];
 
