@@ -2,13 +2,16 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const RoomsPage = () => {
-  const details = 
-    ['Friday', '26 Dec', "Graduation Party", "1800", "Bob's House", "22"];
-
-  const MemberList = [
-    ['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark'],
+  const details = [
+    'Friday',
+    '26 Dec',
+    'Graduation Party',
+    '1800',
+    "Bob's House",
+    '22',
   ];
 
+  const MemberList = [['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark']];
 
   return (
     <View style={styles.container}>
@@ -17,7 +20,6 @@ const RoomsPage = () => {
       </View>
 
       <View style={styles.middle}>
-        
         <View style={styles.event}>
           <Text style={styles.upcomingEvent}>Upcoming Event</Text>
           <EventDetail list={details} />
@@ -32,38 +34,38 @@ const RoomsPage = () => {
 };
 
 const EventDetail = props => {
-    let styleSheet = '';
-  
-    return (
-      <View style={styles.whiteBox}>
-        <View style={styles.left}>
-            <View style={styles.date}>
-              <Text>Friday</Text>
-              <Text>26 Dec</Text>
-            </View>
-            <View style={styles.eventText}>
-              <Text style={styles.event}>Graduation Party!</Text>
-            </View>
+  let styleSheet = '';
+
+  return (
+    <View style={styles.whiteBox}>
+      <View style={styles.left}>
+        <View style={styles.date}>
+          <Text>Friday</Text>
+          <Text>26 Dec</Text>
+        </View>
+        <View style={styles.eventText}>
+          <Text style={styles.event}>Graduation Party!</Text>
+        </View>
+      </View>
+      <View style={styles.right}>
+        <View style={styles.purple}>
+          <View style={styles.purpleBox}>
+            <Text style={styles.purpleBoxText}>Time:</Text>
+            <Text style={styles.purpleBoxText}>1800</Text>
           </View>
-        <View style={styles.right}>
-          <View style={styles.purple}>
-            <View style={styles.purpleBox}>
-              <Text style={styles.purpleBoxText}>Time:</Text>
-              <Text style={styles.purpleBoxText}>1800</Text>
-            </View>
-            <View style={styles.purpleBox}>
-              <Text style={styles.purpleBoxText}>Venue:</Text>
-              <Text style={styles.purpleBoxText}>Bob's house</Text>
-            </View>
-            <View style={styles.purpleBoxLast}>
-              <Text style={styles.purpleBoxText}>Attendees count:</Text>
-              <Text style={styles.count}>22</Text>
-            </View>
+          <View style={styles.purpleBox}>
+            <Text style={styles.purpleBoxText}>Venue:</Text>
+            <Text style={styles.purpleBoxText}>Bob's house</Text>
+          </View>
+          <View style={styles.purpleBoxLast}>
+            <Text style={styles.purpleBoxText}>Attendees count:</Text>
+            <Text style={styles.count}>22</Text>
           </View>
         </View>
       </View>
-    );
-  };
+    </View>
+  );
+};
 
 const GuestList = props => {
   return (
@@ -85,7 +87,6 @@ const GuestList = props => {
 
 const Box = props => {
   let styleSheet = '';
-
 
   return (
     <View>
@@ -151,7 +152,6 @@ const styles = StyleSheet.create({
     maxHeight: '7%',
   },
 
-
   members: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -180,7 +180,6 @@ const styles = StyleSheet.create({
     minHeight: '80%',
     maxHeight: '80%',
     borderRadius: 20,
-    justifyContent: 'space-evenly',
   },
 
   left: {
@@ -198,8 +197,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 
-
-
   eventText: {
     flexDirection: 'row',
     fontSize: 15,
@@ -207,7 +204,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  
   right: {
     justifyContent: 'space-evenly',
     flexDirection: 'row',
@@ -227,11 +223,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     backgroundColor: '#4E1164',
     borderRadius: 10,
-    width: "95%",
+    width: '95%',
   },
 
   purpleBoxText: {
-  
     fontSize: 15,
     color: '#FFFFFF',
   },
@@ -242,7 +237,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4E1164',
     borderRadius: 10,
     alignItems: 'center',
-    width: "95%",
+    width: '95%',
   },
 
   count: {
@@ -250,15 +245,12 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 
-
   name: {
     fontSize: 20,
     top: -5,
     left: -110,
     color: '#000000',
   },
-
-
 
   upcomingEvent: {
     fontSize: 13,
