@@ -61,15 +61,7 @@ const BottomTab = () => {
           }
 
           // You can return any component that you like here!
-          return (
-            <Image
-              source={iconName}
-              style={{
-                width: 20,
-                height: 20,
-              }}
-            />
-          );
+          return <Image source={iconName} />;
           // return <Icon name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: 'tomato',

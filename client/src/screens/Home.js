@@ -46,7 +46,7 @@ const Home = ({ navigation }) => {
             </View>
             <Text style={styles.roomFunctionText}>Create Room</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('PartySnacks')}>
+          <TouchableOpacity onPress={() => navigation.navigate('JoinRoom')}>
             <View style={[styles.roomFunctionButtons, { marginStart: 19 }]}>
               <Image
                 source={ICONS.mail}
@@ -63,11 +63,15 @@ const Home = ({ navigation }) => {
         <Text style={styles.roomsTitle}>Party Rooms</Text>
         <ScrollView>
           <View style={styles.rooms}>
-            <TouchableOpacity style={styles.roomsCard}>
+            <TouchableOpacity
+              style={styles.roomsCard}
+              onPress={() => navigation.navigate('RoomsPage')}>
               <Image source={ICONS.group} />
               <Text style={styles.roomsCardText}>Hall 8 FOC</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.roomsCard}>
+            <TouchableOpacity
+              style={styles.roomsCard}
+              onPress={() => navigation.navigate('Signup')}>
               <Image source={ICONS.mahjong} />
               <Text style={styles.roomsCardText}>Hall 8 FOC</Text>
             </TouchableOpacity>

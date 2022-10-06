@@ -51,7 +51,7 @@ const Signin = ({ navigation }) => {
 
       console.log('Logged in', response.data);
       setLoading(false);
-      navigation.navigate('Home');
+      navigation.navigate('HomeTab');
     } catch (error) {
       setLoading(false);
       console.log('Login failed', error);
