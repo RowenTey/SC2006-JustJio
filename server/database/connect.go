@@ -69,9 +69,9 @@ func seedDB(db *gorm.DB) {
 	roomDB.Find(&allRooms, "Host = ?", "test123")
 
 	room_users := []model.RoomUser{
-		{UserID: test123.ID, RoomID: allRooms[0].ID, IsHost: true},
-		{UserID: test123.ID, RoomID: allRooms[1].ID, IsHost: true},
-		{UserID: test123.ID, RoomID: allRooms[2].ID, IsHost: true},
+		{User: test123.Username, RoomID: allRooms[0].ID, IsHost: true, Accepted: true},
+		{User: test123.Username, RoomID: allRooms[1].ID, IsHost: true, Accepted: true},
+		{User: test123.Username, RoomID: allRooms[2].ID, IsHost: true, Accepted: true},
 	}
 
 	for _, r_u := range room_users {
@@ -80,7 +80,7 @@ func seedDB(db *gorm.DB) {
 
 	roomUserDB := db.Table("room_users")
 	var test_rooms []string
-	roomUserDB.Distinct("room_id").Find(&test_rooms, "user_id = ?", test123.ID)
+	roomUserDB.Distinct("room_id").Find(&test_rooms, "user = ?", test123.Username)
 	for _, t := range test_rooms {
 		fmt.Println(" RoomID: ", t)
 	}
