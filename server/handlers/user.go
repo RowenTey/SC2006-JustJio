@@ -4,17 +4,12 @@ import (
 	"fmt"
 	"sc2006-JustJio/database"
 	"sc2006-JustJio/model"
+	"sc2006-JustJio/util"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
-	"golang.org/x/crypto/bcrypt"
 )
-
-func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes), err
-}
 
 func validToken(token *jwt.Token, id string) bool {
 	n, err := strconv.Atoi(id)
@@ -39,7 +34,7 @@ func validUser(id string, password string) bool {
 	if user.Username == "" {
 		return false
 	}
-	if !CheckPasswordHash(password, user.Password) {
+	if !util.CheckPasswordHash(password, user.Password) {
 		return false
 	}
 	return true
