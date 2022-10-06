@@ -8,10 +8,9 @@
 
 import React from 'react';
 import Navigation from './navigation';
-import TabBar from './components/BottomTab';
 
 const App = () => {
-  return <TabBar />;
+  return <Navigation />;
 };
 
 export default App;
