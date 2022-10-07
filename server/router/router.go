@@ -28,6 +28,7 @@ func Initalize(router *fiber.App) {
 
 	rooms := router.Group("/rooms")
 	rooms.Get("/", middleware.Authenticated(), handlers.GetRooms)
+	rooms.Get("/invites", middleware.Authenticated(), handlers.GetRoomInvitations)
 	rooms.Post("/", middleware.Authenticated(), handlers.CreateRoom)
 	rooms.Patch("/join/:id", middleware.Authenticated(), handlers.JoinRoom)
 

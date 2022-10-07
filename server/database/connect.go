@@ -74,17 +74,17 @@ func seedDB(db *gorm.DB) error {
 	}
 
 	userDB := db.Table("users")
-	var harish123 model.User
-	userDB.First(&harish123, "Username = ?", "harish123")
+	var allUsers []model.User
+	userDB.Not("Username = ?", "ks123").Find(&allUsers)
 
 	roomDB := db.Table("rooms")
 	var allRooms []model.Room
 	roomDB.Find(&allRooms, "Host = ?", "ks123")
 
 	room_users := []model.RoomUser{
-		{User: harish123.Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: true},
-		{User: harish123.Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: true},
-		{User: harish123.Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: true},
+		{User: allUsers[0].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
+		{User: allUsers[1].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
+		{User: allUsers[2].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
 	}
 
 	for _, r_u := range room_users {
@@ -93,7 +93,7 @@ func seedDB(db *gorm.DB) error {
 
 	roomUserDB := db.Table("room_users")
 	var test_rooms []string
-	roomUserDB.Distinct("room_id").Find(&test_rooms, "user = ?", harish123.Username)
+	roomUserDB.Distinct("room_id").Find(&test_rooms, "user = ?", allUsers[0].Username)
 	for _, t := range test_rooms {
 		fmt.Println(" RoomID: ", t)
 	}

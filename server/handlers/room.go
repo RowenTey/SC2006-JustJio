@@ -70,6 +70,26 @@ func GetRooms(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Rooms found", "data": allRooms})
 }
 
+func GetRoomInvitations(c *fiber.Ctx) error {
+	db := database.DB
+
+	token := c.Locals("user").(*jwt.Token)
+	username := getUser(token, "username")
+	var roomInvites []string
+
+	if err := db.Table("room_users").Distinct("room_id").Find(&roomInvites, "user = ? AND accepted = ?", username, false).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get room invitations", "data": err})
+	}
+
+	// get the rooms data
+	var rooms = new([]model.Room)
+	if err := db.Table("rooms").Find(&rooms, "id IN ?", roomInvites).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get room invitations", "data": err})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Found room invitations", "data": rooms})
+}
+
 func CreateRoom(c *fiber.Ctx) error {
 	db := database.DB
 
@@ -122,10 +142,17 @@ func JoinRoom(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't join room - error in room_users table", "data": err})
 	}
 
+	// update attendees_count
 	if err := db.Table("rooms").Where("id = ?", roomID_str).Update("attendees_count", gorm.Expr("attendees_count + ?", 1)).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't join room - error in updating room table", "data": err})
 	}
 
+	// get room to return
+	var room model.Room
+	if err := db.Table("rooms").Find(&room, "id = ?", roomID_str).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't join room - error in getting room", "data": err})
+	}
+
 	fmt.Println("User " + username + " joined Room " + roomID_str + " successfully.")
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": nil})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": room})
 }
