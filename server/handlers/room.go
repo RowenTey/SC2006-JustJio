@@ -48,7 +48,9 @@ func createRoomUser(roomID_str string, username string, userType string) (*model
 	return nil, nil
 }
 
-func inviteUser(usernames []string, roomID_str string, db *gorm.DB) error {
+func inviteUser(usernames []string, roomID_str string) error {
+	db := database.DB
+
 	for _, username := range usernames {
 		roomUser, err := createRoomUser(roomID_str, username, "attendee")
 		if err != nil || roomUser == nil {
@@ -61,13 +63,38 @@ func inviteUser(usernames []string, roomID_str string, db *gorm.DB) error {
 	return nil
 }
 
+func getAttendees(roomId string) ([]string, error) {
+	db := database.DB
+
+	var users []string
+
+	// find room_users record
+	if err := db.Table("room_users").Distinct("user").Find(&users, "room_id = ? AND accepted = ? AND is_attendee = ?", roomId, true, true).Error; err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
 func GetRooms(c *fiber.Ctx) error {
-	roomsDB := database.DB.Table("rooms")
+	db := database.DB
 
-	var allRooms = new([]model.Room)
+	token := c.Locals("user").(*jwt.Token)
+	username := getUser(token, "username")
+	var roomInvites []string
 
-	roomsDB.Find(&allRooms)
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Rooms found", "data": allRooms})
+	// find room_users record
+	if err := db.Table("room_users").Distinct("room_id").Find(&roomInvites, "user = ? AND accepted = ? AND is_attendee = ?", username, true, true).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get rooms - error in room_users table", "data": err})
+	}
+
+	// get the rooms data
+	var rooms = new([]model.Room)
+	if err := db.Table("rooms").Find(&rooms, "id IN ?", roomInvites).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get rooms - error in rooms table", "data": err})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Found rooms successfully", "data": rooms})
 }
 
 func GetRoomInvitations(c *fiber.Ctx) error {
@@ -77,14 +104,15 @@ func GetRoomInvitations(c *fiber.Ctx) error {
 	username := getUser(token, "username")
 	var roomInvites []string
 
+	// find room_users record
 	if err := db.Table("room_users").Distinct("room_id").Find(&roomInvites, "user = ? AND accepted = ?", username, false).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get room invitations", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get room invitations - error in room_users table", "data": err})
 	}
 
 	// get the rooms data
 	var rooms = new([]model.Room)
 	if err := db.Table("rooms").Find(&rooms, "id IN ?", roomInvites).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get room invitations", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get room invitations - error in rooms table", "data": err})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Found room invitations", "data": rooms})
@@ -103,7 +131,7 @@ func CreateRoom(c *fiber.Ctx) error {
 	room.Host = getUser(token, "username")
 
 	if err := db.Table("rooms").Create(&room).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in room table", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in rooms table", "data": err})
 	}
 
 	// convert to str
@@ -112,7 +140,7 @@ func CreateRoom(c *fiber.Ctx) error {
 	// invitees -> create roomUser relationship
 	var usernames []string
 	json.Unmarshal([]byte(room.Invitees), &usernames)
-	if err := inviteUser(usernames, roomID_str, db); err != nil {
+	if err := inviteUser(usernames, roomID_str); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in creating room_user record (invitees)", "data": err})
 	}
 
@@ -123,7 +151,7 @@ func CreateRoom(c *fiber.Ctx) error {
 	}
 
 	if err := db.Table("room_users").Create((&roomUser)).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room  - error in room_users table", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in room_users table", "data": err})
 	}
 
 	fmt.Println("Room " + room.Name + " created successfully.")
@@ -147,12 +175,27 @@ func JoinRoom(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't join room - error in updating room table", "data": err})
 	}
 
-	// get room to return
+	// get room & attendees to return
+	type RoomResponse struct {
+		Room     model.Room `json:"room"`
+		Attendes []string   `json:"attendees"`
+	}
+
 	var room model.Room
 	if err := db.Table("rooms").Find(&room, "id = ?", roomID_str).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't join room - error in getting room", "data": err})
 	}
 
+	attendees, err := getAttendees(roomID_str)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't join room - error in getting room attendees", "data": err})
+	}
+
+	roomResponse := RoomResponse{
+		Room:     room,
+		Attendes: attendees,
+	}
+
 	fmt.Println("User " + username + " joined Room " + roomID_str + " successfully.")
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": room})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": roomResponse})
 }

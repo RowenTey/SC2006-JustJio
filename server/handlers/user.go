@@ -53,6 +53,7 @@ func GetUser(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
 }
 
+// GetUsers -> get all users
 func GetUsers(c *fiber.Ctx) error {
 	db := database.DB.Table("users")
 	user := new([]model.User)
