@@ -16,7 +16,7 @@ const JoinRoom = ({ navigation }) => {
     'Name: Reunion Party!',
     'Date: 13 June 2022',
     'Time: 7.30pm',
-    'Venue: The Joyden Hall,Bugis',
+    'Venue: The Joyden Hall, Bugis',
   ];
 
   return (
