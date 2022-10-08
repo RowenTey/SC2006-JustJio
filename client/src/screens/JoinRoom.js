@@ -5,9 +5,9 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Pressable,
   Alert,
 } from 'react-native';
-import { Button } from 'react-native';
 
 const JoinRoom = ({ navigation }) => {
   const Title = ['Alumni Club', '38 members'];
@@ -43,24 +43,22 @@ const RoomTitle = props => {
 
   return (
     <View style={styles.WhiteBox}>
-      <View style={styles.left}>
         <Text style={styles.roomheader}>Alumni Club</Text>
-        <Text style={styles.roomheader}>38 Members</Text>
-      </View>
-      <View style={styles.greenbox}>
-        <Text style={styles.header}>
-          <Button
-            title="Accept"
-            onPress={() => Alert.alert('Joined Room Successfully')}
-          />
+        <Text style={styles.numberofpeople}>38 Members</Text>
+        <Text style={styles.roomtext}>Name: Reunion Party!</Text>
+        <Text style={styles.roomtext}>Date: 13 June 2022</Text>
+        <Text style={styles.roomtext}>Time: 7.30pm</Text>
+        <Text style={styles.roomtext}>Venue: The Joyden Hall, Bugis</Text>
 
-          <View style={styles.redbox}>
-            <Button
-              title="Decline"
-              onPress={() => Alert.alert('Declined Room Successfully')}
-            />
-          </View>
-        </Text>
+     <View style={styles.invitation}>
+      <Pressable style={styles.greenbox} onPress={() => Alert.alert('Joined Room Successfully')}> 
+      <Text style={styles.confirmationboxtext}>Accept</Text> 
+      </Pressable>
+      <View style={styles.gap}></View>  
+      <Pressable style={styles.redbox} onPress={() => Alert.alert('Declined Room Successfully')}> 
+      <Text style={styles.confirmationboxtext}>Decline</Text> 
+      </Pressable>    
+      
       </View>
     </View>
   );
@@ -100,48 +98,57 @@ const styles = StyleSheet.create({
   },
 
   greenbox: {
-    //need use two for both accept and decline
+    //accept box
     borderRadius: 25,
     width: 135,
     height: 35,
-    paddingVertical: 5,
     backgroundColor: '#71C291',
     marginVertical: 10,
-    color: '#FFFFFF',
     fontFamily: 'Poppins',
     fontWeight: 'bold',
     fontSize: 18,
     alignItems: 'center',
     textAlign: 'center',
-    bottom: -10,
+    bottom: -20,
   },
 
   redbox: {
-    //need use two for both accept and decline
+    //decline box
     borderRadius: 25,
     width: 135,
     height: 35,
-    paddingVertical: 5,
     backgroundColor: '#D2644B',
     marginVertical: 10,
-    color: '#FFFFFF',
     fontFamily: 'Poppins',
     fontWeight: 'bold',
     fontSize: 18,
     alignItems: 'center',
     textAlign: 'center',
-    bottom: -10,
+    bottom: -20,
+  },
+
+  confirmationboxtext: {
+    //top of the content
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'Poppins-Bold',
+    flexDirection: 'row',
+    color: '#4E1164',
+    fontSize: 14,
+    padding: 5,
+    marginHorizontal: 15,
+    textAlign: 'center',
   },
 
   WhiteBox: {
     flex: 1,
-    flexDirection: 'row',
     justifyContent: 'space-evenly',
     backgroundColor: '#FFFFFF',
-    width: '90%',
+    width: 350,
     padding: 20,
-    minHeight: '50%',
-    maxHeight: '50%',
+    minHeight: '40%',
+    maxHeight: '40%',
     borderRadius: 20,
   },
 
@@ -158,19 +165,56 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: 'Poppins-Bold',
-    height: 20,
-    flexDirection: 'row',
+    flexDirection: 'column',
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center',
+  },
+
+  numberofpeople: {
+    //number of people 
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'Poppins',
+    flexDirection: 'column',
+    fontSize: 13,
+    color: 'black',
+    textAlign: 'center',
+    bottom: 20,
+  },
+
+  roomtext: {
+    //top of the content
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'Poppins',
+    flexDirection: 'column',
+    fontSize: 13,
+    color: 'black',
   },
 
   middle: {
-    //middle centralised the whitebox
-    flex: 2,
+    //move the whitebox to center and top of screen
+    flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
     backgroundColor: '#f0ecec',
-    width: 500,
-    minHeight: '83%',
-    maxHeight: '83%',
+    width: 350,
+    height: 250,
+    bottom: -10,
   },
+
+  invitation: {
+    //just for the accept and decline portion
+    flexDirection: 'row',
+  },
+
+  gap: {
+    //between accept and decline
+    marginHorizontal: 20,
+  },
+
+
 });
