@@ -20,6 +20,7 @@
     "react-hook-form": "^7.36.1",
     "react-native": "0.70.0",
     "react-native-date-picker": "^4.2.5",
+    "react-native-google-places-autocomplete": "^2.4.1",
     "react-native-ionicons": "^4.6.5",
     "react-native-keychain": "^8.1.1",
     "react-native-paper": "^3.12.0",
