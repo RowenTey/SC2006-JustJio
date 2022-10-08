@@ -17,7 +17,6 @@ type Room struct {
 	URL            string         `json:"url"`
 	CreatedAt      time.Time      `gorm:"autoCreateTime" json:"CreatedAt"`
 	UpdatedAt      time.Time      `gorm:"autoUpdateTime" json:"-"`
-	PartyItems     datatypes.JSON `json:"partyItems"`
 	Invitees       datatypes.JSON `json:"invitees"`
 	// Date           datatypes.Date `json:"date"`
 }
