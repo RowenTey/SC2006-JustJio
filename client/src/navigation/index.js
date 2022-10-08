@@ -12,6 +12,7 @@ import CreateRoom from '../screens/CreateRoom';
 import RoomsPage from '../screens/RoomsPage';
 import BottomTab from '../components/BottomTab';
 import JoinRoom from '../screens/JoinRoom';
+import GetSupermarkets from '../screens/GetSupermarkets';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -35,6 +36,7 @@ const Navigation = () => {
           name="TransactionHistory"
           component={TransactionHistory}
         />
+        <Stack.Screen name="GetSupermarkets" component={GetSupermarkets} />
       </Stack.Navigator>
     </NavigationContainer>
   );
