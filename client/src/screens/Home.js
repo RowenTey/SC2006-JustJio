@@ -7,14 +7,18 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  FlatList
 } from 'react-native';
-
+import BottomTab from '../components/BottomTab';
 const ICONS = {
   add: require('../../assets/images/add.png'),
   mail: require('../../assets/images/mail.png'),
   group: require('../../assets/images/group.png'),
   mahjong: require('../../assets/images/mahjong.png'),
 };
+
+import RoomData from '../components/RoomData';
+import TempRooms from '../components/TempRooms';
 
 const Home = ({ navigation }) => {
   return (
@@ -63,26 +67,12 @@ const Home = ({ navigation }) => {
         <Text style={styles.roomsTitle}>Party Rooms</Text>
         <ScrollView>
           <View style={styles.rooms}>
-            <TouchableOpacity
-              style={styles.roomsCard}
-              onPress={() => navigation.navigate('RoomsPage')}>
-              <Image source={ICONS.group} />
-              <Text style={styles.roomsCardText}>Hall 8 FOC</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.roomsCard}
-              onPress={() => navigation.navigate('Signup')}>
-              <Image source={ICONS.mahjong} />
-              <Text style={styles.roomsCardText}>Hall 8 FOC</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.roomsCard}>
-              <Image source={ICONS.mahjong} />
-              <Text style={styles.roomsCardText}>Hall 8 FOC</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.roomsCard}>
-              <Image source={ICONS.group} />
-              <Text style={styles.roomsCardText}>Hall 8 FOC</Text>
-            </TouchableOpacity>
+            <FlatList
+              data = {TempRooms}
+              renderItem = {({ item }) => <RoomData MainRoom={item}/>}
+              numColumns = {2}
+              key={'_'}
+              keyExtractor = {(item) => item.id}/>
           </View>
         </ScrollView>
       </View>

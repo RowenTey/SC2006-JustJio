@@ -19,7 +19,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Splash"
+        initialRouteName="HomeTab"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
@@ -30,6 +30,7 @@ const Navigation = () => {
         <Stack.Screen name="CreateRoom" component={CreateRoom} />
         <Stack.Screen name="RoomsPage" component={RoomsPage} />
         <Stack.Screen name="JoinRoom" component={JoinRoom} />
+
         <Stack.Screen
           name="TransactionHistory"
           component={TransactionHistory}
