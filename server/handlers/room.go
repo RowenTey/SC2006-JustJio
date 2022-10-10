@@ -56,7 +56,7 @@ func inviteUser(usernames []string, roomID_str string) error {
 		if err != nil || roomUser == nil {
 			return err
 		}
-		if err := db.Table("room_users").Create((&roomUser)).Error; err != nil {
+		if err := db.Table("room_users").Create(&roomUser).Error; err != nil {
 			return err
 		}
 	}

@@ -32,6 +32,9 @@ func Initalize(router *fiber.App) {
 	rooms.Post("/", middleware.Authenticated(), handlers.CreateRoom)
 	rooms.Patch("/join/:id", middleware.Authenticated(), handlers.JoinRoom)
 
+	bills := router.Group("/bills")
+	bills.Post("/:id", middleware.Authenticated(), handlers.GenerateTransactions)
+
 	router.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{
 			"code":    404,
