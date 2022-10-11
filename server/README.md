@@ -1,8 +1,8 @@
 # JustJio-Server
 
-![server-landing](../client/assets/gifs/JustJio-Server.gif)
+> Server-side code for JustJio
 
-Server-side code for JustJio
+![server-landing](../client/assets/gifs/JustJio-Server.gif)
 
 ## 🛠 Getting Started
 
