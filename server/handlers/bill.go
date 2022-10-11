@@ -142,7 +142,7 @@ func PayBill(c *fiber.Ctx) error {
 	}
 
 	// update isPaid -> true & paidOn
-	if err := db.Table("transactions").Where("payer = ? AND payee = ?", payBillInput.Payer, payBillInput.Payee).Updates(map[string]interface{}{"isPaid": true, "paidOn": payBillInput.PaidOn}).Error; err != nil {
+	if err := db.Table("transactions").Where("payer = ? AND payee = ?", payBillInput.Payer, payBillInput.Payee).Updates(map[string]interface{}{"is_paid": true, "paid_on": payBillInput.PaidOn}).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't pay bill - error in room_users table", "data": err})
 	}
 

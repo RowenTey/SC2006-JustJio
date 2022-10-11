@@ -13,7 +13,7 @@ type Room struct {
 	Host           string    `gorm:"not null" json:"host"`
 	AttendeesCount int       `gorm:"default:1" json:"attendeesCount"`
 	URL            string    `json:"url"`
-	CreatedAt      time.Time `gorm:"autoCreateTime" json:"CreatedAt"`
+	CreatedAt      time.Time `gorm:"autoCreateTime" json:"createdAt"`
 	UpdatedAt      time.Time `gorm:"autoUpdateTime" json:"-"`
 	// Invitees       datatypes.JSON `json:"invitees"`
 }

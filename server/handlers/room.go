@@ -205,7 +205,7 @@ func JoinRoom(c *fiber.Ctx) error {
 	}
 
 	fmt.Println("User " + username + " joined Room " + roomID_str + " successfully.")
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": roomResponse})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": roomResponse})
 }
 
 func DeclineRoom(c *fiber.Ctx) error {
