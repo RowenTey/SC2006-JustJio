@@ -7,19 +7,13 @@ import (
 
 	"sc2006-JustJio/database"
 	"sc2006-JustJio/model"
+	"sc2006-JustJio/util"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
-
-func getUser(t *jwt.Token, field string) string {
-	claims := t.Claims.(jwt.MapClaims)
-	if field == "user_id" {
-		return fmt.Sprint(claims["user_id"].(float64))
-	}
-	return claims[field].(string)
-}
 
 func createRoomUser(roomID_str string, username string, userType string) (*model.RoomUser, error) {
 	roomID_uint32, err := strconv.ParseUint(roomID_str, 10, 32)
@@ -63,16 +57,14 @@ func inviteUser(usernames []string, roomID_str string) error {
 	return nil
 }
 
-func getAttendees(roomId string) ([]string, error) {
+func getAttendees(roomID string) ([]string, error) {
 	db := database.DB
-
 	var users []string
 
 	// find room_users record
-	if err := db.Table("room_users").Distinct("user").Find(&users, "room_id = ? AND accepted = ? AND is_attendee = ?", roomId, true, true).Error; err != nil {
+	if err := db.Table("room_users").Distinct("user").Find(&users, "room_id = ? AND accepted = ? AND is_attendee = ?", roomID, true, true).Error; err != nil {
 		return nil, err
 	}
-
 	return users, nil
 }
 
@@ -80,7 +72,7 @@ func GetRooms(c *fiber.Ctx) error {
 	db := database.DB
 
 	token := c.Locals("user").(*jwt.Token)
-	username := getUser(token, "username")
+	username := util.GetUser(token, "username")
 	var roomInvites []string
 
 	// find room_users record
@@ -101,7 +93,7 @@ func GetRoomInvitations(c *fiber.Ctx) error {
 	db := database.DB
 
 	token := c.Locals("user").(*jwt.Token)
-	username := getUser(token, "username")
+	username := util.GetUser(token, "username")
 	var roomInvites []string
 
 	// find room_users record
@@ -118,44 +110,59 @@ func GetRoomInvitations(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Found room invitations", "data": rooms})
 }
 
+func GetRoomAttendees(c *fiber.Ctx) error {
+	roomID := c.Params("id")
+
+	attendees, err := getAttendees(roomID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get room attendees", "data": err})
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Found room attendees", "data": attendees})
+}
+
 func CreateRoom(c *fiber.Ctx) error {
 	db := database.DB
+	type ClientInput struct {
+		Room     model.Room     `json:"room"`
+		Invitees datatypes.JSON `json:"invitees"`
+	}
 
 	// create room
-	room := new(model.Room)
-	if err := c.BodyParser(room); err != nil {
+	var roomInput ClientInput
+	if err := c.BodyParser(&roomInput); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
 	token := c.Locals("user").(*jwt.Token)
-	room.Host = getUser(token, "username")
+	roomInput.Room.Host = util.GetUser(token, "username")
 
-	if err := db.Table("rooms").Create(&room).Error; err != nil {
+	if err := db.Table("rooms").Create(&roomInput.Room).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in rooms table", "data": err})
 	}
 
 	// convert to str
-	roomID_str := strconv.FormatUint(uint64(room.ID), 10)
+	roomID_str := strconv.FormatUint(uint64(roomInput.Room.ID), 10)
 
 	// invitees -> create roomUser relationship
 	var usernames []string
-	json.Unmarshal([]byte(room.Invitees), &usernames)
+	json.Unmarshal([]byte(roomInput.Invitees), &usernames)
 	if err := inviteUser(usernames, roomID_str); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in creating room_user record (invitees)", "data": err})
 	}
 
 	// host -> create roomUser relationship
-	roomUser, err := createRoomUser(roomID_str, room.Host, "host")
+	roomUser, err := createRoomUser(roomID_str, roomInput.Room.Host, "host")
 	if err != nil || roomUser == nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in creating room_user record (host)", "data": err})
 	}
 
-	if err := db.Table("room_users").Create((&roomUser)).Error; err != nil {
+	if err := db.Table("room_users").Create(&roomUser).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in room_users table", "data": err})
 	}
 
-	fmt.Println("Room " + room.Name + " created successfully.")
-	return c.JSON(fiber.Map{"status": "success", "message": "Created room", "data": room})
+	fmt.Println("Room " + roomInput.Room.Name + " created successfully.")
+	return c.JSON(fiber.Map{"status": "success", "message": "Created room", "data": roomInput})
 }
 
 func JoinRoom(c *fiber.Ctx) error {
@@ -163,7 +170,7 @@ func JoinRoom(c *fiber.Ctx) error {
 	token := c.Locals("user").(*jwt.Token)
 
 	roomID_str := c.Params("id")
-	username := getUser(token, "username")
+	username := util.GetUser(token, "username")
 
 	// update accepted -> true
 	if err := db.Table("room_users").Where("user = ? AND room_id = ?", username, roomID_str).Update("accepted", true).Error; err != nil {
@@ -199,3 +206,5 @@ func JoinRoom(c *fiber.Ctx) error {
 	fmt.Println("User " + username + " joined Room " + roomID_str + " successfully.")
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": roomResponse})
 }
+
+// TODO: Implement DeclineRoom endpoint

@@ -29,10 +29,12 @@ func Initalize(router *fiber.App) {
 	rooms := router.Group("/rooms")
 	rooms.Get("/", middleware.Authenticated(), handlers.GetRooms)
 	rooms.Get("/invites", middleware.Authenticated(), handlers.GetRoomInvitations)
+	rooms.Get("/attendees/:id", middleware.Authenticated(), handlers.GetRoomAttendees)
 	rooms.Post("/", middleware.Authenticated(), handlers.CreateRoom)
 	rooms.Patch("/join/:id", middleware.Authenticated(), handlers.JoinRoom)
 
 	bills := router.Group("/bills")
+	bills.Get("/", middleware.Authenticated(), handlers.GetTransactions)
 	bills.Post("/:id", middleware.Authenticated(), handlers.GenerateTransactions)
 
 	router.Use(func(c *fiber.Ctx) error {

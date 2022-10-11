@@ -3,11 +3,14 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"sc2006-JustJio/database"
-	"sc2006-JustJio/model"
 	"strconv"
 
+	"sc2006-JustJio/database"
+	"sc2006-JustJio/model"
+	"sc2006-JustJio/util"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 	"gorm.io/datatypes"
 )
 
@@ -81,8 +84,8 @@ func GenerateTransactions(c *fiber.Ctx) error {
 	}
 
 	type TransactionResponse struct {
-		Transactions []model.Transaction
-		Bill         model.Bill
+		Transactions []model.Transaction `json:"transactions"`
+		Bill         model.Bill          `json:"bill"`
 	}
 	transactionResponse := TransactionResponse{
 		Transactions: *transactions,
@@ -91,4 +94,35 @@ func GenerateTransactions(c *fiber.Ctx) error {
 
 	fmt.Println("Transaction generated for roomID " + bills.RoomID + " , everyone should pay $" + strconv.Itoa(bills.AmountToPay) + " to " + bills.ShouldPay)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions generated succesfully", "data": transactionResponse})
+}
+
+// Get Transactions for a user
+func GetTransactions(c *fiber.Ctx) error {
+	db := database.DB
+
+	token := c.Locals("user").(*jwt.Token)
+	username := util.GetUser(token, "username")
+
+	var transactions []model.Transaction
+	if err := db.Table("transactions").Find(&transactions, "payer = ? OR payee = ?", username, username).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get transactions - error in transactions table", "data": err})
+	}
+
+	type TransactionResponse struct {
+		Transaction model.Transaction `json:"transaction"`
+		Bill        model.Bill        `json:"bill"`
+	}
+
+	var transactionResponse []TransactionResponse
+	for _, transaction := range transactions {
+		var transactionResponseElement TransactionResponse
+		transactionResponseElement.Transaction = transaction
+		billID := transaction.BillID
+		if err := db.Table("bills").Find(&transactionResponseElement.Bill, "id = ?", billID).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get transactions - error in bills table", "data": err})
+		}
+		transactionResponse = append(transactionResponse, transactionResponseElement)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions found", "data": transactionResponse})
 }
