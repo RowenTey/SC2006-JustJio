@@ -50,6 +50,7 @@ func inviteUser(usernames []string, roomID_str string) error {
 		if err != nil || roomUser == nil {
 			return err
 		}
+
 		if err := db.Table("room_users").Create(&roomUser).Error; err != nil {
 			return err
 		}
@@ -207,4 +208,20 @@ func JoinRoom(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Joined room", "data": roomResponse})
 }
 
-// TODO: Implement DeclineRoom endpoint
+func DeclineRoom(c *fiber.Ctx) error {
+	db := database.DB
+	token := c.Locals("user").(*jwt.Token)
+	username := util.GetUser(token, "username")
+	roomID := c.Params("id")
+
+	var toDelete model.RoomUser
+	if err := db.Table("room_users").First(&toDelete, "user = ? AND room_id = ?", username, roomID).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't decline room - error in finding invitation", "data": err})
+	}
+
+	if err := db.Table("room_users").Delete(&toDelete).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't decline room - error in deleting invitation", "data": err})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Declined room successfully", "data": nil})
+}
