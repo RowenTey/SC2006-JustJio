@@ -1,8 +1,8 @@
 # JustJio 
 
-![landing](./client/assets/gifs/JustJio.gif)
+> Project for SC2006 
 
-Project for SC2006
+![landing](./client/assets/gifs/JustJio.gif)
 
 <!-- ## 🧠 The Team
 | Name              |                     Area of Focus                     |GitHub Acount|
