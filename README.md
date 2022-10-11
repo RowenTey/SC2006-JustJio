@@ -67,17 +67,13 @@ cd <PROJECT-PATH>
 ### React Native
 
 - Deployment: https://blog.logrocket.com/fastlane-build-test-ship-react-native-apps/
-- State management: https://blog.logrocket.com/use-redux-persist-react-native/
-- Push notifications: https://blog.logrocket.com/implement-push-notifications-react-native-onesignal/
 - Authentication: https://blog.logrocket.com/react-native-jwt-authentication-using-axios-interceptors/
 - Maps: https://blog.logrocket.com/react-native-maps-introduction/
 
 ### Go - Fiber & GORM, MySQL
 
 - Database: https://app.planetscale.com/rowen/sc2006-justjio
-- REST API, Docker, Gorm and PostgreSQL: https://www.youtube.com/watch?v=bFYZrEuEDLE&t=0s
 - https://www.karanpratapsingh.com/
-- https://blog.logrocket.com/how-to-build-a-restful-api-with-docker-postgresql-and-go-chi/
 - https://gowebexamples.com/
 - OAuth https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth
 
