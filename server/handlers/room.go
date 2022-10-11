@@ -124,13 +124,13 @@ func GetRoomAttendees(c *fiber.Ctx) error {
 
 func CreateRoom(c *fiber.Ctx) error {
 	db := database.DB
-	type ClientInput struct {
+	type CreateRoomInput struct {
 		Room     model.Room     `json:"room"`
 		Invitees datatypes.JSON `json:"invitees"`
 	}
 
 	// create room
-	var roomInput ClientInput
+	var roomInput CreateRoomInput
 	if err := c.BodyParser(&roomInput); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}

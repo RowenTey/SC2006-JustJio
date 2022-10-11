@@ -64,8 +64,8 @@ func GenerateTransactions(c *fiber.Ctx) error {
 		Date        string         `json:"date"`
 		RoomID      string         `json:"roomId"`
 	}
-	var bills BillReq
 
+	var bills BillReq
 	if err := c.BodyParser(&bills); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
@@ -125,4 +125,26 @@ func GetTransactions(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions found", "data": transactionResponse})
+}
+
+func PayBill(c *fiber.Ctx) error {
+	db := database.DB
+
+	type PayBillInput struct {
+		Payer  string `json:"payer"`
+		Payee  string `json:"payee"`
+		PaidOn string `json:"paidOn"`
+	}
+
+	var payBillInput PayBillInput
+	if err := c.BodyParser(&payBillInput); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+
+	// update isPaid -> true & paidOn
+	if err := db.Table("transactions").Where("payer = ? AND payee = ?", payBillInput.Payer, payBillInput.Payee).Updates(map[string]interface{}{"isPaid": true, "paidOn": payBillInput.PaidOn}).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't pay bill - error in room_users table", "data": err})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Paid bill successfully", "data": nil})
 }

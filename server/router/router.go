@@ -37,6 +37,7 @@ func Initalize(router *fiber.App) {
 	bills := router.Group("/bills")
 	bills.Get("/", middleware.Authenticated(), handlers.GetTransactions)
 	bills.Post("/:id", middleware.Authenticated(), handlers.GenerateTransactions)
+	bills.Patch("/pay", middleware.Authenticated(), handlers.PayBill)
 
 	router.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{

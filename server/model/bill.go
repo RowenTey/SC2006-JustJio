@@ -14,4 +14,5 @@ type Transaction struct {
 	Payer  string `gorm:"not null" json:"payer"`
 	Payee  string `gorm:"not null" json:"payee"`
 	IsPaid bool   `gorm:"default:false" json:"isPaid"`
+	PaidOn string `gorm:"default:null" json:"paidOn"`
 }
