@@ -1,4 +1,4 @@
-# JustJio 
+# JustJio
 
 > Project for SC2006 -> Invite your friends to hangout easily 🀄
 
@@ -42,10 +42,10 @@ cd SC2006-OneStart
 git checkout dev
 ```
 
-5\. Change directory to `client` or `server` 
+5\. Change directory to `client` or `server`
 
 ```terminal
-cd <PROJECT-PATH> 
+cd <PROJECT-PATH>
 ```
 
 ## 📂 Project Folder Structure
@@ -73,9 +73,7 @@ cd <PROJECT-PATH>
 ### Go - Fiber & GORM, MySQL
 
 - Database: https://app.planetscale.com/rowen/sc2006-justjio
+- Documentation: https://rapidapi.com/RowenTey/api/sc2006-justjio
 - https://www.karanpratapsingh.com/
 - https://gowebexamples.com/
 - OAuth https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth
-
-
-
