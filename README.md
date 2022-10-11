@@ -1,6 +1,6 @@
 # JustJio 
 
-> Project for SC2006 
+> Project for SC2006 -> Invite your friends to hangout easily 🀄
 
 ![landing](./client/assets/gifs/JustJio.gif)
 
