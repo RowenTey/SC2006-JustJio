@@ -16,7 +16,7 @@ export default [{
 
   }, {
     id: 'u4',
-    name: 'Alex',
+    name: 'Alexa',
     imageURL: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/3.png',
     amount : "$12.12"
 

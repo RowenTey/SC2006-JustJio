@@ -2,16 +2,7 @@ import React from "react";
 import { View, StyleSheet , TouchableOpacity , Text , Image , ImageURISource ,} from "react-native";
 
 
-export type Transactions = {
-    id : String;
-    name : String;
-    imageURL : ImageURISource;
-    amount : String;
-}
 
-export type TransactionsProp = {
-    Transactions : Transactions;
-}
 
 const ICONS = {
     add: require('../../assets/images/add.png'),
