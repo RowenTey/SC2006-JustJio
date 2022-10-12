@@ -2,23 +2,20 @@ package model
 
 import (
 	"time"
-
-	"gorm.io/datatypes"
 )
 
 type Room struct {
-	ID             uint           `gorm:"primaryKey"`
-	Name           string         `gorm:"not null" json:"name"`
-	Time           string         `gorm:"not null" json:"time"`
-	Venue          string         `gorm:"not null" json:"venue"`
-	Date           string         `gorm:"not null" json:"date"`
-	Host           string         `gorm:"not null" json:"host"`
-	AttendeesCount int            `gorm:"default:1" json:"attendeesCount"`
-	URL            string         `json:"url"`
-	CreatedAt      time.Time      `gorm:"autoCreateTime" json:"CreatedAt"`
-	UpdatedAt      time.Time      `gorm:"autoUpdateTime" json:"-"`
-	Invitees       datatypes.JSON `json:"invitees"`
-	// Date           datatypes.Date `json:"date"`
+	ID             uint      `gorm:"primaryKey"`
+	Name           string    `gorm:"not null" json:"name"`
+	Time           string    `gorm:"not null" json:"time"`
+	Venue          string    `gorm:"not null" json:"venue"`
+	Date           string    `gorm:"not null" json:"date"`
+	Host           string    `gorm:"not null" json:"host"`
+	AttendeesCount int       `gorm:"default:1" json:"attendeesCount"`
+	URL            string    `json:"url"`
+	CreatedAt      time.Time `gorm:"autoCreateTime" json:"createdAt"`
+	UpdatedAt      time.Time `gorm:"autoUpdateTime" json:"-"`
+	// Invitees       datatypes.JSON `json:"invitees"`
 }
 
 // juntion table to model user & room relationships

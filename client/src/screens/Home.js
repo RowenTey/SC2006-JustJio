@@ -15,10 +15,14 @@ const ICONS = {
   mail: require('../../assets/images/mail.png'),
   group: require('../../assets/images/group.png'),
   mahjong: require('../../assets/images/mahjong.png'),
+  vector : require('../../assets/images/Vector.png')
+
 };
 
 import RoomData from '../components/RoomData';
 import TempRooms from '../components/TempRooms';
+import TransactionBar from '../components/TransactionDetails';
+import TransactionData from '../components/TransactionData';
 
 const Home = ({ navigation }) => {
   return (
@@ -27,14 +31,20 @@ const Home = ({ navigation }) => {
         <Text style={styles.header}>Welcome, user!</Text>
       </View>
 
-      <View style={styles.middle}>
-        <View style={styles.transactions}>
-          <View>
-            <Text>TO GIVE:</Text>
+      <View style={styles.middle} >
+        <View flexDirection = "row">
+          <View style = {styles.box}>
+            <Text style = {styles.TransactionText}> TO GIVE: </Text>
+            <TransactionBar Transactions={TransactionData[4]}/>
+            <TransactionBar Transactions={TransactionData[3]}/>
+
           </View>
-          <View>
-            <Text>TO GET:</Text>
-          </View>
+          <View style = {styles.box}>
+            <Text style = {styles.TransactionText}> TO GET: </Text>
+            <TransactionBar Transactions={TransactionData[0]}/>
+            <TransactionBar Transactions={TransactionData[1]}/>
+
+          </View>          
         </View>
 
         <View style={styles.roomFunctions}>
@@ -112,6 +122,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     maxHeight: '83%',
+    justifyContent: 'space-between',
+
+
   },
 
   transactions: {
@@ -185,4 +198,24 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
   },
+  box : { 
+    borderRadius :15,
+    backgroundColor : '#ffffff',
+    paddingHorizontal : 30,
+    paddingVertical : 0,
+    justifyContent : 'space-between',
+    marginTop : 10,
+    marginBottom :20,
+    marginRight :20,
+    marginLeft : 20,
+
+  },
+
+  TransactionText :{
+
+    fontFamily:'Poppins',
+    color : '#000000',
+    fontWeight : 'bold',
+    alignItems : 'flex-start',
+  }
 });

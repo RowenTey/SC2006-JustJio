@@ -117,9 +117,7 @@ const PartySnacks = () => {
         </TouchableOpacity>
       </ScrollView>
 
-      <View style={styles.bottombar}>
-        <Text style={styles.smallText}>Nav Bar</Text>
-      </View>
+     
     </View>
   );
 };

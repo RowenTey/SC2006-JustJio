@@ -37,10 +37,12 @@ const CreateRoom = ({ navigation }) => {
     invitees = invitees.split(',');
 
     roomData = {
-      name: eventName,
-      date,
-      time,
-      venue,
+      room: {
+        name: eventName,
+        date,
+        time,
+        venue,
+      },
       invitees,
     };
 
@@ -49,7 +51,7 @@ const CreateRoom = ({ navigation }) => {
       const response = await authAxios.post('/rooms', roomData);
       console.log('Room created successfully', response.data);
       setLoading(false);
-      navigation.navigate('RoomsPage');
+      onCreateRoomSuccess();
     } catch (error) {
       setLoading(false);
       console.log('Failed to create room', error);
@@ -61,9 +63,8 @@ const CreateRoom = ({ navigation }) => {
     }
   };
 
-  const successCreateRoom = () => {
-    // console.warn('Room page');
-    navigation.navigate('Room');
+  const onCreateRoomSuccess = () => {
+    navigation.navigate('HomeTab');
   };
 
   if (loading) {
@@ -102,7 +103,7 @@ const CreateRoom = ({ navigation }) => {
         />
 
         <CustomInput
-          placeholder={'Time: 08:00pm-10:00pm'}
+          placeholder={'Time: 08:00pm'}
           placeholderTextColor="#000"
           name="time"
           rules={{ required: 'Time is required' }}
