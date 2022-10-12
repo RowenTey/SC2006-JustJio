@@ -7,22 +7,21 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  FlatList
+  FlatList,
 } from 'react-native';
-import BottomTab from '../components/BottomTab';
+
+import RoomData from '../components/RoomData.js';
+import TempRooms from '../components/TempRooms';
+import TransactionBar from '../components/TransactionDetails';
+import TransactionData from '../components/TransactionData';
+
 const ICONS = {
   add: require('../../assets/images/add.png'),
   mail: require('../../assets/images/mail.png'),
   group: require('../../assets/images/group.png'),
   mahjong: require('../../assets/images/mahjong.png'),
-  vector : require('../../assets/images/Vector.png')
-
+  vector: require('../../assets/images/Vector.png'),
 };
-
-import RoomData from '../components/RoomData';
-import TempRooms from '../components/TempRooms';
-import TransactionBar from '../components/TransactionDetails';
-import TransactionData from '../components/TransactionData';
 
 const Home = ({ navigation }) => {
   return (
@@ -31,24 +30,24 @@ const Home = ({ navigation }) => {
         <Text style={styles.header}>Welcome, user!</Text>
       </View>
 
-      <View style={styles.middle} >
-        <View flexDirection = "row">
-          <View style = {styles.box}>
-            <Text style = {styles.TransactionText}> TO GIVE: </Text>
-            <TransactionBar Transactions={TransactionData[4]}/>
-            <TransactionBar Transactions={TransactionData[3]}/>
-
+      <View style={styles.middle}>
+        <View flexDirection="row">
+          <View style={styles.box}>
+            <Text style={styles.TransactionText}> TO GIVE: </Text>
+            <TransactionBar transactions={TransactionData[4]} />
+            <TransactionBar transactions={TransactionData[3]} />
           </View>
-          <View style = {styles.box}>
-            <Text style = {styles.TransactionText}> TO GET: </Text>
-            <TransactionBar Transactions={TransactionData[0]}/>
-            <TransactionBar Transactions={TransactionData[1]}/>
-
-          </View>          
+          <View style={styles.box}>
+            <Text style={styles.TransactionText}> TO GET: </Text>
+            <TransactionBar transactions={TransactionData[0]} />
+            <TransactionBar transactions={TransactionData[1]} />
+          </View>
         </View>
 
         <View style={styles.roomFunctions}>
-          <TouchableOpacity onPress={() => navigation.navigate('CreateRoom')}>
+          <TouchableOpacity
+            style={{ marginStart: 10 }}
+            onPress={() => navigation.navigate('CreateRoom')}>
             <View style={styles.roomFunctionButtons}>
               <Image
                 source={ICONS.add}
@@ -75,16 +74,17 @@ const Home = ({ navigation }) => {
         </View>
 
         <Text style={styles.roomsTitle}>Party Rooms</Text>
-        <ScrollView>
-          <View style={styles.rooms}>
-            <FlatList
-              data = {TempRooms}
-              renderItem = {({ item }) => <RoomData MainRoom={item}/>}
-              numColumns = {2}
-              key={'_'}
-              keyExtractor = {(item) => item.id}/>
-          </View>
-        </ScrollView>
+        <View style={styles.rooms}>
+          <FlatList
+            data={TempRooms}
+            renderItem={({ item }) => (
+              <RoomData mainRoom={item} navigation={navigation} />
+            )}
+            numColumns={2}
+            key={'_'}
+            keyExtractor={item => item.id}
+          />
+        </View>
       </View>
     </View>
   );
@@ -104,15 +104,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#E9D7FD',
-    minHeight: '7%',
-    maxHeight: '7%',
+    minHeight: '9%',
+    maxHeight: '9%',
   },
 
   header: {
     fontSize: 25,
-    bottom: 9,
+    top: 19,
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   middle: {
@@ -121,10 +123,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0ecec',
     alignItems: 'center',
     width: '100%',
-    maxHeight: '83%',
+    maxHeight: '91%',
     justifyContent: 'space-between',
-
-
   },
 
   transactions: {
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginStart: 32,
     paddingHorizontal: 10,
   },
 
@@ -198,24 +199,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
   },
-  box : { 
-    borderRadius :15,
-    backgroundColor : '#ffffff',
-    paddingHorizontal : 30,
-    paddingVertical : 0,
-    justifyContent : 'space-between',
-    marginTop : 10,
-    marginBottom :20,
-    marginRight :20,
-    marginLeft : 20,
 
+  box: {
+    borderRadius: 15,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 30,
+    paddingVertical: 0,
+    justifyContent: 'space-between',
+    marginTop: 15,
+    marginBottom: 20,
+    marginRight: 20,
+    marginLeft: 20,
   },
 
-  TransactionText :{
-
-    fontFamily:'Poppins',
-    color : '#000000',
-    fontWeight : 'bold',
-    alignItems : 'flex-start',
-  }
+  TransactionText: {
+    fontFamily: 'Poppins',
+    color: '#000000',
+    fontWeight: 'bold',
+    alignItems: 'flex-start',
+  },
 });

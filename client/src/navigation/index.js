@@ -13,6 +13,7 @@ import RoomsPage from '../screens/RoomsPage';
 import BottomTab from '../components/BottomTab';
 import JoinRoom from '../screens/JoinRoom';
 import GetSupermarkets from '../screens/GetSupermarkets';
+import SplitBill from '../screens/SplitBill';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();

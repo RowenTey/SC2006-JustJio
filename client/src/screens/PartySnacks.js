@@ -116,8 +116,6 @@ const PartySnacks = () => {
           </View>
         </TouchableOpacity>
       </ScrollView>
-
-     
     </View>
   );
 };
@@ -151,24 +149,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 
-  bottombar: {
-    flex: 3,
-    flexDirection: 'column',
-    backgroundColor: '#E9D7FD',
-    minHeight: '7%',
-    maxHeight: '7%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-
   middle: {
     flex: 2,
     flexDirection: 'column',
     backgroundColor: '#EEEEEE',
     width: 500,
-    minHeight: '83%',
-    maxHeight: '83%',
+    minHeight: '90%',
+    maxHeight: '90%',
   },
 
   details: {

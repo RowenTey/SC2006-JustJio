@@ -7,6 +7,7 @@ const PartyGames = () => {
       <View style={styles.top}>
         <Text style={styles.header}>Party Games</Text>
       </View>
+
       <ScrollView style={styles.middle}>
         <View style={styles.gameContainer}>
           <Image
@@ -109,9 +110,6 @@ const PartyGames = () => {
           <Text style={styles.gameText}>Musical Chairs</Text>
         </View>
       </ScrollView>
-      <View style={styles.bottom}>
-        <Text style={styles.smallText}>Nav Bar</Text>
-      </View>
     </View>
   );
 };
@@ -163,8 +161,8 @@ const styles = StyleSheet.create({
 
   header: {
     fontSize: 25,
-    top: 10,
-    fontFamily: 'OleoScript-Bold',
+    top: 8,
+    fontFamily: 'Poppins-Bold',
     alignItems: 'center',
     justifyContent: 'center',
     color: '#4E1164',
@@ -176,8 +174,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#E9D7FD',
-    minHeight: '10%',
-    maxHeight: '10%',
+    minHeight: '9%',
+    maxHeight: '9%',
   },
 
   middle: {
@@ -185,18 +183,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#f0ecec',
     width: 500,
-    minHeight: '83%',
-    maxHeight: '83%',
-  },
-
-  bottom: {
-    flex: 3,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E9D7FD',
-    minHeight: '7%',
-    maxHeight: '7%',
+    minHeight: '91%',
+    maxHeight: '91%',
   },
 
   smallText: {

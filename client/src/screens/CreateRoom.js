@@ -164,9 +164,9 @@ const styles = StyleSheet.create({
 
   back: {
     // back arrow
-    position: 'relative',
-    top: 8,
-    right: 75,
+    position: 'absolute',
+    top: -1,
+    right: 65,
   },
 
   header: {

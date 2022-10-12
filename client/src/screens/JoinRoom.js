@@ -39,26 +39,27 @@ const JoinRoom = ({ navigation }) => {
 };
 
 const RoomTitle = props => {
-  let styleSheet = '';
-
   return (
     <View style={styles.WhiteBox}>
-        <Text style={styles.roomheader}>Alumni Club</Text>
-        <Text style={styles.numberofpeople}>38 Members</Text>
-        <Text style={styles.roomtext}>Name: Reunion Party!</Text>
-        <Text style={styles.roomtext}>Date: 13 June 2022</Text>
-        <Text style={styles.roomtext}>Time: 7.30pm</Text>
-        <Text style={styles.roomtext}>Venue: The Joyden Hall, Bugis</Text>
+      <Text style={styles.roomheader}>Alumni Club</Text>
+      <Text style={styles.numberofpeople}>38 Members</Text>
+      <Text style={styles.roomtext}>Name: Reunion Party!</Text>
+      <Text style={styles.roomtext}>Date: 13 June 2022</Text>
+      <Text style={styles.roomtext}>Time: 7.30pm</Text>
+      <Text style={styles.roomtext}>Venue: The Joyden Hall, Bugis</Text>
 
-     <View style={styles.invitation}>
-      <Pressable style={styles.greenbox} onPress={() => Alert.alert('Joined Room Successfully')}> 
-      <Text style={styles.confirmationboxtext}>Accept</Text> 
-      </Pressable>
-      <View style={styles.gap}></View>  
-      <Pressable style={styles.redbox} onPress={() => Alert.alert('Declined Room Successfully')}> 
-      <Text style={styles.confirmationboxtext}>Decline</Text> 
-      </Pressable>    
-      
+      <View style={styles.invitation}>
+        <Pressable
+          style={styles.greenbox}
+          onPress={() => Alert.alert('Joined Room Successfully')}>
+          <Text style={styles.confirmationboxtext}>Accept</Text>
+        </Pressable>
+        <View style={styles.gap} />
+        <Pressable
+          style={styles.redbox}
+          onPress={() => Alert.alert('Declined Room Successfully')}>
+          <Text style={styles.confirmationboxtext}>Decline</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -154,9 +155,9 @@ const styles = StyleSheet.create({
 
   back: {
     // back arrow
-    position: 'relative',
-    top: 8,
-    right: 75,
+    position: 'absolute',
+    top: -1,
+    right: 50,
   },
 
   roomheader: {
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
   },
 
   numberofpeople: {
-    //number of people 
+    //number of people
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     //move the whitebox to center and top of screen
     flex: 1,
     flexDirection: 'column',
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: '#f0ecec',
     width: 350,
     height: 250,
@@ -215,6 +216,4 @@ const styles = StyleSheet.create({
     //between accept and decline
     marginHorizontal: 20,
   },
-
-
 });

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   View,
@@ -9,34 +8,37 @@ import {
   ImageURISource,
 } from 'react-native';
 
-const TransactionBar = ({ transactions }) => {
-  return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: transactions.imageURL }}
-        style={{ width: 30, height: 30 }}
-      />
-      <View style={styles.informationContainer}>
-        <Text style={styles.name}>{transactions.name}</Text>
+// export type Room = {
+//   id: String;
+//   Name: String;
+//   imageURL: ImageURISource;
+// };
 
-        <Text style={styles.name}>{transactions.amount}</Text>
-      </View>
+// export type RoomDataProps = {
+//   MainRoom: Room;
+// };
+
+const RoomData = ({ navigation, mainRoom }) => {
+  return (
+    <View>
+      <TouchableOpacity
+        style={styles.roomsCard}
+        onPress={() => navigation.navigate('RoomsPage')}>
+        <Image source={mainRoom.imageURL} />
+        <Text style={styles.roomsCardText}>{mainRoom.Name}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default TransactionBar;
+export default RoomData;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    paddingVertical: 10,
-  },
-
-  informationContainer: {
+    flex: 1,
     alignItems: 'center',
-    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#E9D7FD',
   },
 
   top: {
@@ -110,11 +112,28 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    paddingHorizontal: 10,
   },
 
-  name: {
-    color: '#000000',
-    fontWeight: 'bold',
-    paddingHorizontal: 10,
+  roomsCard: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E9D7FD',
+    borderRadius: 25,
+    shadowColor: 'black',
+    shadowOffset: 10,
+    width: 150,
+    height: 150,
+    margin: 10,
+  },
+
+  roomsCardText: {
+    marginTop: 5,
+    fontSize: 15,
+    fontFamily: 'Poppins-Bold',
+    color: '#4E1164',
   },
 });
