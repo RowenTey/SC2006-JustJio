@@ -23,7 +23,7 @@ export default[
 {
 
     id : "2",
-    Name : "Poker club",
+    Name : "Dance club",
     imageURL : require('../../assets/images/mahjong.png'),
 
 

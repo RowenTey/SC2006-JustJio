@@ -36,6 +36,7 @@ function Transactions({ navigation }) {
 const BottomTab = () => {
   return (
     <Tab.Navigator
+      
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -69,6 +70,7 @@ const BottomTab = () => {
         tabBarActiveBackgroundColor: '#ffffff',
         tabBarInactiveBackgroundColor: '#E9D7FD',
         headerShown: false,
+        tabBarShowLabel : false,
       })}
       initialRouteName={Home}>
       <Tab.Screen name="Home" component={Home} />
