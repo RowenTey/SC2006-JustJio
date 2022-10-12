@@ -163,7 +163,22 @@ func CreateRoom(c *fiber.Ctx) error {
 	}
 
 	fmt.Println("Room " + roomInput.Room.Name + " created successfully.")
-	return c.JSON(fiber.Map{"status": "success", "message": "Created room", "data": roomInput})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Created room", "data": roomInput})
+}
+
+func CloseRoom(c *fiber.Ctx) error {
+	db := database.DB
+	roomID_str := c.Params("id")
+
+	if err := db.Table("rooms").Delete(&model.Room{}, roomID_str).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't close room - error in rooms table", "data": err})
+	}
+
+	if err := db.Table("room_users").Where("room_id = ?", roomID_str).Delete(&model.RoomUser{}).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't close room - error in room_users table", "data": err})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Closed room successfully", "data": nil})
 }
 
 func JoinRoom(c *fiber.Ctx) error {
@@ -180,7 +195,7 @@ func JoinRoom(c *fiber.Ctx) error {
 
 	// update attendees_count
 	if err := db.Table("rooms").Where("id = ?", roomID_str).Update("attendees_count", gorm.Expr("attendees_count + ?", 1)).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't join room - error in updating room table", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't join room - error in updating rooms table", "data": err})
 	}
 
 	// get room & attendees to return
