@@ -7,12 +7,12 @@ const RoomsPage = () => {
     'Friday',
     '26 Dec',
     'Graduation Party',
-    '1800',
+    '1800 - 2300',
     "Bob's House",
     '22',
   ];
 
-  const MemberList = ['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark', 'Lasdfa', 'Oafaf', 'Pafaf', 'K'];
+  const MemberList = ['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark', 'Layla', 'Fred', 'Adrian'];
 
   return (
     <View style={styles.container}>
@@ -37,12 +37,12 @@ const RoomsPage = () => {
         </View>
         <View style={styles.splitBillCloseRoom}>
           <View style={styles.splitBill}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate("SplitBill")}>
               <Text style={styles.buttonText}>Split Bill</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.closeRoom}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
               <Text style={styles.buttonText}>Close Room</Text>
             </TouchableOpacity>
           </View>
@@ -67,32 +67,43 @@ const RoomsPage = () => {
 };
 
 const EventDetail = props => {
-  let styleSheet = '';
+  return (
+    <View>
+      <EventDetailBox
+        day={props.list[0]}
+        date={props.list[1]}
+        eventName={props.list[2]}
+        time={props.list[3]}
+        venue={props.list[4]}
+        attendees={props.list[5]}
+      />
+    </View>
+  );
+};
 
+const EventDetailBox = props => {
   return (
     <View style={styles.whiteBox}>
       <View style={styles.left}>
         <View style={styles.date}>
-          <Text style={styles.dateText}>Friday</Text>
-          <Text style={styles.dateText}>26 Dec</Text>
+          <Text style={styles.dateText}>{props.day}</Text>
+          <Text style={styles.dateText}>{props.date}</Text>
         </View>
         <View style={styles.eventBox}>
-          <Text style={styles.eventText}>Graduation Party!</Text>
+          <Text style={styles.eventText}>Event: {props.eventName}</Text>
         </View>
       </View>
       <View style={styles.right}>
         <View style={styles.purple}>
           <View style={styles.purpleBox}>
-            <Text style={styles.purpleBoxText}>Time:</Text>
-            <Text style={styles.purpleBoxText}>1800</Text>
+            <Text style={styles.purpleBoxText}>Time: {props.time}</Text>
           </View>
           <View style={styles.purpleBox}>
-            <Text style={styles.purpleBoxText}>Venue:</Text>
-            <Text style={styles.purpleBoxText}>Bob's house</Text>
+            <Text style={styles.purpleBoxText}>Venue: {props.venue}</Text>
           </View>
           <View style={styles.purpleBoxLast}>
             <Text style={styles.purpleBoxText}>Attendees count:</Text>
-            <Text style={styles.count}>22</Text>
+            <Text style={styles.count}>{props.attendees}</Text>
           </View>
         </View>
       </View>
@@ -114,18 +125,6 @@ const GuestList = props => {
   );
 };
 
-function allNames(i) {
-  return (
-    <View>
-      {props.list.map(MemberList => (
-        <Box
-          key={MemberList[i]}
-          name={MemberList[i]}
-        />
-      ))}
-    </View>
-  );
-};
 
 const Box = props => {
 
@@ -211,8 +210,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
     width: '75%',
-    minHeight: '80%',
-    maxHeight: '80%',
+    minHeight: '90%',
+    maxHeight: '90%',
     borderRadius: 20,
     position: 'relative',
   },
