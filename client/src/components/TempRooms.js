@@ -6,7 +6,7 @@ const ICONS = {
 export default [
   {
     id: '1',
-    Name: 'Hall 8 FOC',
+    Name: 'Hall 8 ',
     imageURL: require('../../assets/images/mahjong.png'),
   },
 

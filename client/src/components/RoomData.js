@@ -31,6 +31,7 @@ const RoomData = ({ navigation, mainRoom }) => {
   );
 };
 
+
 export default RoomData;
 
 const styles = StyleSheet.create({

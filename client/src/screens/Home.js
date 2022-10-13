@@ -56,6 +56,7 @@ const Home = ({ navigation }) => {
                   height: 30,
                 }}
               />
+              
             </View>
             <Text style={styles.roomFunctionText}>Create Room</Text>
           </TouchableOpacity>
@@ -74,8 +75,8 @@ const Home = ({ navigation }) => {
         </View>
 
         <Text style={styles.roomsTitle}>Party Rooms</Text>
-        <View style={styles.rooms}>
-          <FlatList
+        <View style={{flex:1}}>       
+           <FlatList
             data={TempRooms}
             renderItem={({ item }) => (
               <RoomData mainRoom={item} navigation={navigation} />
