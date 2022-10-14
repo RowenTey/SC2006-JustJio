@@ -21,18 +21,14 @@ const TransactionHistory = () => {
         <TransactionList date="28 aug" list={list1} />
         <TransactionList date="27 aug" list={list2} />
       </View>
-
-      <View style={styles.bottom}>
-        <Text style={styles.smallText}>Nav Bar</Text>
-      </View>
     </View>
   );
 };
 
 const TransactionList = props => {
   return (
-    <View>
-      <Text style={styles.date}>{props.date}</Text>
+    <View style={styles.transactionList}>
+      <Text style={styles.date}>{props.date.toUpperCase()}</Text>
       <View>
         {props.list.map(listItem => (
           <TransactionBox
@@ -56,7 +52,7 @@ const TransactionBox = props => {
   }
 
   return (
-    <View>
+    <View style={styles.transactionBox}>
       <View style={styles.oneDate}>
         <Text style={styles.name}>{props.name}</Text>
         <Text style={styleSheet}>{props.amount}</Text>
@@ -70,8 +66,8 @@ export default TransactionHistory;
 const styles = StyleSheet.create({
   header: {
     fontSize: 25,
-    top: 10,
-    fontFamily: 'OleoScript-Bold',
+    top: 8,
+    fontFamily: 'Poppins-Bold',
     alignItems: 'center',
     justifyContent: 'center',
     color: '#4E1164',
@@ -105,18 +101,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#f0ecec',
     width: 500,
-    minHeight: '83%',
-    maxHeight: '83%',
-  },
-
-  bottom: {
-    flex: 3,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E9D7FD',
-    minHeight: '7%',
-    maxHeight: '7%',
+    minHeight: '90%',
+    maxHeight: '90%',
   },
 
   oneDate: {
@@ -131,7 +117,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 15,
     left: 3,
-    fontFamily: 'OleoScript-Bold',
+    fontFamily: 'Poppins-Bold',
     color: '#4E1164',
   },
 
@@ -160,5 +146,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#4E1164',
     flexDirection: 'row',
+  },
+
+  transactionList: {
+    marginVertical: 10,
+  },
+
+  transactionBox: {
+    marginVertical: 5,
   },
 });

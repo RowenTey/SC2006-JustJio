@@ -1,8 +1,8 @@
 # JustJio-Client
 
-![landing](./assets/gifs/JustJio-Client.gif)
+> Client-side code for JustJio
 
-Client-side code for JustJio
+![landing](./assets/gifs/JustJio-Client.gif)
 
 ## 🛠 Getting Started
 > From your command line go to the project client directory and run the following scripts in the terminal.

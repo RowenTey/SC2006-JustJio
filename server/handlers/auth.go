@@ -128,7 +128,7 @@ func Login(c *fiber.Ctx) error {
 
 	t, err := token.SignedString([]byte(config.Config("JWT_SECRET")))
 	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Failed to create token", "data": nil})
 	}
 
 	fmt.Println("User " + userData.Username + " logged in successfully.")
