@@ -8,8 +8,9 @@ import {
   Pressable,
   Alert,
 } from 'react-native';
+import BottomTab from '../navigation/BottomTab';
 
-const SplitBillMembers = ({ navigation }) => {
+const SplitBill = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -17,11 +18,23 @@ const SplitBillMembers = ({ navigation }) => {
       </View>
 
       <View style={styles.middle}>
-        <Text style={styles.billtoptext}>Bill for: </Text>
-
-        <Text style={styles.billtext}>Bill Name: </Text>
-
-        <Text style={styles.billtext}>Amount to split: </Text>
+      <Text style={styles.billTopText}>Bill for:  6D </Text>
+        <View style = {styles.topLineStyle} /> 
+        <Text style={styles.billText}>Bill name: </Text>
+        <View style={styles.gap}></View>  
+        <Text style={styles.billText}>Drinks </Text>
+        <View style = {styles.lineStyle} /> 
+        <View style={styles.gap}></View>  
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Image
+            style={styles.qrcode}
+            source={require('../../assets/images/back.png')}
+          />
+        </TouchableOpacity>
+        <Text style={styles.billText}>Amount to split: </Text>
+        <View style={styles.gap}></View>  
+        <Text style={styles.billText}>$ 50.00 </Text>
+        <View style = {styles.lineStyle} />  
       </View>
     </View>
   );
@@ -39,6 +52,17 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     height: 80,
     flexDirection: 'row',
+  },
+
+  
+  middle: {
+    //move the whitebox to center and top of screen
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#f0ecec',
+    width: 350,
+    height: 250,
+    bottom: -10,
   },
 
   container: {
@@ -59,7 +83,8 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
-  billtext: {
+
+  billText: {
     //text details of the text
     fontSize: 20,
     top: 10,
@@ -70,11 +95,51 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
 
-  billtoptext: {
+  billTopText: {
     //text details of the text
     fontSize: 15,
     fontFamily: 'Poppins',
     color: '#4E1164',
     marginLeft: 12,
   },
+
+  topLineStyle:{
+    borderWidth: 1,
+    borderColor:'#4E1164',
+    margin:10,
+    width: 383,
+  },
+
+  lineStyle:{
+    borderWidth: 1,
+    borderColor:'#000000',
+    margin:13,
+    width: 300,
+    alignSelf: 'center',
+
+  },
+
+  qrcode: {
+    // qr code placement?
+    position: 'absolute',
+    right: 35,
+    top: 10,
+    height: 50,
+    width: 50,
+  },
+
+  gap: {
+    //between the bill name,drinks and amount to split:,$50.00
+    marginVertical: 2,
+  },
+
+  room: {
+    position: 'absolute',
+    left: 70,
+    top: 30,
+    height: 49,
+    width: 16,
+  },
+
+
 });

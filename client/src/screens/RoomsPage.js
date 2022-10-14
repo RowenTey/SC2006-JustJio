@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity,} from 'react-native';
-import BottomTab from '../components/BottomTab';
+import BottomTab from '../navigation/BottomTab';
 
 const RoomsPage = () => {
   const details = [
