@@ -61,7 +61,7 @@ const GetSupermarkets = () => {
       <View style={styles.top}>
         <Text style={styles.bigText}>Party Snacks</Text>
         <GooglePlacesAutocomplete
-          placeholder="Current location:"
+          placeholder="Enter current location:"
           fetchDetails={true}
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
@@ -72,17 +72,26 @@ const GetSupermarkets = () => {
               longitude: details.geometry.location.lng,
             });
           }}
+
           query={{
             key: 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4',
             language: 'en',
             components: 'country:sg',
           }}
+
           styles={{
             container: {
               flex: 0,
               width: '80%',
             },
-            listView: { backgroundColor: 'white' },
+
+            listView: { 
+              backgroundColor: 'white' 
+            },
+
+            textInputContainer: { 
+            },
+
           }}
         />
       </View>
@@ -91,7 +100,7 @@ const GetSupermarkets = () => {
         data={places.placesArray.results}
         style={{
           flex: 1,
-          backgroundColor: '#EEEEEE',
+          backgroundColor: '#FFFFFF',
           width: '80%',
           margin: 60,
           padding: 5,
@@ -106,6 +115,7 @@ const GetSupermarkets = () => {
             backgroundColor: '#E9D7FD',
             color: '#4E1164',
             fontWeight: '600',
+            fontSize: 15,
             padding: 15,
             marginBottom: 50,
             borderRadius: 10,
@@ -122,7 +132,7 @@ export default GetSupermarkets;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#EEEEEE',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -133,8 +143,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#E9D7FD',
-    minHeight: '10%',
-    maxHeight: '10%',
+    minHeight: '12%',
+    maxHeight: '12%',
     width: '100%',
     paddingVertical: 20,
   },
@@ -142,7 +152,7 @@ const styles = StyleSheet.create({
   bigText: {
     color: '#4E1164',
     fontWeight: '800',
-    fontSize: 20,
+    fontSize: 25,
   },
 
 });
