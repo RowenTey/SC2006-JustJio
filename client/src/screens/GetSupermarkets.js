@@ -58,39 +58,40 @@ const GetSupermarkets = () => {
 
   return (
     <View style={styles.container}>
-      <GooglePlacesAutocomplete
-        placeholder="Search"
-        fetchDetails={true}
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          console.log('Glat:' + details.geometry.location.lat);
-          console.log('Glong:' + details.geometry.location.lng);
-          setLocation({
-            latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng,
-          });
-        }}
-        query={{
-          key: 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4',
-          language: 'en',
-          components: 'country:sg',
-        }}
-        styles={{
-          container: {
-            flex: 0,
-            width: '100%',
-            zIndex: 1,
-            backgroundColor: 'gray',
-          },
-          listView: { backgroundColor: 'white' },
-        }}
-      />
+      <View style={styles.top}>
+        <Text style={styles.bigText}>Party Snacks</Text>
+        <GooglePlacesAutocomplete
+          placeholder="Current location:"
+          fetchDetails={true}
+          onPress={(data, details = null) => {
+            // 'details' is provided when fetchDetails = true
+            console.log('Glat:' + details.geometry.location.lat);
+            console.log('Glong:' + details.geometry.location.lng);
+            setLocation({
+              latitude: details.geometry.location.lat,
+              longitude: details.geometry.location.lng,
+            });
+          }}
+          query={{
+            key: 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4',
+            language: 'en',
+            components: 'country:sg',
+          }}
+          styles={{
+            container: {
+              flex: 0,
+              width: '80%',
+            },
+            listView: { backgroundColor: 'white' },
+          }}
+        />
+      </View>
 
       <FlatList
         data={places.placesArray.results}
         style={{
           flex: 1,
-          backgroundColor: 'grey',
+          backgroundColor: '#EEEEEE',
           width: '80%',
           margin: 60,
           padding: 5,
@@ -102,10 +103,12 @@ const GetSupermarkets = () => {
       <TouchableOpacity onPress={() => fetchNearestPlacesFromGoogle()}>
         <Text
           style={{
-            backgroundColor: 'grey',
-            color: 'white',
-            padding: 20,
+            backgroundColor: '#E9D7FD',
+            color: '#4E1164',
+            fontWeight: '600',
+            padding: 15,
             marginBottom: 50,
+            borderRadius: 10,
           }}>
           Find Snacks
         </Text>
@@ -123,4 +126,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  top: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E9D7FD',
+    minHeight: '10%',
+    maxHeight: '10%',
+    width: '100%',
+    paddingVertical: 20,
+  },
+
+  bigText: {
+    color: '#4E1164',
+    fontWeight: '800',
+    fontSize: 20,
+  },
+
 });
