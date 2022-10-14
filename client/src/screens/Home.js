@@ -1,12 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Image,
-  ScrollView,
   FlatList,
 } from 'react-native';
 
@@ -14,6 +13,7 @@ import RoomData from '../components/RoomData.js';
 import TempRooms from '../components/TempRooms';
 import TransactionBar from '../components/TransactionDetails';
 import TransactionData from '../components/TransactionData';
+import { UserContext } from '../context/user.js';
 
 const ICONS = {
   add: require('../../assets/images/add.png'),
@@ -24,10 +24,12 @@ const ICONS = {
 };
 
 const Home = ({ navigation }) => {
+  const [user, setUser] = useContext(UserContext);
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.header}>Welcome, user!</Text>
+        <Text style={styles.header}>Welcome, {user.username}!</Text>
       </View>
 
       <View style={styles.middle}>
@@ -56,7 +58,6 @@ const Home = ({ navigation }) => {
                   height: 30,
                 }}
               />
-              
             </View>
             <Text style={styles.roomFunctionText}>Create Room</Text>
           </TouchableOpacity>
@@ -75,8 +76,8 @@ const Home = ({ navigation }) => {
         </View>
 
         <Text style={styles.roomsTitle}>Party Rooms</Text>
-        <View style={{flex:1}}>       
-           <FlatList
+        <View style={{ flex: 1 }}>
+          <FlatList
             data={TempRooms}
             renderItem={({ item }) => (
               <RoomData mainRoom={item} navigation={navigation} />

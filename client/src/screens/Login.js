@@ -12,6 +12,7 @@ import { AxiosContext } from '../context/axios';
 import * as KeyChain from 'react-native-keychain';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
+import { UserContext } from '../context/user';
 
 const initialState = {
   username: '',
@@ -26,17 +27,15 @@ const Signin = ({ navigation }) => {
   } = useForm({ defaultValues: initialState });
   const authContext = useContext(AuthContext);
   const { publicAxios } = useContext(AxiosContext);
+  const [user, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
 
-  // function for backend to check if data is right then approve :)
   const onLogin = async formData => {
-    // console.warn('Signing in');
     setLoading(true);
     try {
       console.log('Login data', formData);
-      const response = await publicAxios.post('/auth', formData);
-      console.log('Response status', response.status);
-      const { token } = response.data;
+      const { data: response } = await publicAxios.post('/auth', formData);
+      const { token } = response;
       authContext.setAuthState({
         accessToken: token,
         authenticated: true,
@@ -50,6 +49,7 @@ const Signin = ({ navigation }) => {
       );
 
       console.log('Logged in', response.data);
+      setUser(response.data);
       setLoading(false);
       navigation.navigate('HomeTab');
     } catch (error) {
@@ -64,7 +64,6 @@ const Signin = ({ navigation }) => {
   };
 
   const onSignup = () => {
-    // console.warn('Signup page');
     navigation.navigate('Signup');
   };
 

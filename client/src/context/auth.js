@@ -22,12 +22,17 @@ const AuthProvider = ({ children }) => {
     return authState.accessToken;
   };
 
+  const getAuthenticated = () => {
+    return authState.authenticated;
+  };
+
   return (
     <Provider
       value={{
         authState,
-        getAccessToken,
         setAuthState,
+        getAccessToken,
+        getAuthenticated,
         logout,
       }}>
       {children}
