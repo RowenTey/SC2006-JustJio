@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 
-const SplitBill = ({ navigation }) => {
+const SplitBillMembers = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>

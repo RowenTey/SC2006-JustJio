@@ -10,7 +10,7 @@ import RoomsPage from '../screens/RoomsPage';
 import BottomTab from './BottomTab';
 import JoinRoom from '../screens/JoinRoom';
 import GetSupermarkets from '../screens/GetSupermarkets';
-import SplitBill from '../screens/SplitBill';
+import SplitBillMembers from '../screens/SplitBillMembers';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -27,7 +27,8 @@ const Navigation = () => {
         <Stack.Screen name="CreateRoom" component={CreateRoom} />
         <Stack.Screen name="RoomsPage" component={RoomsPage} />
         <Stack.Screen name="JoinRoom" component={JoinRoom} />
-        <Stack.Screen name="SplitBill" component={SplitBill} />
+        <Stack.Screen name="SplitBillMembers" component={SplitBillMembers} />
+
         <Stack.Screen name="GetSupermarkets" component={GetSupermarkets} />
       </Stack.Navigator>
     </NavigationContainer>
