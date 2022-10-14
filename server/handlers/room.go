@@ -69,6 +69,7 @@ func getAttendees(roomID string) ([]string, error) {
 	return users, nil
 }
 
+// TODO: fix the logic for host
 func GetRooms(c *fiber.Ctx) error {
 	db := database.DB
 
@@ -77,7 +78,7 @@ func GetRooms(c *fiber.Ctx) error {
 	var roomInvites []string
 
 	// find room_users record
-	if err := db.Table("room_users").Distinct("room_id").Find(&roomInvites, "user = ? AND accepted = ? AND is_attendee = ?", username, true, true).Error; err != nil {
+	if err := db.Table("room_users").Distinct("room_id").Find(&roomInvites, "user = ? AND accepted = ?", username, true).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get rooms - error in room_users table", "data": err})
 	}
 
