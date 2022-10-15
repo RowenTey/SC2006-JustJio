@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  FlatList, 
+  FlatList,
 } from 'react-native';
 
 const RoomsPage = ({ navigation, route }) => {
@@ -34,7 +34,6 @@ const RoomsPage = ({ navigation, route }) => {
       name: 'Jane',
     },
 
-  
     //'Jeff',
     //'Letitia',
     //'Mark',
@@ -142,17 +141,15 @@ const EventDetailBox = props => {
 };
 
 const GuestList = props => {
-  const renderItem = ({ item }) => (
-    <Box name={item.name} />
-  );
+  const renderItem = ({ item }) => <Box name={item.name} />;
   return (
     <View style={styles.memberBox}>
       <ScrollView>
-      <FlatList
-        data={props.list}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
+        <FlatList
+          data={props.list}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+        />
       </ScrollView>
     </View>
   );

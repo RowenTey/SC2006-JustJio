@@ -53,14 +53,18 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.header}>Welcome, { user ? user.name : "user"}!</Text>
-        <Image
-          source={ICONS.logout}
-          style={{
-            width: 30,
-            height: 30,
-          }}
-        />
+        <Text style={styles.header}>
+          Welcome, {user ? user.username : 'user'}!
+        </Text>
+        <TouchableOpacity onPress={handleLogout}>
+          <Image
+            source={ICONS.logout}
+            style={{
+              width: 30,
+              height: 30,
+            }}
+          />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.middle}>

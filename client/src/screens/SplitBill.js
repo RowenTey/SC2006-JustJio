@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 const SplitBill = ({ navigation }) => {
+  const calcAmountToPay = () => {};
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>
