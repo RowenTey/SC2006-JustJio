@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -11,11 +11,11 @@ import {
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const GetSupermarkets = () => {
-  const [places, setPlaces] = React.useState({
+  const [places, setPlaces] = useState({
     placesArray: [],
   });
 
-  const [location, setLocation] = React.useState({
+  const [location, setLocation] = useState({
     latitude: 0,
     longitude: 0,
     locationName: 'none',
@@ -61,17 +61,16 @@ const GetSupermarkets = () => {
   };
 
   const onSearch = async details => {
-    console.log('Glat:' + details.geometry.location.lat);
-    console.log('Glong:' + details.geometry.location.lng);
+    const lat = details.geometry.location.lat;
+    const long = details.geometry.location.lng;
+    console.log('Glat:' + lat);
+    console.log('Glong:' + long);
     setLocation({
-      latitude: details.geometry.location.lat,
-      longitude: details.geometry.location.lng,
+      latitude: lat,
+      longitude: long,
       locationName: details.formatted_address,
     });
-    await fetchNearestPlacesFromGoogle(
-      details.geometry.location.lat,
-      details.geometry.location.lng,
-    );
+    await fetchNearestPlacesFromGoogle(lat, long);
   };
 
   return (

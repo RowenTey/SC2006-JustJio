@@ -1,4 +1,4 @@
-import React, { useContext, useState , Component } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,8 +13,6 @@ import { AxiosContext } from '../context/axios';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
-import BottomTab from '../navigation/BottomTab';
-import SplitBillMembers from './SplitBillMembers';
 
 var billData = {
   billname: '',
@@ -26,9 +24,8 @@ const initialState = {
 };
 
 const SplitBill = ({ navigation }) => {
-
   const calcAmountToPay = () => {}; //need to work on this after today's commit
-  
+
   const {
     control,
     handleSubmit,
@@ -40,11 +37,11 @@ const SplitBill = ({ navigation }) => {
 
   const onSplitBill = async formData => {
     setLoading(true);
-    let {billname, amount } = formData;
+    let { billname, amount } = formData;
 
     billData = {
-        billname,
-        amount,
+      billname,
+      amount,
     };
 
     try {
@@ -75,12 +72,12 @@ const SplitBill = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-      <TouchableOpacity onPress={() => navigation.navigation(SplitBillMembers)}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.back}
             source={require('../../assets/images/back.png')}
           />
-        </TouchableOpacity>  
+        </TouchableOpacity>
         <Text style={styles.header}>Split Bill</Text>
       </View>
 
@@ -92,7 +89,7 @@ const SplitBill = ({ navigation }) => {
           placeholder={''}
           placeholderTextColor="#4E1164"
           name="billName"
-          rules={{required: 'Bill name is required' }}
+          rules={{ required: 'Bill name is required' }}
           control={control}
           textStyles={styles.billText}
         />
@@ -102,7 +99,7 @@ const SplitBill = ({ navigation }) => {
           placeholder={''}
           placeholderTextColor="#4E1164"
           name="amount"
-          rules={{required: 'Amount is required' }}
+          rules={{ required: 'Amount is required' }}
           control={control}
           textStyles={styles.billText}
         />
@@ -112,7 +109,6 @@ const SplitBill = ({ navigation }) => {
             <Text style={styles.buttonText}>Split Bill</Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </View>
   );
@@ -243,6 +239,4 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     margin: 15,
   },
-
-
 });
