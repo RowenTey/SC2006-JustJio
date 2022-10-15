@@ -48,7 +48,14 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.header}>Welcome, {user.username}!</Text>
+        <Text style={styles.header}>Welcome, { user ? user.name : "user"}!</Text>
+        <Image
+          source={ICONS.logout}
+          style={{
+            width: 30,
+            height: 30,
+          }}
+        />
       </View>
 
       <View style={styles.middle}>
@@ -123,7 +130,7 @@ const styles = StyleSheet.create({
 
   top: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'row',
     backgroundColor: '#E9D7FD',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -131,7 +138,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     minHeight: '9%',
     maxHeight: '9%',
-    justifyContent: 'space-between',
   },
 
   header: {
