@@ -41,11 +41,11 @@ const SplitBillMembers = ({ navigation }) => {
           <Text style={styles.list}>List of Payers:</Text>
           <GuestList list={MemberList} />
         </View>
-        <View style={styles.confirm}>
-          <TouchableOpacity onPress={() => navigation.navigate('SplitBill')}>
-            <Text style={styles.buttonText}>Confirm</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.confirm}
+          onPress={() => navigation.navigate('SplitBill')}>
+          <Text style={styles.buttonText}>Confirm</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
 
   buttonText: {
     fontSize: 20,
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins-Bold',
     alignItems: 'center',
     color: '#FFFFFF',
   },

@@ -46,9 +46,7 @@ const GetSupermarkets = () => {
     console.log(getSupermarketsUrl);
     await fetch(getSupermarketsUrl)
       .then(res => {
-        const data = res.json();
-        console.log('Google Map API response: ' + JSON.stringify(data));
-        return data;
+        return res.json();
       })
       .then(result =>
         setPlaces({
@@ -63,8 +61,8 @@ const GetSupermarkets = () => {
   const onSearch = async details => {
     const lat = details.geometry.location.lat;
     const long = details.geometry.location.lng;
-    console.log('Glat:' + lat);
-    console.log('Glong:' + long);
+    console.log('G_lat:' + lat);
+    console.log('G_long:' + long);
     setLocation({
       latitude: lat,
       longitude: long,
