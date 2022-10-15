@@ -27,6 +27,8 @@ const initialState = {
 
 const SplitBill = ({ navigation }) => {
 
+  const calcAmountToPay = () => {}; //need to work on this after today's commit
+  
   const {
     control,
     handleSubmit,
