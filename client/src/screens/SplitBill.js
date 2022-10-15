@@ -1,12 +1,86 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import React, { useContext, useState , Component } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Pressable,
+  Alert,
+  KeyboardAvoidingView,
+} from 'react-native';
+import { AxiosContext } from '../context/axios';
+import { useForm } from 'react-hook-form';
+import Spinner from '../components/Spinner';
+import CustomInput from '../components/CustomInput';
+import BottomTab from '../navigation/BottomTab';
+import SplitBillMembers from './SplitBillMembers';
+
+var billData = {
+  billname: '',
+  amount: '',
+};
+
+const initialState = {
+  ...billData,
+};
 
 const SplitBill = ({ navigation }) => {
-  const calcAmountToPay = () => {};
+
+  const calcAmountToPay = () => {}; //need to work on this after today's commit
+  
+  const {
+    control,
+    handleSubmit,
+    formState: {},
+  } = useForm({ initialState });
+
+  const { authAxios } = useContext(AxiosContext);
+  const [loading, setLoading] = useState(false);
+
+  const onSplitBill = async formData => {
+    setLoading(true);
+    let {billname, amount } = formData;
+
+    billData = {
+        billname,
+        amount,
+    };
+
+    try {
+      console.log('Split Bill Data', billData);
+      const response = await authAxios.post('/bills', billData);
+      console.log('Split Bill Successfully', response.data);
+      setLoading(false);
+      onSplitBillSuccess();
+    } catch (error) {
+      setLoading(false);
+      console.log('Failed to create bill', error);
+      if (error.response) {
+        console.log('Error response', error.response.data);
+      } else if (error.request) {
+        console.log('Error request', error.request);
+      }
+    }
+  };
+
+  const onSplitBillSuccess = () => {
+    navigation.navigate('HomeTab');
+  };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.title}>
+      <TouchableOpacity onPress={() => navigation.navigation(SplitBillMembers)}>
+          <Image
+            style={styles.back}
+            source={require('../../assets/images/back.png')}
+          />
+        </TouchableOpacity>  
         <Text style={styles.header}>Split Bill</Text>
       </View>
 
@@ -14,20 +88,31 @@ const SplitBill = ({ navigation }) => {
         <Text style={styles.billTopText}>Bill for: 6D </Text>
         <View style={styles.topLineStyle} />
         <Text style={styles.billText}>Bill name: </Text>
-        <View style={styles.gap} />
-        <Text style={styles.billText}>Drinks </Text>
+        <CustomInput
+          placeholder={''}
+          placeholderTextColor="#4E1164"
+          name="billName"
+          rules={{required: 'Bill name is required' }}
+          control={control}
+          textStyles={styles.billText}
+        />
         <View style={styles.lineStyle} />
-        <View style={styles.gap} />
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            style={styles.qrcode}
-            source={require('../../assets/images/back.png')}
-          />
-        </TouchableOpacity>
         <Text style={styles.billText}>Amount to split: </Text>
-        <View style={styles.gap} />
-        <Text style={styles.billText}>$ 50.00 </Text>
+        <CustomInput
+          placeholder={''}
+          placeholderTextColor="#4E1164"
+          name="amount"
+          rules={{required: 'Amount is required' }}
+          control={control}
+          textStyles={styles.billText}
+        />
         <View style={styles.lineStyle} />
+        <View style={styles.confirm}>
+          <TouchableOpacity onPress={handleSubmit(onSplitBill)}>
+            <Text style={styles.buttonText}>Split Bill</Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
     </View>
   );
@@ -75,6 +160,13 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
+  back: {
+    // back arrow
+    position: 'absolute',
+    top: -1,
+    right: 120,
+  },
+
   billText: {
     //text details of the text
     fontSize: 20,
@@ -104,7 +196,7 @@ const styles = StyleSheet.create({
   lineStyle: {
     borderWidth: 1,
     borderColor: '#000000',
-    margin: 13,
+    margin: 5,
     width: 300,
     alignSelf: 'center',
   },
@@ -130,4 +222,27 @@ const styles = StyleSheet.create({
     height: 49,
     width: 16,
   },
+
+  confirm: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    justifyContent: 'space-evenly',
+    width: '35%',
+    minHeight: '9%',
+    maxHeight: '9%',
+    position: 'relative',
+    top: 10,
+    backgroundColor: '#4E1164',
+    borderRadius: 10,
+    right: -10,
+  },
+
+  buttonText: {
+    fontSize: 20,
+    fontFamily: 'OleoScript-Bold',
+    color: '#FFFFFF',
+    margin: 15,
+  },
+
+
 });
