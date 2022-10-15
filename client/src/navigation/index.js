@@ -7,12 +7,19 @@ import Signup from '../screens/Registration';
 import Splash from '../screens/Splash';
 import CreateRoom from '../screens/CreateRoom';
 import RoomsPage from '../screens/RoomsPage';
-import BottomTab from '../navigation/BottomTab';
+import HomeTab from './HomeTab';
 import JoinRoom from '../screens/JoinRoom';
 import GetSupermarkets from '../screens/GetSupermarkets';
 import SplitBill from '../screens/SplitBill';
 import SplitBillMembers from '../screens/SplitBillMembers';
 import PartyGames from '../screens/PartyGames';
+import BeerPong from '../screens/BeerPong';
+import Charades from '../screens/Charades';
+import CardsAgainstHumanity from '../screens/CardsAgainstHumanity';
+import Mahjong from '../screens/Mahjong';
+import HeadsUp from '../screens/HeadsUp';
+import MusicalChairs from '../screens/MusicalChairs';
+import Mafia from '../screens/Mafia';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -25,7 +32,7 @@ const Navigation = () => {
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
         <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="BottomTab" component={BottomTab} />
+        <Stack.Screen name="HomeTab" component={HomeTab} />
         <Stack.Screen name="CreateRoom" component={CreateRoom} />
         <Stack.Screen name="RoomsPage" component={RoomsPage} />
         <Stack.Screen name="JoinRoom" component={JoinRoom} />
@@ -33,6 +40,16 @@ const Navigation = () => {
         <Stack.Screen name="SplitBillMembers" component={SplitBillMembers} />
         <Stack.Screen name="GetSupermarkets" component={GetSupermarkets} />
         <Stack.Screen name="PartyGames" component={PartyGames} />
+        <Stack.Screen name="BeerPong" component={BeerPong} />
+        <Stack.Screen name="Charades" component={Charades} />
+        <Stack.Screen
+          name="CardsAgainstHumanity"
+          component={CardsAgainstHumanity}
+        />
+        <Stack.Screen name="Mahjong" component={Mahjong} />
+        <Stack.Screen name="HeadsUp" component={HeadsUp} />
+        <Stack.Screen name="MusicalChairs" component={MusicalChairs} />
+        <Stack.Screen name="Mafia" component={Mafia} />
       </Stack.Navigator>
     </NavigationContainer>
   );

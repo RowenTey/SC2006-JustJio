@@ -13,12 +13,16 @@ const AuthProvider = ({ children }) => {
   });
 
   const logout = async () => {
-    await Keychain.resetGenericPassword();
-    dispatch({ type: 'LOGOUT' });
-    setAuthState({
-      accessToken: null,
-      authenticated: false,
-    });
+    try {
+      await Keychain.resetGenericPassword();
+      dispatch({ type: 'LOGOUT' });
+      setAuthState({
+        accessToken: null,
+        authenticated: false,
+      });
+    } catch (error) {
+      console.log('Error logging out ' + error);
+    }
   };
 
   const getAccessToken = () => {

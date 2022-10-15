@@ -72,26 +72,22 @@ const GetSupermarkets = () => {
               longitude: details.geometry.location.lng,
             });
           }}
-
           query={{
             key: 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4',
             language: 'en',
             components: 'country:sg',
           }}
-
           styles={{
             container: {
               flex: 0,
               width: '80%',
             },
 
-            listView: { 
-              backgroundColor: 'white' 
+            listView: {
+              backgroundColor: 'white',
             },
 
-            textInputContainer: { 
-            },
-
+            textInputContainer: {},
           }}
         />
       </View>
@@ -154,5 +150,4 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     fontSize: 25,
   },
-
 });
