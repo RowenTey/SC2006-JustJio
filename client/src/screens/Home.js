@@ -24,6 +24,7 @@ const ICONS = {
   group: require('../../assets/images/group.png'),
   mahjong: require('../../assets/images/mahjong.png'),
   vector: require('../../assets/images/Vector.png'),
+  logout: require('../../assets/images/logout.png'),
 };
 
 const Home = ({ navigation }) => {
@@ -52,10 +53,14 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.header}>Welcome, {user.username}!</Text>
-        <Text style={styles.logout} onPress={handleLogout}>
-          L
-        </Text>
+        <Text style={styles.header}>Welcome, { user ? user.name : "user"}!</Text>
+        <Image
+          source={ICONS.logout}
+          style={{
+            width: 30,
+            height: 30,
+          }}
+        />
       </View>
 
       <View style={styles.middle}>
