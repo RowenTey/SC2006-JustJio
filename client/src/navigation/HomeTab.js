@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { Image, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-ionicons';
 
 // Screens
 import Home from '../screens/Home';
@@ -33,22 +32,12 @@ function Transactions({ navigation }) {
   );
 }
 
-const BottomTab = () => {
+const HomeTab = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
-          /* if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'PartyGames') {
-            iconName = focused ? 'list' : 'list-outline';
-          } else if (route.name === 'PartySnacks') {
-            iconName = focused ? 'list' : 'list-outline';
-          } else if (route.name === 'Transaction') {
-            iconName = focused ? 'list' : 'list-outline';
-          } */
 
           if (route.name === 'Home') {
             iconName = require('../../assets/images/home.png');
@@ -62,7 +51,6 @@ const BottomTab = () => {
 
           // You can return any component that you like here!
           return <Image source={iconName} />;
-          // return <Icon name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
@@ -80,4 +68,4 @@ const BottomTab = () => {
   );
 };
 
-export default BottomTab;
+export default HomeTab;

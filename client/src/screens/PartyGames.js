@@ -5,7 +5,7 @@ const IMAGES = {
   mafia: require('../../assets/images/mafia.png'),
 };
 
-const PartyGames = () => {
+const PartyGames = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -14,7 +14,7 @@ const PartyGames = () => {
 
       <ScrollView style={styles.middle}>
 
-        <TouchableOpacity style={styles.gameContainer}>
+        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('BeerPong')}>
           <Image
             style={styles.gameImage}
             source={{
@@ -26,7 +26,7 @@ const PartyGames = () => {
           <Text style={styles.gameText}>Beer Pong</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.gameContainer}>
+        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('Charades')}>
           <Image
             style={styles.gameImage}
             source={{
@@ -38,7 +38,7 @@ const PartyGames = () => {
           <Text style={styles.gameText}>Charades</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.gameContainer}>
+        <TouchableOpacity style={styles.gameContainer}  onPress={() => navigation.navigate('CardsAgainstHumanity')}>
           <Image
             style={styles.gameImage}
             resizeMode="stretch"
@@ -51,7 +51,7 @@ const PartyGames = () => {
           <Text style={styles.gameText}>Cards Against Humanity</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.gameContainer}>
+        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('Mahjong')}>
           <Image
             style={styles.gameImage}
             source={{
@@ -63,7 +63,7 @@ const PartyGames = () => {
           <Text style={styles.gameText}>Mahjong</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.gameContainer}>
+        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('HeadsUp')}>
           <Image
             style={styles.gameImage}
             source={{
@@ -75,7 +75,7 @@ const PartyGames = () => {
           <Text style={styles.gameText}>Heads Up</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.gameContainer}>
+        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('MusicalChairs')}>
           <Image
             style={styles.gameImage}
             source={{
@@ -87,7 +87,7 @@ const PartyGames = () => {
           <Text style={styles.gameText}>Musical Chairs</Text>
         </TouchableOpacity>
   
-        <TouchableOpacity style={styles.gameContainerLast}>
+        <TouchableOpacity style={styles.gameContainerLast} onPress={() => navigation.navigate('Mafia')}>
           <Image
             source={IMAGES.mafia}
             style={{

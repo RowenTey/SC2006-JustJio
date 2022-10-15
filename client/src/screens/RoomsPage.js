@@ -6,29 +6,40 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 
 const RoomsPage = ({ navigation, route }) => {
   const { room } = route.params;
   const details = [
-    'Friday',
-    '26 Dec',
-    'Graduation Party',
-    '1800 - 2300',
-    "Bob's House",
-    '22',
+    //'Friday',
+    //'26 Dec',
+    //'Graduation Party',
+    //'1800 - 2300',
+    //"Bob's House",
+    //'22',
   ];
 
   const MemberList = [
-    'Hilary',
-    'Marcus',
-    'Jane',
-    'Jeff',
-    'Letitia',
-    'Mark',
-    'Layla',
-    'Fred',
-    'Adrian',
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      name: 'Hilary',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      name: 'Marcus',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      name: 'Jane',
+    },
+
+    //'Jeff',
+    //'Letitia',
+    //'Mark',
+    //'Layla',
+    //'Fred',
+    //'Adrian',
   ];
 
   return (
@@ -130,12 +141,15 @@ const EventDetailBox = props => {
 };
 
 const GuestList = props => {
+  const renderItem = ({ item }) => <Box name={item.name} />;
   return (
     <View style={styles.memberBox}>
       <ScrollView>
-        {props.list.map(Member => (
-          <Box name={Member} />
-        ))}
+        <FlatList
+          data={props.list}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+        />
       </ScrollView>
     </View>
   );
