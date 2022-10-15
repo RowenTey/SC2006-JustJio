@@ -1,38 +1,20 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  Image,
-  ImageURISource,
-} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 
-// export type Room = {
-//   id: String;
-//   Name: String;
-//   imageURL: ImageURISource;
-// };
-
-// export type RoomDataProps = {
-//   MainRoom: Room;
-// };
-
-const RoomData = ({ navigation, mainRoom }) => {
+const RoomCard = ({ navigation, mainRoom }) => {
   return (
     <View>
       <TouchableOpacity
         style={styles.roomsCard}
-        onPress={() => navigation.navigate('RoomsPage')}>
-        <Image source={mainRoom.imageURL} />
-        <Text style={styles.roomsCardText}>{mainRoom.Name}</Text>
+        onPress={() => navigation.navigate('RoomsPage', { room: mainRoom })}>
+        <Image source={require('../../assets/images/group.png')} />
+        <Text style={styles.roomsCardText}>{mainRoom.name}</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-
-export default RoomData;
+export default RoomCard;
 
 const styles = StyleSheet.create({
   container: {

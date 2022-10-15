@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import { AuthContext } from '../context/auth';
 import { AxiosContext } from '../context/axios';
+import { UserContext } from '../context/user';
 import * as KeyChain from 'react-native-keychain';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
-import { UserContext } from '../context/user';
+import { RoomContext } from '../context/room';
 
 const initialState = {
   username: '',
@@ -29,6 +30,7 @@ const Signin = ({ navigation }) => {
   const { publicAxios } = useContext(AxiosContext);
   const [user, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const { fetchRooms } = useContext(RoomContext);
 
   const onLogin = async formData => {
     setLoading(true);
@@ -51,6 +53,7 @@ const Signin = ({ navigation }) => {
       console.log('Logged in', response.data);
       setUser(response.data);
       setLoading(false);
+      fetchRooms();
       navigation.navigate('HomeTab');
     } catch (error) {
       setLoading(false);

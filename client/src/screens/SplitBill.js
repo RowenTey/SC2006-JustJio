@@ -1,15 +1,7 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Pressable,
-  Alert,
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-const SplitBillMembers = ({ navigation }) => {
+const SplitBill = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>

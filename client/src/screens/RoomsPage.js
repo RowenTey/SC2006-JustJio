@@ -1,8 +1,15 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity,} from 'react-native';
-import BottomTab from '../components/BottomTab';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
-const RoomsPage = () => {
+const RoomsPage = ({ navigation, route }) => {
+  const { room } = route.params;
   const details = [
     'Friday',
     '26 Dec',
@@ -12,7 +19,17 @@ const RoomsPage = () => {
     '22',
   ];
 
-  const MemberList = ['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark', 'Layla', 'Fred', 'Adrian'];
+  const MemberList = [
+    'Hilary',
+    'Marcus',
+    'Jane',
+    'Jeff',
+    'Letitia',
+    'Mark',
+    'Layla',
+    'Fred',
+    'Adrian',
+  ];
 
   return (
     <View style={styles.container}>
@@ -23,13 +40,13 @@ const RoomsPage = () => {
             source={require('../../assets/images/back.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.header}>6D</Text>
+        <Text style={styles.header}>{room.name}</Text>
       </View>
 
       <View style={styles.middle}>
         <View style={styles.event}>
           <Text style={styles.upcomingEvent}>Upcoming Event</Text>
-          <EventDetail list={details} />
+          <EventDetail room={room} />
         </View>
         <View style={styles.memberList}>
           <Text style={styles.list}>Members</Text>
@@ -37,12 +54,13 @@ const RoomsPage = () => {
         </View>
         <View style={styles.splitBillCloseRoom}>
           <View style={styles.splitBill}>
-            <TouchableOpacity onPress={() => navigation.navigate("SplitBill")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SplitBillMembers')}>
               <Text style={styles.buttonText}>Split Bill</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.closeRoom}>
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
               <Text style={styles.buttonText}>Close Room</Text>
             </TouchableOpacity>
           </View>
@@ -66,16 +84,16 @@ const RoomsPage = () => {
   );
 };
 
-const EventDetail = props => {
+const EventDetail = ({ room }) => {
   return (
     <View>
       <EventDetailBox
-        day={props.list[0]}
-        date={props.list[1]}
-        eventName={props.list[2]}
-        time={props.list[3]}
-        venue={props.list[4]}
-        attendees={props.list[5]}
+        day="Sunday"
+        date={room.date}
+        eventName={room.name}
+        time={room.time}
+        venue={room.venue}
+        attendees={room.attendeesCount}
       />
     </View>
   );
@@ -115,19 +133,15 @@ const GuestList = props => {
   return (
     <View style={styles.memberBox}>
       <ScrollView>
-        {props.list.map((Member) => (
-        <Box
-          name={Member}
-        />
-      ))}
+        {props.list.map(Member => (
+          <Box name={Member} />
+        ))}
       </ScrollView>
     </View>
   );
 };
 
-
 const Box = props => {
-
   return (
     <View style={styles.indName}>
       <Text style={styles.name}>{props.name}</Text>
@@ -185,13 +199,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#f0ecec',
     width: 500,
     minHeight: '90%',
     maxHeight: '90%',
     position: 'relative',
-
   },
 
   event: {
@@ -202,7 +214,7 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: '28%',
     maxHeight: '28%',
-    
+    paddingHorizontal: 15,
   },
 
   whiteBox: {
@@ -232,7 +244,7 @@ const styles = StyleSheet.create({
     left: 20,
   },
 
-  dateText:{
+  dateText: {
     fontFamily: 'OleoScript-Bold',
     fontSize: 15,
     position: 'relative',
@@ -245,7 +257,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
 
-  eventText: {  
+  eventText: {
     fontSize: 25,
     fontFamily: 'OleoScript-Bold',
     alignItems: 'center',
@@ -260,7 +272,6 @@ const styles = StyleSheet.create({
     minHeight: '100%',
     maxHeight: '100%',
     alignItems: 'center',
-
   },
 
   purple: {
@@ -295,7 +306,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  memberList:{
+  memberList: {
     flexDirection: 'column',
     fontSize: 15,
     alignItems: 'center',
@@ -304,6 +315,7 @@ const styles = StyleSheet.create({
     minHeight: '46%',
     maxHeight: '46%',
     position: 'relative',
+    paddingHorizontal: 15,
   },
 
   memberBox: {
@@ -317,7 +329,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
 
-  indName:{
+  indName: {
     justifyContent: 'flex-start',
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -347,7 +359,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     top: -5,
-    left: -140,
+    left: -120,
   },
 
   list: {
@@ -355,7 +367,7 @@ const styles = StyleSheet.create({
     color: '#4E1164',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    left: -160,
+    left: -140,
     top: -5,
   },
 
@@ -365,7 +377,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 
-  splitBillCloseRoom:{
+  splitBillCloseRoom: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
@@ -373,7 +385,8 @@ const styles = StyleSheet.create({
     minHeight: '10%',
     maxHeight: '10%',
     position: 'relative',
-    top: 5,  
+    top: 5,
+    paddingHorizontal: 15,
   },
 
   splitBill: {
@@ -403,12 +416,12 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    top: 5,
+    top: 7,
     fontSize: 20,
-    fontFamily: 'OleoScript-Bold',
+    fontFamily: 'Poppins-Bold',
   },
 
-  urlQrCode:{
+  urlQrCode: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
@@ -423,6 +436,4 @@ const styles = StyleSheet.create({
     fontFamily: 'OleoScript-Bold',
     color: '#4E1164',
   },
-
-
 });

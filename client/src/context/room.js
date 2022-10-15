@@ -1,27 +1,32 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { AuthContext } from './auth';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
+import RoomReducer, { initialRoomState } from '../reducers/roomReducer';
 import { AxiosContext } from './axios';
 
 const RoomContext = createContext(null);
 const { Provider } = RoomContext;
 
-const initialRoomState = {
-  total: 0,
-  rooms: [],
-};
-
 const RoomProvider = ({ children }) => {
-  const [roomsState, setRoomsState] = useState(initialRoomState);
+  const [state, dispatch] = useReducer(RoomReducer, initialRoomState);
   const { authAxios } = useContext(AxiosContext);
-  const authContext = useContext(AuthContext);
 
   const fetchRooms = async () => {
     try {
+      dispatch({
+        type: 'START_LOADING',
+      });
       const { data: response } = await authAxios.get('/rooms');
-      setRoomsState({
-        total: response.data.length,
-        rooms: response.data,
+      dispatch({
+        type: 'FETCH_ROOMS',
+        payload: response,
+      });
+      dispatch({
+        type: 'STOP_LOADING',
       });
     } catch (error) {
       console.log('Failed to fetch rooms', error);
@@ -33,13 +38,14 @@ const RoomProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    if (authContext.getAuthenticated) {
-      fetchRooms();
-    }
-  }, [authContext.getAuthenticated]);
+  const value = {
+    total: state.total,
+    rooms: state.rooms,
+    isLoading: state.isLoading,
+    fetchRooms,
+  };
 
-  return <Provider value={[roomsState, setRoomsState]}>{children}</Provider>;
+  return <Provider value={value}>{children}</Provider>;
 };
 
 export { RoomContext, RoomProvider };
