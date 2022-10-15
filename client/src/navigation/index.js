@@ -20,7 +20,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="BottomTab"
+        initialRouteName="PartyGames"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
@@ -32,6 +32,7 @@ const Navigation = () => {
         <Stack.Screen name="SplitBill" component={SplitBill} />
         <Stack.Screen name="SplitBillMembers" component={SplitBillMembers} />
         <Stack.Screen name="GetSupermarkets" component={GetSupermarkets} />
+        <Stack.Screen name="PartyGames" component={PartyGames} />
       </Stack.Navigator>
     </NavigationContainer>
   );

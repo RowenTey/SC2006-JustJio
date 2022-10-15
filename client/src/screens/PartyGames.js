@@ -1,5 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+
+const IMAGES = {
+  mafia: require('../../assets/images/mafia.png'),
+};
 
 const PartyGames = () => {
   return (
@@ -9,7 +13,8 @@ const PartyGames = () => {
       </View>
 
       <ScrollView style={styles.middle}>
-        <View style={styles.gameContainer}>
+
+        <TouchableOpacity style={styles.gameContainer}>
           <Image
             style={styles.gameImage}
             source={{
@@ -19,8 +24,9 @@ const PartyGames = () => {
             }}
           />
           <Text style={styles.gameText}>Beer Pong</Text>
-        </View>
-        <View style={styles.gameContainer}>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.gameContainer}>
           <Image
             style={styles.gameImage}
             source={{
@@ -30,8 +36,9 @@ const PartyGames = () => {
             }}
           />
           <Text style={styles.gameText}>Charades</Text>
-        </View>
-        <View style={styles.gameContainer}>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.gameContainer}>
           <Image
             style={styles.gameImage}
             resizeMode="stretch"
@@ -42,8 +49,9 @@ const PartyGames = () => {
             }}
           />
           <Text style={styles.gameText}>Cards Against Humanity</Text>
-        </View>
-        <View style={styles.gameContainer}>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.gameContainer}>
           <Image
             style={styles.gameImage}
             source={{
@@ -53,8 +61,9 @@ const PartyGames = () => {
             }}
           />
           <Text style={styles.gameText}>Mahjong</Text>
-        </View>
-        <View style={styles.gameContainer}>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.gameContainer}>
           <Image
             style={styles.gameImage}
             source={{
@@ -64,8 +73,9 @@ const PartyGames = () => {
             }}
           />
           <Text style={styles.gameText}>Heads Up</Text>
-        </View>
-        <View style={styles.gameContainer}>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.gameContainer}>
           <Image
             style={styles.gameImage}
             source={{
@@ -75,40 +85,21 @@ const PartyGames = () => {
             }}
           />
           <Text style={styles.gameText}>Musical Chairs</Text>
-        </View>
-        <View style={styles.gameContainer}>
+        </TouchableOpacity>
+  
+        <TouchableOpacity style={styles.gameContainerLast}>
           <Image
-            style={styles.gameImage}
-            source={{
+            source={IMAGES.mafia}
+            style={{
               width: 92,
               height: 67,
-              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
+              margin: 8,
+              borderRadius: 10,
             }}
           />
-          <Text style={styles.gameText}>Musical Chairs</Text>
-        </View>
-        <View style={styles.gameContainer}>
-          <Image
-            style={styles.gameImage}
-            source={{
-              width: 92,
-              height: 67,
-              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
-            }}
-          />
-          <Text style={styles.gameText}>Musical Chairs</Text>
-        </View>
-        <View style={styles.gameContainerLast}>
-          <Image
-            style={styles.gameImage}
-            source={{
-              width: 92,
-              height: 67,
-              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
-            }}
-          />
-          <Text style={styles.gameText}>Musical Chairs</Text>
-        </View>
+          <Text style={styles.gameText}>Mafia</Text>
+        </TouchableOpacity>
+
       </ScrollView>
     </View>
   );
@@ -157,6 +148,7 @@ const styles = StyleSheet.create({
   gameText: {
     color: '#4E1164',
     marginLeft: 2,
+    fontSize: 16,
   },
 
   header: {
