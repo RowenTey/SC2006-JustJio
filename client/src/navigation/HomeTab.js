@@ -1,36 +1,14 @@
-/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Screens
 import Home from '../screens/Home';
-import PartySnacks from '../screens/PartySnacks';
 import PartyGames from '../screens/PartyGames';
 import TransactionHistory from '../screens/TransactionHistory';
+import GetSupermarkets from '../screens/GetSupermarkets';
 
 const Tab = createBottomTabNavigator();
-
-// Screen names
-function HomeScreen() {
-  return {
-    /* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <TouchableOpacity onPress={() => navigation.navigate('CreateRoom')} />
-    </View> */
-  };
-}
-
-function Transactions({ navigation }) {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    />
-  );
-}
 
 const HomeTab = () => {
   return (
@@ -62,7 +40,7 @@ const HomeTab = () => {
       initialRouteName={Home}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="PartyGames" component={PartyGames} />
-      <Tab.Screen name="PartySnacks" component={PartySnacks} />
+      <Tab.Screen name="PartySnacks" component={GetSupermarkets} />
       <Tab.Screen name="Transaction" component={TransactionHistory} />
     </Tab.Navigator>
   );
