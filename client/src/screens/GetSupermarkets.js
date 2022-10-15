@@ -102,7 +102,7 @@ const GetSupermarkets = () => {
           flex: 1,
           backgroundColor: '#FFFFFF',
           width: '80%',
-          margin: 60,
+          margin: 20,
           padding: 5,
         }}
         keyExtractor={item => item.place_id}

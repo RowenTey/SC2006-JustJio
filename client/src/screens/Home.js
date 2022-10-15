@@ -21,6 +21,7 @@ const ICONS = {
   group: require('../../assets/images/group.png'),
   mahjong: require('../../assets/images/mahjong.png'),
   vector: require('../../assets/images/Vector.png'),
+  logout: require('../../assets/images/logout.png'),
 };
 
 const Home = ({ navigation }) => {
@@ -29,7 +30,20 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.header}>Welcome, {user.username}!</Text>
+        <View>
+          <Text style={styles.header}>Welcome, {user ? user.name : "user"}!</Text>
+        </View>
+        <View>
+          <TouchableOpacity>
+            <Image
+              source={ICONS.logout}
+              style={{
+                width: 30,
+                height: 30,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.middle}>
@@ -104,10 +118,11 @@ const styles = StyleSheet.create({
 
   top: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'row',
     backgroundColor: '#E9D7FD',
     minHeight: '9%',
     maxHeight: '9%',
+    justifyContent: 'space-between',
   },
 
   header: {
