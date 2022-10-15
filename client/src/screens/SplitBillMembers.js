@@ -7,8 +7,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import BottomTab from '../navigation/BottomTab';
 
-const SplitBillMembers = ({ navigation }) => {
+const SplitBillMembers = () => {
   const MemberList = [
     'Hilary',
     'Marcus',
@@ -27,7 +28,7 @@ const SplitBillMembers = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigation(RoomsPage)}>
           <Image
             style={styles.back}
             source={require('../../assets/images/back.png')}
@@ -46,6 +47,9 @@ const SplitBillMembers = ({ navigation }) => {
             <Text style={styles.buttonText}>Confirm</Text>
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={styles.bottom}>
+        <Text style={styles.smallText}>Nav Bar</Text>
       </View>
     </View>
   );
@@ -75,10 +79,10 @@ export default SplitBillMembers;
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 25,
+    fontSize: 30,
     top: 8,
     right: 5,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OleoScript-Bold',
     alignItems: 'center',
     justifyContent: 'center',
     color: '#4E1164',
@@ -117,16 +121,28 @@ const styles = StyleSheet.create({
   },
 
   middle: {
-    top: 15,
+    top: 30,
     flex: 2,
     flexDirection: 'column',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#f0ecec',
     width: 500,
-    minHeight: '90%',
-    maxHeight: '90%',
+    minHeight: '83%',
+    maxHeight: '83%',
     position: 'relative',
+  },
+
+  bottom: {
+    flex: 3,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E9D7FD',
+    width: '100%',
+    minHeight: '7%',
+    maxHeight: '7%',
   },
 
   memberList: {
@@ -138,7 +154,6 @@ const styles = StyleSheet.create({
     minHeight: '80%',
     maxHeight: '80%',
     position: 'relative',
-    marginBottom: 15,
   },
 
   memberBox: {
@@ -209,15 +224,14 @@ const styles = StyleSheet.create({
     minHeight: '9%',
     maxHeight: '9%',
     position: 'relative',
-    top: 30,
+    top: 40,
     backgroundColor: '#4E1164',
     borderRadius: 10,
-    marginBottom: 5,
   },
 
   buttonText: {
     fontSize: 20,
-    fontFamily: 'Poppins',
+    fontFamily: 'OleoScript-Bold',
     alignItems: 'center',
     color: '#FFFFFF',
   },

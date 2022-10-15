@@ -7,11 +7,12 @@ import Signup from '../screens/Registration';
 import Splash from '../screens/Splash';
 import CreateRoom from '../screens/CreateRoom';
 import RoomsPage from '../screens/RoomsPage';
-import BottomTab from './BottomTab';
+import BottomTab from '../navigation/BottomTab';
 import JoinRoom from '../screens/JoinRoom';
 import GetSupermarkets from '../screens/GetSupermarkets';
-import SplitBillMembers from '../screens/SplitBillMembers';
 import SplitBill from '../screens/SplitBill';
+import SplitBillMembers from '../screens/SplitBillMembers';
+import PartyGames from '../screens/PartyGames';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -19,12 +20,12 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Splash"
+        initialRouteName="GetSupermarkets"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Signin" component={Signin} />
         <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="HomeTab" component={BottomTab} />
+        <Stack.Screen name="BottomTab" component={BottomTab} />
         <Stack.Screen name="CreateRoom" component={CreateRoom} />
         <Stack.Screen name="RoomsPage" component={RoomsPage} />
         <Stack.Screen name="JoinRoom" component={JoinRoom} />
