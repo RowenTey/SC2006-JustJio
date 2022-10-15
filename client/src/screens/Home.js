@@ -14,7 +14,7 @@ import RoomCard from '../components/RoomCard.js';
 import TransactionBar from '../components/TransactionDetails';
 import TransactionData from '../components/TransactionData';
 import Spinner from '../components/Spinner.js';
-import { UserContext } from '../context/user.js';
+import { initialUserState, UserContext } from '../context/user.js';
 import { AuthContext } from '../context/auth.js';
 import { RoomContext } from '../context/room.js';
 
@@ -35,9 +35,14 @@ const Home = ({ navigation }) => {
     fetchRooms();
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigation.navigate('Signin');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUser(initialUserState);
+      navigation.navigate('Signin');
+    } catch (error) {
+      console.log('Error logging out', error);
+    }
   };
 
   if (isLoading) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 const SplitBill = ({ navigation }) => {
   return (
@@ -12,10 +12,10 @@ const SplitBill = ({ navigation }) => {
         <Text style={styles.billTopText}>Bill for: 6D </Text>
         <View style={styles.topLineStyle} />
         <Text style={styles.billText}>Bill name: </Text>
-        <View style={styles.gap}></View>
+        <View style={styles.gap} />
         <Text style={styles.billText}>Drinks </Text>
         <View style={styles.lineStyle} />
-        <View style={styles.gap}></View>
+        <View style={styles.gap} />
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.qrcode}
@@ -23,7 +23,7 @@ const SplitBill = ({ navigation }) => {
           />
         </TouchableOpacity>
         <Text style={styles.billText}>Amount to split: </Text>
-        <View style={styles.gap}></View>
+        <View style={styles.gap} />
         <Text style={styles.billText}>$ 50.00 </Text>
         <View style={styles.lineStyle} />
       </View>
