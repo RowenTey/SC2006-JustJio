@@ -1,9 +1,29 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity,} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import BottomTab from '../navigation/BottomTab';
 
 const SplitBillMembers = () => {
-  const MemberList = ['Hilary', 'Marcus', 'Jane', 'Jeff', 'Letitia', 'Mark', 'Layla', 'Fred', 'Adrian', 'Ashley', 'Brendan', 'Donovan'];
+  const MemberList = [
+    'Hilary',
+    'Marcus',
+    'Jane',
+    'Jeff',
+    'Letitia',
+    'Mark',
+    'Layla',
+    'Fred',
+    'Adrian',
+    'Ashley',
+    'Brendan',
+    'Donovan',
+  ];
 
   return (
     <View style={styles.container}>
@@ -23,7 +43,7 @@ const SplitBillMembers = () => {
           <GuestList list={MemberList} />
         </View>
         <View style={styles.confirm}>
-          <TouchableOpacity onPress={() => navigation.navigate("SplitBill")}>
+          <TouchableOpacity onPress={() => navigation.navigate('SplitBill')}>
             <Text style={styles.buttonText}>Confirm</Text>
           </TouchableOpacity>
         </View>
@@ -35,26 +55,19 @@ const SplitBillMembers = () => {
   );
 };
 
-
-
-
 const GuestList = props => {
   return (
-  <View style={styles.memberBox}>
+    <View style={styles.memberBox}>
       <ScrollView>
-        {props.list.map((Member) => (
-        <Box
-          name={Member}
-        />
-      ))}
+        {props.list.map(Member => (
+          <Box name={Member} />
+        ))}
       </ScrollView>
     </View>
   );
 };
 
-
 const Box = props => {
-
   return (
     <View style={styles.indName}>
       <Text style={styles.name}>{props.name}</Text>
@@ -119,7 +132,6 @@ const styles = StyleSheet.create({
     minHeight: '83%',
     maxHeight: '83%',
     position: 'relative',
-
   },
 
   bottom: {
@@ -133,9 +145,7 @@ const styles = StyleSheet.create({
     maxHeight: '7%',
   },
 
-
-
-  memberList:{
+  memberList: {
     flexDirection: 'column',
     fontSize: 15,
     alignItems: 'center',
@@ -157,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
 
-  indName:{
+  indName: {
     justifyContent: 'flex-start',
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -206,7 +216,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 
-  confirm:{
+  confirm: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
@@ -214,12 +224,10 @@ const styles = StyleSheet.create({
     minHeight: '9%',
     maxHeight: '9%',
     position: 'relative',
-    top: 40,  
+    top: 40,
     backgroundColor: '#4E1164',
     borderRadius: 10,
   },
-
-
 
   buttonText: {
     fontSize: 20,
@@ -227,7 +235,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: '#FFFFFF',
   },
-
-
-
 });

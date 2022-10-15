@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Pressable,
-  Alert,
-} from 'react-native';
-import BottomTab from '../navigation/BottomTab';
+import { StyleSheet, Text, View } from 'react-native';
 
 const SplitBill = ({ navigation }) => {
   return (
@@ -18,23 +9,23 @@ const SplitBill = ({ navigation }) => {
       </View>
 
       <View style={styles.middle}>
-      <Text style={styles.billTopText}>Bill for:  6D </Text>
-        <View style = {styles.topLineStyle} /> 
+        <Text style={styles.billTopText}>Bill for: 6D </Text>
+        <View style={styles.topLineStyle} />
         <Text style={styles.billText}>Bill name: </Text>
-        <View style={styles.gap}></View>  
+        <View style={styles.gap}></View>
         <Text style={styles.billText}>Drinks </Text>
-        <View style = {styles.lineStyle} /> 
-        <View style={styles.gap}></View>  
+        <View style={styles.lineStyle} />
+        <View style={styles.gap}></View>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image
+          <Image
             style={styles.qrcode}
             source={require('../../assets/images/back.png')}
           />
         </TouchableOpacity>
         <Text style={styles.billText}>Amount to split: </Text>
-        <View style={styles.gap}></View>  
+        <View style={styles.gap}></View>
         <Text style={styles.billText}>$ 50.00 </Text>
-        <View style = {styles.lineStyle} />  
+        <View style={styles.lineStyle} />
       </View>
     </View>
   );
@@ -54,7 +45,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
-  
   middle: {
     //move the whitebox to center and top of screen
     flex: 1,
@@ -83,7 +73,6 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
-
   billText: {
     //text details of the text
     fontSize: 20,
@@ -103,20 +92,19 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
 
-  topLineStyle:{
+  topLineStyle: {
     borderWidth: 1,
-    borderColor:'#4E1164',
-    margin:10,
+    borderColor: '#4E1164',
+    margin: 10,
     width: 383,
   },
 
-  lineStyle:{
+  lineStyle: {
     borderWidth: 1,
-    borderColor:'#000000',
-    margin:13,
+    borderColor: '#000000',
+    margin: 13,
     width: 300,
     alignSelf: 'center',
-
   },
 
   qrcode: {
@@ -140,6 +128,4 @@ const styles = StyleSheet.create({
     height: 49,
     width: 16,
   },
-
-
 });

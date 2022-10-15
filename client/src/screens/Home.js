@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,11 +10,13 @@ import {
   FlatList,
 } from 'react-native';
 
-import RoomData from '../components/RoomData.js';
-import TempRooms from '../components/TempRooms';
+import RoomCard from '../components/RoomCard.js';
 import TransactionBar from '../components/TransactionDetails';
 import TransactionData from '../components/TransactionData';
+import Spinner from '../components/Spinner.js';
 import { UserContext } from '../context/user.js';
+import { AuthContext } from '../context/auth.js';
+import { RoomContext } from '../context/room.js';
 
 const ICONS = {
   add: require('../../assets/images/add.png'),
@@ -26,24 +29,26 @@ const ICONS = {
 
 const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
+  const { logout } = useContext(AuthContext);
+  const { rooms, isLoading, fetchRooms } = useContext(RoomContext);
+
+  useEffect(() => {
+    fetchRooms();
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigation.navigate('Signin');
+  };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <View>
-          <Text style={styles.header}>Welcome, {user ? user.name : "user"}!</Text>
-        </View>
-        <View>
-          <TouchableOpacity>
-            <Image
-              source={ICONS.logout}
-              style={{
-                width: 30,
-                height: 30,
-              }}
-            />
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.header}>Welcome, {user.username}!</Text>
       </View>
 
       <View style={styles.middle}>
@@ -92,9 +97,9 @@ const Home = ({ navigation }) => {
         <Text style={styles.roomsTitle}>Party Rooms</Text>
         <View style={{ flex: 1 }}>
           <FlatList
-            data={TempRooms}
+            data={rooms}
             renderItem={({ item }) => (
-              <RoomData mainRoom={item} navigation={navigation} />
+              <RoomCard mainRoom={item} navigation={navigation} />
             )}
             numColumns={2}
             key={'_'}
@@ -118,20 +123,31 @@ const styles = StyleSheet.create({
 
   top: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: '#E9D7FD',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 20,
     minHeight: '9%',
     maxHeight: '9%',
     justifyContent: 'space-between',
   },
 
   header: {
-    fontSize: 25,
-    top: 19,
+    fontSize: 18,
+    top: 5,
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+
+  logout: {
+    fontSize: 25,
+    top: 3,
+    position: 'relative',
+    justifySelf: 'flex-end',
+    fontFamily: 'Poppins-Bold',
+    color: '#4E1164',
   },
 
   middle: {
@@ -186,7 +202,7 @@ const styles = StyleSheet.create({
   },
 
   rooms: {
-    marginTop: -10,
+    marginTop: -15,
     width: '100%',
     display: 'flex',
     flexDirection: 'row',

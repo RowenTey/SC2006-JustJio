@@ -6,31 +6,31 @@ const ICONS = {
 export default [
   {
     id: '1',
-    Name: 'Hall 8 ',
+    name: 'Hall 8 ',
     imageURL: require('../../assets/images/mahjong.png'),
   },
 
   {
     id: '2',
-    Name: 'Dance club',
+    name: 'Dance club',
     imageURL: require('../../assets/images/mahjong.png'),
   },
 
   {
     id: '3',
-    Name: 'Dinner',
+    name: 'Dinner',
     imageURL: require('../../assets/images/group.png'),
   },
 
   {
     id: '4',
-    Name: 'Orientation',
+    name: 'Orientation',
     imageURL: require('../../assets/images/group.png'),
   },
 
   {
     id: '5',
-    Name: 'Drinking',
+    name: 'Drinking',
     imageURL: require('../../assets/images/group.png'),
   },
 ];
