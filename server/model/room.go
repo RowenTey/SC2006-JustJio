@@ -15,7 +15,6 @@ type Room struct {
 	URL            string    `json:"url"`
 	CreatedAt      time.Time `gorm:"autoCreateTime" json:"createdAt"`
 	UpdatedAt      time.Time `gorm:"autoUpdateTime" json:"-"`
-	// Invitees       datatypes.JSON `json:"invitees"`
 }
 
 // juntion table to model user & room relationships

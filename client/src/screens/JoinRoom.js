@@ -1,23 +1,47 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Image,
+  FlatList,
   Pressable,
   Alert,
 } from 'react-native';
+import Spinner from '../components/Spinner';
+import { AxiosContext } from '../context/axios';
+
+const initialInvitationsState = {
+  total: 0,
+  invites: [],
+};
 
 const JoinRoom = ({ navigation }) => {
-  const Title = ['Alumni Club', '38 members'];
+  const { authAxios } = useContext(AxiosContext);
+  const [loading, setLoading] = useState(false);
+  const [invitations, setInvitations] = useState(initialInvitationsState);
 
-  const Details = [
-    'Name: Reunion Party!',
-    'Date: 13 June 2022',
-    'Time: 7.30pm',
-    'Venue: The Joyden Hall, Bugis',
-  ];
+  const fetchInvitations = async () => {
+    setLoading(true);
+    const { data: response } = await authAxios.get('/rooms/invites');
+    console.log('Invites', response.data);
+    setInvitations({
+      total: response.data.length,
+      invites: response.data,
+    });
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchInvitations();
+    console.log('Invitations obj', JSON.stringify(invitations));
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <View style={styles.container}>
@@ -32,21 +56,25 @@ const JoinRoom = ({ navigation }) => {
       </View>
 
       <View style={styles.middle}>
-        <RoomTitle list={Title} />
+        <FlatList
+          data={invitations.invites}
+          renderItem={({ item }) => <InvitationCard invite={item} />}
+          key={'_'}
+          keyExtractor={item => item.ID}
+        />
       </View>
     </View>
   );
 };
 
-const RoomTitle = props => {
+const InvitationCard = ({ invite }) => {
   return (
-    <View style={styles.WhiteBox}>
-      <Text style={styles.roomheader}>Alumni Club</Text>
-      <Text style={styles.numberofpeople}>38 Members</Text>
-      <Text style={styles.roomtext}>Name: Reunion Party!</Text>
-      <Text style={styles.roomtext}>Date: 13 June 2022</Text>
-      <Text style={styles.roomtext}>Time: 7.30pm</Text>
-      <Text style={styles.roomtext}>Venue: The Joyden Hall, Bugis</Text>
+    <View style={styles.whiteBox}>
+      <Text style={styles.roomHeader}>{invite.name}</Text>
+      <Text style={styles.numberOfPeople}>{invite.attendeesCount} Members</Text>
+      <Text style={styles.roomtext}>Date: {invite.date}</Text>
+      <Text style={styles.roomtext}>Time: {invite.time}</Text>
+      <Text style={styles.roomtext}>Venue: {invite.venue}</Text>
 
       <View style={styles.invitation}>
         <Pressable
@@ -110,7 +138,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignItems: 'center',
     textAlign: 'center',
-    bottom: -20,
   },
 
   redbox: {
@@ -125,7 +152,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignItems: 'center',
     textAlign: 'center',
-    bottom: -20,
   },
 
   confirmationboxtext: {
@@ -142,14 +168,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  WhiteBox: {
+  whiteBox: {
     flex: 1,
     justifyContent: 'space-evenly',
     backgroundColor: '#FFFFFF',
     width: 350,
     padding: 20,
-    minHeight: '40%',
-    maxHeight: '40%',
+    height: 200,
     borderRadius: 20,
   },
 
@@ -160,7 +185,7 @@ const styles = StyleSheet.create({
     right: 50,
   },
 
-  roomheader: {
+  roomHeader: {
     //top of the content
     width: '100%',
     justifyContent: 'center',
@@ -172,7 +197,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  numberofpeople: {
+  numberOfPeople: {
     //number of people
     width: '100%',
     justifyContent: 'center',
@@ -182,7 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'black',
     textAlign: 'center',
-    bottom: 20,
+    bottom: 5,
   },
 
   roomtext: {
@@ -210,6 +235,7 @@ const styles = StyleSheet.create({
   invitation: {
     //just for the accept and decline portion
     flexDirection: 'row',
+    bottom: -10,
   },
 
   gap: {
