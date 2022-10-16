@@ -164,7 +164,7 @@ func CreateRoom(c *fiber.Ctx) error {
 	}
 
 	fmt.Println("Room " + roomInput.Room.Name + " created successfully.")
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Created room", "data": roomInput})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Created room", "data": roomInput.Room})
 }
 
 func CloseRoom(c *fiber.Ctx) error {

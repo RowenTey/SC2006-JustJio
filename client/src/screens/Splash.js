@@ -41,7 +41,7 @@ const Splash = ({ navigation }) => {
 
   useEffect(() => {
     loadJWT();
-  }, [loadJWT]);
+  }, []);
 
   if (loading) {
     return <Spinner />;

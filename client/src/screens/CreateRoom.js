@@ -1,9 +1,17 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
 import { AxiosContext } from '../context/axios';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
+import { RoomContext } from '../context/room';
 //for images being imported in no need to specify dimensions
 //for images online need to specify dimensions such as width: height: uri:(image url)
 
@@ -27,8 +35,7 @@ const CreateRoom = ({ navigation }) => {
     handleSubmit,
     formState: {},
   } = useForm({ initialState });
-
-  const { authAxios } = useContext(AxiosContext);
+  const { createRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
 
   const onCreateRoom = async formData => {
@@ -46,24 +53,9 @@ const CreateRoom = ({ navigation }) => {
       invitees,
     };
 
-    try {
-      console.log('Room data', roomData);
-      const response = await authAxios.post('/rooms', roomData);
-      console.log('Room created successfully', response.data);
-      setLoading(false);
-      onCreateRoomSuccess();
-    } catch (error) {
-      setLoading(false);
-      console.log('Failed to create room', error);
-      if (error.response) {
-        console.log('Error response', error.response.data);
-      } else if (error.request) {
-        console.log('Error request', error.request);
-      }
-    }
-  };
-
-  const onCreateRoomSuccess = () => {
+    createRoom(roomData);
+    setLoading(false);
+    Alert.alert('Room created successfully');
     navigation.navigate('HomeTab');
   };
 

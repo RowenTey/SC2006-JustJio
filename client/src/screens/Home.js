@@ -37,13 +37,9 @@ const Home = ({ navigation }) => {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      setUser(initialUserState);
-      navigation.navigate('Signin');
-    } catch (error) {
-      console.log('Error logging out', error);
-    }
+    await logout();
+    setUser(initialUserState);
+    navigation.navigate('Signin');
   };
 
   if (isLoading) {
@@ -119,7 +115,7 @@ const Home = ({ navigation }) => {
             )}
             numColumns={2}
             key={'_'}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.ID}
           />
         </View>
       </View>
