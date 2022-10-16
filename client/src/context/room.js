@@ -49,7 +49,6 @@ const RoomProvider = ({ children }) => {
       dispatch({
         type: START_LOADING,
       });
-      console.log('Room data', roomData);
       const { data: response } = await authAxios.post('/rooms', roomData);
       dispatch({
         type: CREATE_ROOM,

@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useState } from 'react';
 import * as Keychain from 'react-native-keychain';
+import { LOGOUT } from '../constants/actionTypes';
 import RoomReducer from '../reducers/roomReducer';
 
 const AuthContext = createContext(null);
@@ -15,7 +16,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await Keychain.resetGenericPassword();
-      dispatch({ type: 'LOGOUT' });
+      dispatch({ type: LOGOUT });
       setAuthState({
         accessToken: null,
         authenticated: false,

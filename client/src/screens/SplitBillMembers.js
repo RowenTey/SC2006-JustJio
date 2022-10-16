@@ -4,7 +4,7 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
+  FlatList,
   TouchableOpacity,
 } from 'react-native';
 
@@ -62,13 +62,11 @@ const GuestList = props => {
   const renderItem = ({ item }) => <Box name={item.name} />;
   return (
     <View style={styles.memberBox}>
-      <ScrollView>
-        <FlatList
-          data={props.list}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
-      </ScrollView>
+      <FlatList
+        data={props.list}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };

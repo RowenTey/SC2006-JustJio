@@ -7,7 +7,6 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import { AxiosContext } from '../context/axios';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
@@ -15,16 +14,12 @@ import { RoomContext } from '../context/room';
 //for images being imported in no need to specify dimensions
 //for images online need to specify dimensions such as width: height: uri:(image url)
 
-var roomData = {
+const initialCreateRoomState = {
   eventName: '',
   date: '',
   time: '',
   venue: '',
   invitees: '',
-};
-
-const initialState = {
-  ...roomData,
 };
 
 const CreateRoom = ({ navigation }) => {
@@ -33,8 +28,9 @@ const CreateRoom = ({ navigation }) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: {},
-  } = useForm({ initialState });
+  } = useForm({ initialCreateRoomState });
   const { createRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +39,7 @@ const CreateRoom = ({ navigation }) => {
     let { eventName, date, time, venue, invitees } = formData;
     invitees = invitees.split(',');
 
-    roomData = {
+    let roomData = {
       room: {
         name: eventName,
         date,
@@ -53,8 +49,9 @@ const CreateRoom = ({ navigation }) => {
       invitees,
     };
 
-    createRoom(roomData);
+    await createRoom(roomData);
     setLoading(false);
+    reset(initialCreateRoomState);
     Alert.alert('Room created successfully');
     navigation.navigate('HomeTab');
   };

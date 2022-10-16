@@ -26,7 +26,6 @@ const JoinRoom = ({ navigation }) => {
   const fetchInvitations = async () => {
     setLoading(true);
     const { data: response } = await authAxios.get('/rooms/invites');
-    console.log('Invites', response.data);
     setInvitations({
       total: response.data.length,
       invites: response.data,
@@ -34,9 +33,16 @@ const JoinRoom = ({ navigation }) => {
     setLoading(false);
   };
 
+  const onAccept = async roomId => {
+    setLoading(true);
+    const { data: response } = await authAxios.patch(`/rooms/join/${roomId}`);
+
+    setLoading(false);
+    navigation.navigate('HomeTab');
+  };
+
   useEffect(() => {
     fetchInvitations();
-    console.log('Invitations obj', JSON.stringify(invitations));
   }, []);
 
   if (loading) {
@@ -176,6 +182,7 @@ const styles = StyleSheet.create({
     padding: 20,
     height: 200,
     borderRadius: 20,
+    marginVertical: 10,
   },
 
   back: {
