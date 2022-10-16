@@ -64,17 +64,16 @@ const RoomsPage = ({ navigation, route }) => {
           <GuestList list={MemberList} />
         </View>
         <View style={styles.splitBillCloseRoom}>
-          <View style={styles.splitBill}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('SplitBillMembers')}>
-              <Text style={styles.buttonText}>Split Bill</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.closeRoom}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-              <Text style={styles.buttonText}>Close Room</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.splitBill}
+            onPress={() => navigation.navigate('SplitBillMembers')}>
+            <Text style={styles.buttonText}>Split Bill</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.closeRoom}
+            onPress={() => navigation.navigate('HomeTab')}>
+            <Text style={styles.buttonText}>Close Room</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.urlQrCode}>
           <View style={styles.url}>
@@ -141,16 +140,13 @@ const EventDetailBox = props => {
 };
 
 const GuestList = props => {
-  const renderItem = ({ item }) => <Box name={item.name} />;
   return (
     <View style={styles.memberBox}>
-      <ScrollView>
-        <FlatList
-          data={props.list}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
-      </ScrollView>
+      <FlatList
+        data={props.list}
+        renderItem={({ item }) => <Box name={item.name} />}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };

@@ -1,99 +1,127 @@
-import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import React, { useState } from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const GetSupermarkets = () => {
+  const [places, setPlaces] = useState({
+    placesArray: [],
+  });
 
-  const [ places, setPlaces ] = React.useState({
-		placesArray: [],
-	})
+  const [location, setLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+    locationName: 'none',
+  });
 
-  const [location, setLocation] = React.useState({
-      latitude: 0,
-      longitude: 0,
-      locationName: "none",
-  })
+  const fetchNearestPlacesFromGoogle = async (lat, long) => {
+    let latitude = lat;
+    let longitude = long;
+    let radMetter = 2 * 1000; // Search withing 2 KM radius
+    const order = 'distance';
+    const keyword = 'supermarket';
+    const types = ['supermarket'];
+    const key = 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4';
+    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
+    const getSupermarketsUrl =
+      url +
+      'location=' +
+      latitude +
+      ',' +
+      longitude +
+      '&keyword=' +
+      keyword +
+      '&rankby=' +
+      order +
+      '&key=' +
+      key;
 
-  fetchNearestPlacesFromGoogle = () => {
-      let latitude = location.latitude; 
-      let longitude = location.longitude;
-      let radMetter = 2 * 1000; // Search withing 2 KM radius
-      const order = 'distance';
-      const keyword = 'supermarket';
-      const types = ['supermarket']
-      const key = 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4';
-      const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
-      const getSupermarketsUrl = url + 'location=' + latitude + ',' + longitude +
-      '&keyword=' + keyword + '&rankby=' + order + '&key=' + key;
-      // const getSupermarketsUrl = url + 'location=' + latitude + ',' + longitude + '&radius=' + 
-      // radMetter + '&keyword=' + keyword + '&key=' + key + '&rankby=' + order;
-      console.log(getSupermarketsUrl);
-      fetch(getSupermarketsUrl)
-        .then(res => {
-          return res.json()
-        })
-        .then(result => setPlaces({
-          placesArray: result
-        }))
-        .catch(error => {
-          console.log(error);
-        });
-    }
+    console.log(getSupermarketsUrl);
+    await fetch(getSupermarketsUrl)
+      .then(res => {
+        return res.json();
+      })
+      .then(result =>
+        setPlaces({
+          placesArray: result,
+        }),
+      )
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onSearch = async details => {
+    const lat = details.geometry.location.lat;
+    const long = details.geometry.location.lng;
+    console.log('G_lat:' + lat);
+    console.log('G_long:' + long);
+    setLocation({
+      latitude: lat,
+      longitude: long,
+      locationName: details.formatted_address,
+    });
+    await fetchNearestPlacesFromGoogle(lat, long);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.bigText}>Party Snacks</Text>
-        <Text style={{ textAlign: 'center', flexWrap: 'wrap', width: 350, color: '#4E1164', fontWeight: '400', }}>
-            Current location: {location.locationName}
+        <Text
+          style={{
+            textAlign: 'center',
+            flexWrap: 'wrap',
+            width: 350,
+            color: '#4E1164',
+            fontWeight: '400',
+          }}>
+          Current location: {location.locationName}
         </Text>
       </View>
       <GooglePlacesAutocomplete
-        placeholder='Search'
-        fetchDetails = {true}
-        onPress={(data, details = null) => {
-          // console.log("Glat:" + details.geometry.location.lat);
-          // console.log("Glong:"+details.geometry.location.lng);
-          setLocation({
-            latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng,
-            locationName: details.formatted_address,
-          })
-          fetchNearestPlacesFromGoogle()
-        }}
+        placeholder="Search"
+        fetchDetails={true}
+        onPress={(data, details) => onSearch(details)}
         query={{
-            key: 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4',
-            language: 'en',
-            components: 'country:sg',
+          key: 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4',
+          language: 'en',
+          components: 'country:sg',
         }}
         styles={{
-          container: { flex: 0, width: "90%", zIndex: 1, marginTop: 10},
-          listView: { backgroundColor: "white", }
+          container: { flex: 0, width: '90%', zIndex: 1, marginTop: 10 },
+          listView: { backgroundColor: 'white' },
         }}
       />
 
-      <FlatList 
+      <FlatList
         data={places.placesArray.results}
-        style={{ flex: 1, width: '100%',}} 
-        contentContainerStyle = {{alignItems: 'center'}}
-        keyExtractor={(item) => item.place_id}
-        renderItem={({item}) => (
+        style={{ flex: 1, width: '100%' }}
+        contentContainerStyle={{ alignItems: 'center' }}
+        keyExtractor={item => item.place_id}
+        renderItem={({ item }) => (
           <TouchableOpacity style={styles.box}>
             <Image
               style={styles.images}
               source={{
-              width: 90,
-              height: 65,
-              uri: 'https://mustsharenews.com/wp-content/uploads/2022/03/sheng-siong.png',
+                width: 90,
+                height: 65,
+                uri: 'https://mustsharenews.com/wp-content/uploads/2022/03/sheng-siong.png',
               }}
             />
             <View>
-                <Text style={styles.details}>{item.name}</Text>
+              <Text style={styles.details}>{item.name}</Text>
             </View>
           </TouchableOpacity>
-        )} 
+        )}
       />
-
     </View>
   );
 };
@@ -118,7 +146,7 @@ const styles = StyleSheet.create({
     minHeight: '10%',
     maxHeight: '10%',
     width: '100%',
-    },
+  },
 
   box: {
     backgroundColor: '#FFFFFF',
@@ -141,7 +169,7 @@ const styles = StyleSheet.create({
     color: '#4E1164',
     fontWeight: '500',
     flexWrap: 'wrap',
-    width: 200
+    width: 200,
   },
 
   bigText: {
@@ -165,5 +193,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-
 });
