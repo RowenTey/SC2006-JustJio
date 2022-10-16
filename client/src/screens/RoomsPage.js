@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   left: {
     justifyContent: 'space-around',
     flexDirection: 'column',
-    width: '50%',
+    maxwidth: '50%',
     minHeight: '100%',
     maxHeight: '100%',
     position: 'relative',
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
   right: {
     justifyContent: 'space-evenly',
     flexDirection: 'row',
-    width: '50%',
+    maxwidth: '50%',
     minHeight: '100%',
     maxHeight: '100%',
     alignItems: 'center',
