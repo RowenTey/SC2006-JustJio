@@ -10,18 +10,25 @@ import {
 
 const SplitBillMembers = ({ navigation }) => {
   const MemberList = [
-    'Hilary',
-    'Marcus',
-    'Jane',
-    'Jeff',
-    'Letitia',
-    'Mark',
-    'Layla',
-    'Fred',
-    'Adrian',
-    'Ashley',
-    'Brendan',
-    'Donovan',
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      name: 'Hilary',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      name: 'Marcus',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      name: 'Jane',
+    },
+
+    //'Jeff',
+    //'Letitia',
+    //'Mark',
+    //'Layla',
+    //'Fred',
+    //'Adrian',
   ];
 
   return (
@@ -52,12 +59,15 @@ const SplitBillMembers = ({ navigation }) => {
 };
 
 const GuestList = props => {
+  const renderItem = ({ item }) => <Box name={item.name} />;
   return (
     <View style={styles.memberBox}>
       <ScrollView>
-        {props.list.map(Member => (
-          <Box name={Member} />
-        ))}
+        <FlatList
+          data={props.list}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+        />
       </ScrollView>
     </View>
   );

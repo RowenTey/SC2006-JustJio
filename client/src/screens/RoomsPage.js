@@ -114,17 +114,18 @@ const EventDetailBox = props => {
     <View style={styles.whiteBox}>
       <View style={styles.left}>
         <View style={styles.date}>
-          <Text style={styles.dateText}>{props.day}</Text>
-          <Text style={styles.dateText}>{props.date}</Text>
+          <Text style={styles.dateTextDay}>{props.day}</Text>
+          <Text style={styles.dateTextDate}>26 Sept</Text>
         </View>
         <View style={styles.eventBox}>
-          <Text style={styles.eventText}>Event: {props.eventName}</Text>
+          <Text style={styles.eventTextEvent}>Event: </Text>
+          <Text style={styles.eventText}>{props.eventName}</Text>
         </View>
       </View>
       <View style={styles.right}>
         <View style={styles.purple}>
           <View style={styles.purpleBox}>
-            <Text style={styles.purpleBoxText}>Time: {props.time}</Text>
+            <Text style={styles.purpleBoxTextFirstBox}>Time: {props.time}</Text>
           </View>
           <View style={styles.purpleBox}>
             <Text style={styles.purpleBoxText}>Venue: {props.venue}</Text>
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 30,
     top: 8,
-    fontFamily: 'OleoScript-Bold',
+    fontFamily: 'Poppins-Bold',
     alignItems: 'center',
     justifyContent: 'center',
     color: '#4E1164',
@@ -175,8 +176,8 @@ const styles = StyleSheet.create({
     // back arrow
     position: 'relative',
     justifyContent: 'flex-start',
-    top: 8,
-    right: 150,
+    top: 6,
+    right: 90,
   },
 
   head: {
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
   },
 
   middle: {
-    top: 30,
+    top: 10,
     flex: 2,
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -222,16 +223,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
-    minHeight: '28%',
-    maxHeight: '28%',
+    minHeight: '32%',
+    maxHeight: '32%',
     paddingHorizontal: 15,
+    marginTop: 10,
   },
 
   whiteBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
-    width: '75%',
+    width: '80%',
     minHeight: '90%',
     maxHeight: '90%',
     borderRadius: 20,
@@ -239,8 +241,8 @@ const styles = StyleSheet.create({
   },
 
   left: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flexDirection: 'column',
     width: '50%',
     minHeight: '100%',
     maxHeight: '100%',
@@ -249,30 +251,51 @@ const styles = StyleSheet.create({
 
   date: {
     flexDirection: 'column',
-    fontSize: 20,
-    fontFamily: 'OleoScript-Bold',
-    left: 20,
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    left: 11,
+    marginTop: 2,
   },
 
-  dateText: {
-    fontFamily: 'OleoScript-Bold',
-    fontSize: 15,
+  dateTextDay: {
+    fontFamily: 'Poppins-Medium',
+    color: '#000000',
+    fontSize: 13,
     position: 'relative',
+  },
+
+  dateTextDate: {
+    fontFamily: 'Poppins-Medium',
+    color: '#000000',
+    fontSize: 20,
+    position: 'relative',
+    top: -5,
   },
 
   eventBox: {
     flexDirection: 'column',
-    top: 40,
-    left: -40,
     position: 'relative',
+    left: 19,
+    top: -15,
+  },
+
+  eventTextEvent: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    alignItems: 'center',
+    color: '#000000',
+    position: 'relative',
+    margin: -7,
   },
 
   eventText: {
     fontSize: 25,
-    fontFamily: 'OleoScript-Bold',
+    fontFamily: 'Poppins-Bold',
     alignItems: 'center',
     color: '#000000',
     position: 'relative',
+    margin: -7,
+    top: 5,
   },
 
   right: {
@@ -301,9 +324,16 @@ const styles = StyleSheet.create({
     padding: 5,
   },
 
+  purpleBoxTextFirstBox: {
+    fontSize: 12,
+    color: '#FFFFFF',
+    fontFamily: 'Poppins-Regular',
+  },
+
   purpleBoxText: {
     fontSize: 15,
     color: '#FFFFFF',
+    fontFamily: 'Poppins-Regular',
   },
 
   purpleBoxLast: {
@@ -316,23 +346,25 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
+
   memberList: {
     flexDirection: 'column',
     fontSize: 15,
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    minHeight: '46%',
-    maxHeight: '46%',
+    minHeight: '39%',
+    maxHeight: '39%',
     position: 'relative',
     paddingHorizontal: 15,
+    padding: 10,
   },
 
   memberBox: {
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#E9D7FD',
-    width: '75%',
+    width: '80%',
     minHeight: '90%',
     maxHeight: '90%',
     borderRadius: 20,
@@ -354,6 +386,7 @@ const styles = StyleSheet.create({
   count: {
     fontSize: 20,
     color: '#FFFFFF',
+    fontFamily: 'Poppins-Bold',
   },
 
   name: {
@@ -368,17 +401,19 @@ const styles = StyleSheet.create({
     color: '#4E1164',
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    fontFamily: 'Poppins-Medium',
     top: -5,
-    left: -120,
+    left: -130,
   },
 
   list: {
-    fontSize: 13,
+    fontSize: 15,
     color: '#4E1164',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    left: -140,
+    left: -150,
     top: -5,
+    fontFamily: 'Poppins-Medium',
   },
 
   smallText: {
@@ -397,6 +432,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: 5,
     paddingHorizontal: 15,
+    marginTop: 10,
   },
 
   splitBill: {
@@ -426,9 +462,10 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    top: 7,
+    top: 5,
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
+    alignItems: 'center',
   },
 
   urlQrCode: {
@@ -439,11 +476,12 @@ const styles = StyleSheet.create({
     minHeight: '13%',
     maxHeight: '13%',
     position: 'relative',
+    marginTop: 3,
   },
 
   urlText: {
     fontSize: 15,
-    fontFamily: 'OleoScript-Bold',
+    fontFamily: 'Poppins-Bold',
     color: '#4E1164',
   },
 });
