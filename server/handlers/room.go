@@ -69,7 +69,6 @@ func getAttendees(roomID string) ([]string, error) {
 	return users, nil
 }
 
-// TODO: fix the logic for host
 func GetRooms(c *fiber.Ctx) error {
 	db := database.DB
 

@@ -36,7 +36,13 @@ const CustomInput = ({
             secureTextEntry={secureTextEntry}
           />
           {error && (
-            <Text style={{ color: 'red', alignSelf: 'auto' }}>
+            <Text
+              style={{
+                color: 'red',
+                alignSelf: 'auto',
+                textAlign: 'center',
+                paddingHorizontal: 15,
+              }}>
               {error.message || 'error'}
             </Text>
           )}

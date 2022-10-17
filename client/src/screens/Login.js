@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
@@ -6,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import { AuthContext } from '../context/auth';
 import { AxiosContext } from '../context/axios';
@@ -59,6 +61,13 @@ const Signin = ({ navigation }) => {
       console.log('Login failed', error);
       if (error.response) {
         console.log('Error response', error.response.data);
+        Alert.alert('Login failed', error.response.data.message, [
+          {
+            text: 'Retry',
+            onPress: () => reset(initialLoginState),
+            style: 'cancel',
+          },
+        ]);
       } else if (error.request) {
         console.log('Error request', error.request);
       }

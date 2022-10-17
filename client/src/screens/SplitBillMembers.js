@@ -54,6 +54,13 @@ const GuestList = props => {
 const Box = props => {
   return (
     <View style={styles.indName}>
+      <Image
+        source={{
+          width: 35,
+          height: 35,
+          uri: 'https://i.pinimg.com/736x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg',
+        }}
+      />
       <Text style={styles.name}>{props.name}</Text>
     </View>
   );
@@ -142,8 +149,10 @@ const styles = StyleSheet.create({
 
   indName: {
     justifyContent: 'flex-start',
+    alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
+    paddingStart: 15,
     width: 340,
     height: 50,
     borderRadius: 10,
@@ -159,8 +168,8 @@ const styles = StyleSheet.create({
 
   name: {
     fontSize: 18,
-    top: 10,
-    left: 100,
+    fontFamily: 'Poppins-Medium',
+    left: 20,
     color: '#000000',
   },
 

@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     // back arrow
     position: 'absolute',
     top: -1,
-    right: 120,
+    right: 100,
   },
 
   billText: {
@@ -193,7 +193,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#000000',
     margin: 5,
-    width: 300,
+    marginLeft: 12,
+    width: 298,
     alignSelf: 'center',
   },
 
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
   confirm: {
     flexDirection: 'row',
     alignSelf: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     width: '35%',
     minHeight: '9%',
     maxHeight: '9%',
@@ -230,12 +231,12 @@ const styles = StyleSheet.create({
     top: 10,
     backgroundColor: '#4E1164',
     borderRadius: 10,
-    right: -10,
+    left: 90,
   },
 
   buttonText: {
     fontSize: 20,
-    fontFamily: 'OleoScript-Bold',
+    fontFamily: 'Poppins-SemiBold',
     color: '#FFFFFF',
     margin: 15,
   },

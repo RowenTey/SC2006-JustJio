@@ -104,21 +104,25 @@ const InvitationCard = ({ invite, handleClick }) => {
     <View style={styles.whiteBox}>
       <Text style={styles.roomHeader}>{invite.name}</Text>
       <Text style={styles.numberOfPeople}>{invite.attendeesCount} Members</Text>
-      <Text style={styles.roomtext}>Date: {invite.date}</Text>
-      <Text style={styles.roomtext}>Time: {invite.time}</Text>
-      <Text style={styles.roomtext}>Venue: {invite.venue}</Text>
+      <Text style={styles.roomText}>Date: {invite.date}</Text>
+      <Text style={styles.roomText}>Time: {invite.time}</Text>
+      <Text style={styles.roomText}>Venue: {invite.venue}</Text>
 
       <View style={styles.invitation}>
         <TouchableOpacity
-          style={styles.greenbox}
+          style={styles.greenBox}
           onPress={() => handleClick(invite.ID, 'join')}>
-          <Text style={styles.confirmationboxtext}>Accept</Text>
+          <Text style={[styles.confirmationBoxText, { color: '#71C291' }]}>
+            Accept
+          </Text>
         </TouchableOpacity>
         <View style={styles.gap} />
         <TouchableOpacity
-          style={styles.redbox}
+          style={styles.redBox}
           onPress={() => handleClick(invite.ID, 'decline')}>
-          <Text style={styles.confirmationboxtext}>Decline</Text>
+          <Text style={[styles.confirmationBoxText, { color: '#D2644B' }]}>
+            Decline
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -158,12 +162,14 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
-  greenbox: {
+  greenBox: {
     //accept box
     borderRadius: 25,
+    borderColor: '#71C291',
+    borderWidth: 5,
     width: 135,
     height: 35,
-    backgroundColor: '#71C291',
+    backgroundColor: '#FFFFFF',
     marginVertical: 10,
     fontFamily: 'Poppins',
     fontWeight: 'bold',
@@ -172,12 +178,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  redbox: {
+  redBox: {
     //decline box
     borderRadius: 25,
+    borderColor: '#D2644B',
+    borderWidth: 5,
     width: 135,
     height: 35,
-    backgroundColor: '#D2644B',
+    backgroundColor: '#FFFFFF',
     marginVertical: 10,
     fontFamily: 'Poppins',
     fontWeight: 'bold',
@@ -186,16 +194,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  confirmationboxtext: {
+  confirmationBoxText: {
     //top of the content
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: 'Poppins-Bold',
     flexDirection: 'row',
-    color: '#4E1164',
-    fontSize: 14,
-    padding: 5,
+    fontSize: 15,
     marginHorizontal: 15,
     textAlign: 'center',
   },
@@ -243,7 +249,7 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 
-  roomtext: {
+  roomText: {
     //top of the content
     width: '100%',
     justifyContent: 'center',
