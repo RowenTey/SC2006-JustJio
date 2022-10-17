@@ -9,7 +9,6 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-
 import RoomCard from '../components/RoomCard.js';
 import TransactionBar from '../components/TransactionDetails';
 import TransactionData from '../components/TransactionData';
