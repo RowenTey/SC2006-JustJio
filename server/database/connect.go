@@ -65,17 +65,22 @@ func seedDB(db *gorm.DB) error {
 	}
 
 	rooms := []model.Room{
-		{Name: "ks birthday", Time: "5:00pm-10:00pm", Venue: "ntu hall 9", Host: "ks123"},
-		{Name: "harish birthday", Time: "6:00pm-10:00pm", Venue: "clementi mall", Host: "harish123"},
-		{Name: "amabel birthday", Time: "9:00am-11:00am", Venue: "marina bay sand", Host: "amabel123"},
+		{Name: "ks birthday", Date: "04/09/2022", Time: "5:00pm-10:00pm", Venue: "ntu hall 9", Host: "ks123"},
+		{Name: "harish birthday", Date: "04/10/2022", Time: "6:00pm-10:00pm", Venue: "clementi mall", Host: "harish123"},
+		{Name: "amabel birthday", Date: "04/11/2022", Time: "9:00am-11:00am", Venue: "marina bay sand", Host: "amabel123"},
 	}
 	for _, r := range rooms {
 		db.Create(&r)
+		fmt.Println(" room: ", r)
 	}
 
 	userDB := db.Table("users")
 	var allUsers []model.User
 	userDB.Not("Username = ?", "ks123").Find(&allUsers)
+
+	for _, u := range allUsers {
+		fmt.Println(" user: ", u)
+	}
 
 	roomDB := db.Table("rooms")
 	var allRooms []model.Room
@@ -85,6 +90,9 @@ func seedDB(db *gorm.DB) error {
 		{User: allUsers[0].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
 		{User: allUsers[1].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
 		{User: allUsers[2].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
+		{User: "ks123", RoomID: 1, IsHost: true, Accepted: true},
+		{User: "harish123", RoomID: 2, IsHost: true, Accepted: true},
+		{User: "amabel123", RoomID: 3, IsHost: true, Accepted: true},
 	}
 
 	for _, r_u := range room_users {

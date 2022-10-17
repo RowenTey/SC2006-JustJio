@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -7,11 +8,11 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Pressable,
   Alert,
 } from 'react-native';
 import Spinner from '../components/Spinner';
 import { AxiosContext } from '../context/axios';
+import { RoomContext } from '../context/room';
 
 const initialInvitationsState = {
   total: 0,
@@ -20,23 +21,35 @@ const initialInvitationsState = {
 
 const JoinRoom = ({ navigation }) => {
   const { authAxios } = useContext(AxiosContext);
+  const { joinRoom, declineRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
   const [invitations, setInvitations] = useState(initialInvitationsState);
 
   const fetchInvitations = async () => {
     setLoading(true);
-    const { data: response } = await authAxios.get('/rooms/invites');
-    setInvitations({
-      total: response.data.length,
-      invites: response.data,
-    });
-    setLoading(false);
+    try {
+      const { data: response } = await authAxios.get('/rooms/invites');
+      setInvitations({
+        total: response.data.length,
+        invites: response.data,
+      });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log('Error fetching invitations', error);
+    }
   };
 
-  const onAccept = async roomId => {
+  const onClick = async (roomId, type) => {
     setLoading(true);
-    const { data: response } = await authAxios.patch(`/rooms/join/${roomId}`);
 
+    if (type == 'join') {
+      console.log('join room');
+      await joinRoom(roomId);
+    } else if (type == 'decline') {
+      console.log('decline room');
+      await declineRoom(roomId);
+    }
     setLoading(false);
     navigation.navigate('HomeTab');
   };
@@ -61,19 +74,32 @@ const JoinRoom = ({ navigation }) => {
         <Text style={styles.header}>Room Invitations</Text>
       </View>
 
-      <View style={styles.middle}>
-        <FlatList
-          data={invitations.invites}
-          renderItem={({ item }) => <InvitationCard invite={item} />}
-          key={'_'}
-          keyExtractor={item => item.ID}
-        />
+      <View
+        style={[
+          styles.middle,
+          {
+            justifyContent:
+              invitations.invites.length > 0 ? 'space-around' : 'center',
+          },
+        ]}>
+        {invitations.invites.length > 0 ? (
+          <FlatList
+            data={invitations.invites}
+            renderItem={({ item }) => (
+              <InvitationCard invite={item} handleClick={onClick} />
+            )}
+            key={'_'}
+            keyExtractor={item => item.ID}
+          />
+        ) : (
+          <Text style={styles.noInvitation}>No invitations</Text>
+        )}
       </View>
     </View>
   );
 };
 
-const InvitationCard = ({ invite }) => {
+const InvitationCard = ({ invite, handleClick }) => {
   return (
     <View style={styles.whiteBox}>
       <Text style={styles.roomHeader}>{invite.name}</Text>
@@ -83,17 +109,17 @@ const InvitationCard = ({ invite }) => {
       <Text style={styles.roomtext}>Venue: {invite.venue}</Text>
 
       <View style={styles.invitation}>
-        <Pressable
+        <TouchableOpacity
           style={styles.greenbox}
-          onPress={() => Alert.alert('Joined Room Successfully')}>
+          onPress={() => handleClick(invite.ID, 'join')}>
           <Text style={styles.confirmationboxtext}>Accept</Text>
-        </Pressable>
+        </TouchableOpacity>
         <View style={styles.gap} />
-        <Pressable
+        <TouchableOpacity
           style={styles.redbox}
-          onPress={() => Alert.alert('Declined Room Successfully')}>
+          onPress={() => handleClick(invite.ID, 'decline')}>
           <Text style={styles.confirmationboxtext}>Decline</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -248,5 +274,10 @@ const styles = StyleSheet.create({
   gap: {
     //between accept and decline
     marginHorizontal: 20,
+  },
+
+  noInvitation: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 25,
   },
 });

@@ -66,12 +66,12 @@ const Home = ({ navigation }) => {
       <View style={styles.middle}>
         <View flexDirection="row">
           <View style={styles.box}>
-            <Text style={styles.TransactionText}> TO GIVE: </Text>
+            <Text style={styles.transactionText}> TO GIVE: </Text>
             <TransactionBar transactions={TransactionData[4]} />
             <TransactionBar transactions={TransactionData[3]} />
           </View>
           <View style={styles.box}>
-            <Text style={styles.TransactionText}> TO GET: </Text>
+            <Text style={styles.transactionText}> TO GET: </Text>
             <TransactionBar transactions={TransactionData[0]} />
             <TransactionBar transactions={TransactionData[1]} />
           </View>
@@ -108,15 +108,21 @@ const Home = ({ navigation }) => {
 
         <Text style={styles.roomsTitle}>Party Rooms</Text>
         <View style={{ flex: 1 }}>
-          <FlatList
-            data={rooms}
-            renderItem={({ item }) => (
-              <RoomCard mainRoom={item} navigation={navigation} />
-            )}
-            numColumns={2}
-            key={'_'}
-            keyExtractor={item => item.ID}
-          />
+          {rooms.length > 0 ? (
+            <FlatList
+              data={rooms}
+              renderItem={({ item }) => (
+                <RoomCard mainRoom={item} navigation={navigation} />
+              )}
+              numColumns={2}
+              key={'_'}
+              keyExtractor={item => item.ID}
+            />
+          ) : (
+            <Text style={styles.noRooms}>
+              No rooms to display, create or join a room!
+            </Text>
+          )}
         </View>
       </View>
     </View>
@@ -256,10 +262,18 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 
-  TransactionText: {
+  transactionText: {
     fontFamily: 'Poppins',
     color: '#000000',
     fontWeight: 'bold',
     alignItems: 'flex-start',
+  },
+
+  noRooms: {
+    textAlign: 'center',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 20,
+    marginTop: 35,
+    paddingHorizontal: 30,
   },
 });

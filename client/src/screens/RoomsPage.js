@@ -1,46 +1,56 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
   Text,
   Image,
-  ScrollView,
   TouchableOpacity,
   FlatList,
 } from 'react-native';
+import Spinner from '../components/Spinner';
+import { AxiosContext } from '../context/axios';
+import { UserContext } from '../context/user';
+import { RoomContext } from '../context/room';
 
 const RoomsPage = ({ navigation, route }) => {
+  const [loading, setLoading] = useState(false);
+  const [attendees, setAttendees] = useState([]);
+  const [user, setUser] = useContext(UserContext);
+  const { authAxios } = useContext(AxiosContext);
+  const { closeRoom } = useContext(RoomContext);
   const { room } = route.params;
-  const details = [
-    //'Friday',
-    //'26 Dec',
-    //'Graduation Party',
-    //'1800 - 2300',
-    //"Bob's House",
-    //'22',
-  ];
 
-  const MemberList = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      name: 'Hilary',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      name: 'Marcus',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      name: 'Jane',
-    },
+  const onCloseRoom = async roomId => {
+    setLoading(true);
+    await closeRoom(roomId);
+    setLoading(false);
+    navigation.navigate('HomeTab');
+  };
 
-    //'Jeff',
-    //'Letitia',
-    //'Mark',
-    //'Layla',
-    //'Fred',
-    //'Adrian',
-  ];
+  const fetchAttendees = async roomId => {
+    setLoading(true);
+    try {
+      const { data: response } = await authAxios.get(
+        `/rooms/attendees/${roomId}`,
+      );
+      setAttendees(response.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log('Error fetching attendees', error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchAttendees(room.ID);
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <View style={styles.container}>
@@ -61,19 +71,28 @@ const RoomsPage = ({ navigation, route }) => {
         </View>
         <View style={styles.memberList}>
           <Text style={styles.list}>Members</Text>
-          <GuestList list={MemberList} />
+          <GuestList list={attendees} />
         </View>
         <View style={styles.splitBillCloseRoom}>
           <TouchableOpacity
-            style={styles.splitBill}
-            onPress={() => navigation.navigate('SplitBillMembers')}>
+            style={[
+              styles.splitBill,
+              {
+                left: user.username === room.host ? 10 : 0,
+              },
+            ]}
+            onPress={() =>
+              navigation.navigate('SplitBillMembers', { payees: attendees })
+            }>
             <Text style={styles.buttonText}>Split Bill</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.closeRoom}
-            onPress={() => navigation.navigate('HomeTab')}>
-            <Text style={styles.buttonText}>Close Room</Text>
-          </TouchableOpacity>
+          {user.username === room.host && (
+            <TouchableOpacity
+              style={styles.closeRoom}
+              onPress={() => onCloseRoom(room.ID)}>
+              <Text style={styles.buttonText}>Close Room</Text>
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.urlQrCode}>
           <View style={styles.url}>
@@ -145,8 +164,8 @@ const GuestList = props => {
     <View style={styles.memberBox}>
       <FlatList
         data={props.list}
-        renderItem={({ item }) => <Box name={item.name} />}
-        keyExtractor={item => item.id}
+        renderItem={({ item }) => <Box name={item} />}
+        keyExtractor={(item, index) => index}
       />
     </View>
   );
@@ -347,7 +366,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-
   memberList: {
     flexDirection: 'column',
     fontSize: 15,
@@ -446,7 +464,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     padding: 5,
     alignItems: 'center',
-    left: 10,
   },
 
   closeRoom: {

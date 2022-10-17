@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 
 const RoomCard = ({ navigation, mainRoom }) => {

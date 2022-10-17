@@ -63,7 +63,7 @@ func getAttendees(roomID string) ([]string, error) {
 	var users []string
 
 	// find room_users record
-	if err := db.Table("room_users").Distinct("user").Find(&users, "room_id = ? AND accepted = ? AND is_attendee = ?", roomID, true, true).Error; err != nil {
+	if err := db.Table("room_users").Distinct("user").Find(&users, "room_id = ? AND accepted = ?", roomID, true).Error; err != nil {
 		return nil, err
 	}
 	return users, nil

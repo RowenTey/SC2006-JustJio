@@ -8,28 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const SplitBillMembers = ({ navigation }) => {
-  const MemberList = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      name: 'Hilary',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      name: 'Marcus',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      name: 'Jane',
-    },
-
-    //'Jeff',
-    //'Letitia',
-    //'Mark',
-    //'Layla',
-    //'Fred',
-    //'Adrian',
-  ];
+const SplitBillMembers = ({ navigation, route }) => {
+  const { payees } = route.params;
 
   return (
     <View style={styles.container}>
@@ -46,7 +26,7 @@ const SplitBillMembers = ({ navigation }) => {
       <View style={styles.middle}>
         <View style={styles.memberList}>
           <Text style={styles.list}>List of Payers:</Text>
-          <GuestList list={MemberList} />
+          <GuestList list={payees} />
         </View>
         <TouchableOpacity
           style={styles.confirm}
@@ -59,13 +39,13 @@ const SplitBillMembers = ({ navigation }) => {
 };
 
 const GuestList = props => {
-  const renderItem = ({ item }) => <Box name={item.name} />;
+  const renderItem = ({ item }) => <Box name={item} />;
   return (
     <View style={styles.memberBox}>
       <FlatList
         data={props.list}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => index}
       />
     </View>
   );

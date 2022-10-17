@@ -1,14 +1,11 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 import {
+  CLOSE_ROOM,
   CREATE_ROOM,
+  DECLINE_ROOM,
   END_LOADING,
   FETCH_ROOMS,
+  JOIN_ROOM,
   START_LOADING,
 } from '../constants/actionTypes';
 import RoomReducer, { initialRoomState } from '../reducers/roomReducer';
@@ -49,16 +46,108 @@ const RoomProvider = ({ children }) => {
       dispatch({
         type: START_LOADING,
       });
+
       const { data: response } = await authAxios.post('/rooms', roomData);
+      const updatedRooms = state.rooms.concat(response.data);
+      const updatedTotal = updatedRooms.length;
       dispatch({
         type: CREATE_ROOM,
-        payload: response,
+        payload: {
+          rooms: updatedRooms,
+          total: updatedTotal,
+        },
       });
+
       dispatch({
         type: END_LOADING,
       });
     } catch (error) {
       console.log('Failed to create room', error);
+      if (error.response) {
+        console.log('Error response', error.response.data);
+      } else if (error.request) {
+        console.log('Error request', error.request);
+      }
+    }
+  };
+
+  const joinRoom = async roomId => {
+    try {
+      dispatch({
+        type: START_LOADING,
+      });
+
+      const { data: response } = await authAxios.patch(`/rooms/join/${roomId}`);
+      console.log('joinRoom response', JSON.stringify(response.data.room));
+      const updatedRooms = state.rooms.concat(response.data.room);
+      const updatedTotal = updatedRooms.length;
+      dispatch({
+        type: JOIN_ROOM,
+        payload: {
+          rooms: updatedRooms,
+          total: updatedTotal,
+        },
+      });
+
+      dispatch({
+        type: END_LOADING,
+      });
+    } catch (error) {
+      console.log('Failed to join room', error);
+      if (error.response) {
+        console.log('Error response', error.response.data);
+      } else if (error.request) {
+        console.log('Error request', error.request);
+      }
+    }
+  };
+
+  const declineRoom = async roomId => {
+    try {
+      dispatch({
+        type: START_LOADING,
+      });
+
+      await authAxios.delete(`/rooms/decline/${roomId}`);
+      dispatch({
+        type: DECLINE_ROOM,
+      });
+
+      dispatch({
+        type: END_LOADING,
+      });
+    } catch (error) {
+      console.log('Failed to join room', error);
+      if (error.response) {
+        console.log('Error response', error.response.data);
+      } else if (error.request) {
+        console.log('Error request', error.request);
+      }
+    }
+  };
+
+  const closeRoom = async roomId => {
+    try {
+      dispatch({
+        type: START_LOADING,
+      });
+
+      await authAxios.delete(`/rooms/${roomId}`);
+      const updatedRooms = state.rooms.filter(room => room.ID !== roomId);
+      const updatedTotal = updatedRooms.length;
+      dispatch({
+        type: CLOSE_ROOM,
+        payload: {
+          rooms: updatedRooms,
+          total: updatedTotal,
+        },
+      });
+
+      dispatch({
+        type: END_LOADING,
+      });
+    } catch (error) {
+      console.log('Failed to close room', error);
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
@@ -73,6 +162,9 @@ const RoomProvider = ({ children }) => {
     isLoading: state.isLoading,
     fetchRooms,
     createRoom,
+    joinRoom,
+    declineRoom,
+    closeRoom,
   };
 
   return <Provider value={value}>{children}</Provider>;

@@ -1,7 +1,10 @@
 import {
+  CLOSE_ROOM,
   CREATE_ROOM,
+  DECLINE_ROOM,
   END_LOADING,
   FETCH_ROOMS,
+  JOIN_ROOM,
   LOGOUT,
   START_LOADING,
 } from '../constants/actionTypes';
@@ -33,7 +36,14 @@ const RoomReducer = (state, action) => {
         total: payload.data.length,
       };
     case CREATE_ROOM:
-      state.rooms.push(payload);
+    case JOIN_ROOM:
+    case CLOSE_ROOM:
+      return {
+        ...state,
+        rooms: payload.rooms,
+        total: payload.total,
+      };
+    case DECLINE_ROOM:
       return {
         ...state,
       };
