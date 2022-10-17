@@ -5,10 +5,16 @@ const IMAGES = {
     mafia: require('../../assets/images/mafia.png'),
   };
 
-const Mafia = () => {
+const Mafia = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            style={styles.back}
+            source={require('../../assets/images/back.png')}
+          />
+        </TouchableOpacity>
         <Text style={styles.header}>Mafia</Text>
       </View>
 
@@ -94,12 +100,12 @@ const styles = StyleSheet.create({
 
   top: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#E9D7FD',
-    minHeight: '9%',
-    maxHeight: '9%',
+    minHeight: '10%',
+    maxHeight: '10%',
   },
 
   middle: {
@@ -107,7 +113,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#f0ecec',
     width: 500,
-    minHeight: '91%',
-    maxHeight: '91%',
+    minHeight: '90%',
+    maxHeight: '90%',
+  },
+
+  back: {
+    // back arrow
+    position: 'relative',
+    justifyContent: 'flex-start',
+    top: 6,
+    right: 130,
   },
 });

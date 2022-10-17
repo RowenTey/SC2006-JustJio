@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 
 const IMAGES = {
   mafia: require('../../assets/images/mafia.png'),
@@ -101,6 +101,7 @@ const PartyGames = ({ navigation }) => {
         </TouchableOpacity>
 
       </ScrollView>
+
     </View>
   );
 };
