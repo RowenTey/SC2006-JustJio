@@ -25,5 +25,3 @@ npm install
 ```terminal
 npm start android
 ```
-
-Test for amabel
