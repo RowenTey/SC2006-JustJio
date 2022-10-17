@@ -312,8 +312,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 15,
     marginBottom: 20,
-    marginRight: 20,
-    marginLeft: 20,
+    marginRight: 5,
+    marginLeft: 5,
   },
 
   transactionText: {
