@@ -9,25 +9,27 @@ const AxiosProvider = ({ children }) => {
   const authContext = useContext(AuthContext);
 
   const authAxios = axios.create({
-    baseURL: 'http://192.168.5.130:8080',
+    baseURL: 'http://192.168.0.101:8080',
   });
 
   const publicAxios = axios.create({
-    baseURL: 'http://192.168.5.130:8080',
+    baseURL: 'http://192.168.0.101:8080',
   });
 
-  authAxios.interceptors.request.use(
-    config => {
-      if (!config.headers.Authorization) {
-        config.headers.Authorization = `Bearer ${authContext.getAccessToken()}`;
-      }
+  if (authContext.getAuthenticated()) {
+    authAxios.interceptors.request.use(
+      config => {
+        if (!config.headers.Authorization) {
+          config.headers.Authorization = `Bearer ${authContext.getAccessToken()}`;
+        }
 
-      return config;
-    },
-    error => {
-      return Promise.reject(error);
-    },
-  );
+        return config;
+      },
+      error => {
+        return Promise.reject(error);
+      },
+    );
+  }
 
   return (
     <Provider

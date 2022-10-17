@@ -28,8 +28,17 @@ func Initalize(router *fiber.App) {
 
 	rooms := router.Group("/rooms")
 	rooms.Get("/", middleware.Authenticated(), handlers.GetRooms)
+	rooms.Get("/invites", middleware.Authenticated(), handlers.GetRoomInvitations)
+	rooms.Get("/attendees/:id", middleware.Authenticated(), handlers.GetRoomAttendees)
 	rooms.Post("/", middleware.Authenticated(), handlers.CreateRoom)
 	rooms.Patch("/join/:id", middleware.Authenticated(), handlers.JoinRoom)
+	rooms.Delete("/:id", middleware.Authenticated(), handlers.CloseRoom)
+	rooms.Delete("/decline/:id", middleware.Authenticated(), handlers.DeclineRoom)
+
+	bills := router.Group("/bills")
+	bills.Get("/", middleware.Authenticated(), handlers.GetTransactions)
+	bills.Post("/:id", middleware.Authenticated(), handlers.GenerateTransactions)
+	bills.Patch("/pay", middleware.Authenticated(), handlers.PayBill)
 
 	router.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{

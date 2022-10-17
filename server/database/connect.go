@@ -6,6 +6,7 @@ import (
 
 	"sc2006-JustJio/config"
 	"sc2006-JustJio/model"
+	"sc2006-JustJio/util"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -25,7 +26,7 @@ func ConnectDB() {
 	}
 	fmt.Println("Connection opened to Database")
 
-	err = DB.AutoMigrate(&model.User{}, &model.Room{}, &model.RoomUser{})
+	err = DB.AutoMigrate(&model.User{}, &model.Room{}, &model.RoomUser{}, &model.Bill{}, &model.Transaction{})
 	if err != nil {
 		fmt.Println("Migration failed")
 		fmt.Println(err.Error())
@@ -36,42 +37,62 @@ func ConnectDB() {
 	var userCount int64
 	if DB.Table("users").Count(&userCount); userCount == 0 {
 		fmt.Println("User count", userCount)
-		seedDB(DB)
-		fmt.Println("Database seeded")
+		err = seedDB(DB)
+		if err != nil {
+			fmt.Println("Failed to seed database")
+		} else {
+			fmt.Println("Database seeded")
+		}
 	}
 }
 
-func seedDB(db *gorm.DB) {
+func seedDB(db *gorm.DB) error {
 	users := []model.User{
-		{Username: "test123", Password: "test123", Email: "test@test.com"},
-		{Username: "test1234", Password: "test1234", Email: "test4@test.com"},
-		{Username: "test1235", Password: "test1235", Email: "test5@test.com"},
+		{Username: "harish123", Password: "harish123", Email: "harish123@test.com"},
+		{Username: "amabel123", Password: "amabel123", Email: "amabel123@test.com"},
+		{Username: "zh123", Password: "zh123", Email: "zh123@test.com"},
+		{Username: "eldrick123", Password: "eldrick123", Email: "eldrick123@test.com"},
+		{Username: "ks123", Password: "ks123", Email: "ks123@test.com"},
+		{Username: "aloysius123", Password: "aloysius123", Email: "aloysius123@test.com"},
 	}
 	for _, u := range users {
+		hash, err := util.HashPassword(u.Password)
+		if err != nil {
+			return err
+		}
+		u.Password = hash
 		db.Create(&u)
 	}
 
 	rooms := []model.Room{
-		{Name: "ks birthday", Time: "5pm", Venue: "ntu hall 9", Host: "test123"},
-		{Name: "ww birthday", Time: "10pm", Venue: "ss2", Host: "test123"},
-		{Name: "steven birthday", Time: "9am", Venue: "elmina", Host: "test123"},
+		{Name: "ks birthday", Date: "04/09/2022", Time: "5:00pm-10:00pm", Venue: "ntu hall 9", Host: "ks123"},
+		{Name: "harish birthday", Date: "04/10/2022", Time: "6:00pm-10:00pm", Venue: "clementi mall", Host: "harish123"},
+		{Name: "amabel birthday", Date: "04/11/2022", Time: "9:00am-11:00am", Venue: "marina bay sand", Host: "amabel123"},
 	}
 	for _, r := range rooms {
 		db.Create(&r)
+		fmt.Println(" room: ", r)
 	}
 
 	userDB := db.Table("users")
-	var test123 model.User
-	userDB.First(&test123, "Username = ?", "test123")
+	var allUsers []model.User
+	userDB.Not("Username = ?", "ks123").Find(&allUsers)
+
+	for _, u := range allUsers {
+		fmt.Println(" user: ", u)
+	}
 
 	roomDB := db.Table("rooms")
 	var allRooms []model.Room
-	roomDB.Find(&allRooms, "Host = ?", "test123")
+	roomDB.Find(&allRooms, "Host = ?", "ks123")
 
 	room_users := []model.RoomUser{
-		{UserID: test123.ID, RoomID: allRooms[0].ID, IsHost: true},
-		{UserID: test123.ID, RoomID: allRooms[1].ID, IsHost: true},
-		{UserID: test123.ID, RoomID: allRooms[2].ID, IsHost: true},
+		{User: allUsers[0].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
+		{User: allUsers[1].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
+		{User: allUsers[2].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
+		{User: "ks123", RoomID: 1, IsHost: true, Accepted: true},
+		{User: "harish123", RoomID: 2, IsHost: true, Accepted: true},
+		{User: "amabel123", RoomID: 3, IsHost: true, Accepted: true},
 	}
 
 	for _, r_u := range room_users {
@@ -80,8 +101,10 @@ func seedDB(db *gorm.DB) {
 
 	roomUserDB := db.Table("room_users")
 	var test_rooms []string
-	roomUserDB.Distinct("room_id").Find(&test_rooms, "user_id = ?", test123.ID)
+	roomUserDB.Distinct("room_id").Find(&test_rooms, "user = ?", allUsers[0].Username)
 	for _, t := range test_rooms {
 		fmt.Println(" RoomID: ", t)
 	}
+
+	return nil
 }

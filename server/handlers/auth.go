@@ -8,20 +8,14 @@ import (
 	"sc2006-JustJio/config"
 	"sc2006-JustJio/database"
 	"sc2006-JustJio/model"
+	"sc2006-JustJio/util"
 
 	"gorm.io/gorm"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
-	"golang.org/x/crypto/bcrypt"
 )
-
-// CheckPasswordHash compare password with hash
-func CheckPasswordHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
-}
 
 func getUserByEmail(email string) (*model.User, error) {
 	db := database.DB.Table("users")
@@ -59,7 +53,7 @@ func SignUp(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
-	hash, err := HashPassword(user.Password)
+	hash, err := util.HashPassword(user.Password)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
 	}
@@ -116,7 +110,7 @@ func Login(c *fiber.Ctx) error {
 		Email:    user.Email,
 	}
 
-	if !CheckPasswordHash(pass, user.Password) {
+	if !util.CheckPasswordHash(pass, user.Password) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
@@ -134,7 +128,7 @@ func Login(c *fiber.Ctx) error {
 
 	t, err := token.SignedString([]byte(config.Config("JWT_SECRET")))
 	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Failed to create token", "data": nil})
 	}
 
 	fmt.Println("User " + userData.Username + " logged in successfully.")

@@ -1,5 +1,7 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useReducer, useState } from 'react';
 import * as Keychain from 'react-native-keychain';
+import RoomReducer from '../reducers/roomReducer';
+import { LOGOUT } from '../constants/actionTypes';
 
 const AuthContext = createContext(null);
 const { Provider } = AuthContext;
@@ -11,23 +13,32 @@ const AuthProvider = ({ children }) => {
   });
 
   const logout = async () => {
-    await Keychain.resetGenericPassword();
-    setAuthState({
-      accessToken: null,
-      authenticated: false,
-    });
+    try {
+      await Keychain.resetGenericPassword();
+      setAuthState({
+        accessToken: null,
+        authenticated: false,
+      });
+    } catch (error) {
+      console.log('Error logging out ' + error);
+    }
   };
 
   const getAccessToken = () => {
     return authState.accessToken;
   };
 
+  const getAuthenticated = () => {
+    return authState.authenticated;
+  };
+
   return (
     <Provider
       value={{
         authState,
-        getAccessToken,
         setAuthState,
+        getAccessToken,
+        getAuthenticated,
         logout,
       }}>
       {children}
