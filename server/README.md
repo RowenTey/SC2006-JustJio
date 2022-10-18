@@ -49,7 +49,3 @@ go run main.go
 ├── go.sum
 └── README.md
 ```
-
-# License
-
-[MIT](https://choosealicense.com/licenses/mit/)
