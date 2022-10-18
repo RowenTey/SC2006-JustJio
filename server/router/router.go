@@ -5,12 +5,15 @@ import (
 	"sc2006-JustJio/middleware"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/swagger"
 )
 
 func Initalize(router *fiber.App) {
 
 	router.Use(middleware.Json)
+	router.Use(middleware.Security)
+	router.Use(logger.New())
 
 	router.Get("/", func(c *fiber.Ctx) error {
 		return c.Status(200).SendString("Hello, World!")
