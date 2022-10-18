@@ -2,26 +2,17 @@ package main
 
 import (
 	"log"
-	"os"
 
+	"sc2006-JustJio/config"
 	"sc2006-JustJio/database"
 	"sc2006-JustJio/router"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/joho/godotenv"
 
 	_ "sc2006-JustJio/docs"
-
-	"github.com/joho/godotenv"
 )
-
-func getenv(key, fallback string) string {
-	value := os.Getenv(key)
-	if len(value) == 0 {
-		return fallback
-	}
-	return value
-}
 
 // @title           JustJio API
 // @version         1.0
@@ -47,5 +38,5 @@ func main() {
 
 	database.ConnectDB()
 	router.Initalize(app)
-	log.Fatal(app.Listen(":" + getenv("PORT", "8080")))
+	log.Fatal(app.Listen(":" + config.Config("PORT")))
 }
