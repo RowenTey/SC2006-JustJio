@@ -1,4 +1,4 @@
-# JustJio
+# SC2006-JustJio
 
 > Project for SC2006 -> Invite your friends to hangout easily 🀄
 
