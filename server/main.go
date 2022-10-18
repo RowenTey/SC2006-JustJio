@@ -9,6 +9,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+
 	"github.com/joho/godotenv"
 )
 
@@ -20,6 +21,20 @@ func getenv(key, fallback string) string {
 	return value
 }
 
+// @title           JustJio API
+// @version         1.0
+// @description     This is a server for NTU SC2006's project - JustJio.
+// @termsOfService  http://swagger.io/terms/
+// @contact.name   Kai Seong
+// @contact.email  kaiseong02@gmail.com
+// @license.name  MIT
+// @host      localhost:8080
+// @BasePath  /
+// @securityDefinitions.basic  BasicAuth
+// @securityDefinitions.apikey  ApiKeyAuth
+// @in                          header
+// @name                        Authorization
+// @description									authorise authenticated users
 func main() {
 	godotenv.Load()
 	app := fiber.New()

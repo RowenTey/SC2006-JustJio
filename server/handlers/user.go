@@ -40,7 +40,16 @@ func validUser(id string, password string) bool {
 	return true
 }
 
-// GetUser -> get a user
+// GetUser godoc
+// @Summary      Get a specific user
+// @Description  get user by ID
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "User ID"
+// @Success      200  {object}  model.User
+// @Failure      404  {object}  nil
+// @Router       /users/{id} [get]
 func GetUser(c *fiber.Ctx) error {
 	id := c.Params("id")
 	db := database.DB.Table("users")
@@ -53,16 +62,19 @@ func GetUser(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
 }
 
-// GetUsers -> get all users
-func GetUsers(c *fiber.Ctx) error {
-	db := database.DB.Table("users")
-	user := new([]model.User)
-
-	db.Find(&user)
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Users found", "data": user})
-}
-
-// UpdateUser -> update user
+// UpdateUser godoc
+// @Summary      Update user attribute
+// @Description  update user attribute with new value
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        field   body      string  true  "Field"
+// @Param        value   body      string  true  "Value"
+// @Success      200  {object}  handlers.UpdateUser.UpdateUserInput
+// @Failure      400  {object}  nil
+// @Failure      401  {object}  nil
+// @Failure      404  {object}  nil
+// @Router       /users/{id} [patch]
 func UpdateUser(c *fiber.Ctx) error {
 	type UpdateUserInput struct {
 		Field string `json:"field"`
@@ -101,7 +113,17 @@ func UpdateUser(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "User successfully updated", "data": updatedUserInput})
 }
 
-// DeleteUser -> delete user
+// DeleteUser godoc
+// @Summary      Delete a user
+// @Description  delete a user account
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        password   body      handlers.DeleteUser.PasswordInput  true  "User Password"
+// @Success      200  {object}  nil
+// @Failure      400  {object}  nil
+// @Failure      401  {object}  nil
+// @Router       /users/{id} [delete]
 func DeleteUser(c *fiber.Ctx) error {
 	type PasswordInput struct {
 		Password string `json:"password"`

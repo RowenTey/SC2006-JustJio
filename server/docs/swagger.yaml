@@ -1,0 +1,331 @@
+basePath: /
+definitions:
+  handlers.CreateRoom.CreateRoomInput:
+    properties:
+      invitees:
+        items:
+          type: string
+        type: array
+      room:
+        $ref: '#/definitions/model.Room'
+    type: object
+  handlers.DeleteUser.PasswordInput:
+    properties:
+      password:
+        type: string
+    type: object
+  handlers.JoinRoom.RoomResponse:
+    properties:
+      attendees:
+        items:
+          type: string
+        type: array
+      room:
+        $ref: '#/definitions/model.Room'
+    type: object
+  handlers.UpdateUser.UpdateUserInput:
+    properties:
+      field:
+        type: string
+      value:
+        type: string
+    type: object
+  model.Room:
+    properties:
+      attendeesCount:
+        type: integer
+      createdAt:
+        type: string
+      date:
+        type: string
+      host:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      time:
+        type: string
+      url:
+        type: string
+      venue:
+        type: string
+    type: object
+  model.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      phoneNum:
+        type: string
+      registeredAt:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: kaiseong02@gmail.com
+    name: Kai Seong
+  description: This is a server for NTU SC2006's project - JustJio.
+  license:
+    name: MIT
+  termsOfService: http://swagger.io/terms/
+  title: JustJio API
+  version: "1.0"
+paths:
+  /rooms:
+    get:
+      consumes:
+      - application/json
+      description: Get rooms by user's username
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Room'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all rooms for a user
+      tags:
+      - rooms
+    post:
+      consumes:
+      - application/json
+      description: Create a room in database
+      parameters:
+      - description: Room
+        in: body
+        name: room
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateRoom.CreateRoomInput'
+      - description: Invites
+        in: body
+        name: invites
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateRoom.CreateRoomInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Room'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create a room
+      tags:
+      - rooms
+  /rooms/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a room from database
+      parameters:
+      - description: Room ID
+        in: path
+        name: roomID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Room'
+        "500":
+          description: Internal Server Error
+      summary: Close a room
+      tags:
+      - rooms
+  /rooms/attendees/:
+    get:
+      consumes:
+      - application/json
+      description: Get attendees by roomID
+      parameters:
+      - description: Room ID
+        in: path
+        name: roomID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all attendees for a room
+      tags:
+      - rooms
+  /rooms/decline/{4}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the room invitation in database
+      parameters:
+      - description: Room ID
+        in: path
+        name: roomID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Decline a room
+      tags:
+      - rooms
+  /rooms/invites/{invites}:
+    get:
+      consumes:
+      - application/json
+      description: Get invitations by user's username
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Room'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all invitations for a user
+      tags:
+      - rooms
+      - invites
+  /rooms/join/{id}:
+    patch:
+      consumes:
+      - application/json
+      description: Set accepted to true in invitation database
+      parameters:
+      - description: Room ID
+        in: path
+        name: roomID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.JoinRoom.RoomResponse'
+        "500":
+          description: Internal Server Error
+      summary: Join a room
+      tags:
+      - rooms
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a user account
+      parameters:
+      - description: User Password
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.DeleteUser.PasswordInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      summary: Delete a user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: get user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+        "404":
+          description: Not Found
+      summary: Get a specific user
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: update user attribute with new value
+      parameters:
+      - description: Field
+        in: body
+        name: field
+        required: true
+        schema:
+          type: string
+      - description: Value
+        in: body
+        name: value
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.UpdateUser.UpdateUserInput'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+      summary: Update user attribute
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+swagger: "2.0"

@@ -5,6 +5,7 @@ import (
 	"sc2006-JustJio/middleware"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger"
 )
 
 func Initalize(router *fiber.App) {
@@ -16,6 +17,9 @@ func Initalize(router *fiber.App) {
 	router.Get("/", func(c *fiber.Ctx) error {
 		return c.Status(200).SendString("Hello, World!")
 	})
+
+	// default
+	router.Get("/swagger/*", swagger.HandlerDefault)
 
 	auth := router.Group("/auth")
 	auth.Post("/signup", handlers.SignUp)
