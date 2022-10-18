@@ -10,6 +10,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 
+	_ "sc2006-JustJio/docs"
+
 	"github.com/joho/godotenv"
 )
 

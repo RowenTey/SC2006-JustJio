@@ -10,8 +10,6 @@ import (
 
 func Initalize(router *fiber.App) {
 
-	// router.Use(middleware.Security)
-
 	router.Use(middleware.Json)
 
 	router.Get("/", func(c *fiber.Ctx) error {
