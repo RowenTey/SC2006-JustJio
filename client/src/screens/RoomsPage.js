@@ -117,7 +117,6 @@ const EventDetail = ({ room }) => {
   return (
     <View>
       <EventDetailBox
-        day="Sunday"
         date={room.date}
         eventName={room.name}
         time={room.time}
@@ -129,12 +128,24 @@ const EventDetail = ({ room }) => {
 };
 
 const EventDetailBox = props => {
+  const weekday = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  const [day, month, year] = props.date.split('/');
+  const date = new Date(`${year}-${month}-${day}`);
+
   return (
     <View style={styles.whiteBox}>
       <View style={styles.left}>
         <View style={styles.date}>
-          <Text style={styles.dateTextDay}>{props.day}</Text>
-          <Text style={styles.dateTextDate}>26 Sept</Text>
+          <Text style={styles.dateTextDay}>{weekday[date.getDay()]}</Text>
+          <Text style={styles.dateTextDate}>{props.date}</Text>
         </View>
         <View style={styles.eventBox}>
           <Text style={styles.eventTextEvent}>Event: </Text>
@@ -147,7 +158,9 @@ const EventDetailBox = props => {
             <Text style={styles.purpleBoxTextFirstBox}>Time: {props.time}</Text>
           </View>
           <View style={styles.purpleBox}>
-            <Text style={styles.purpleBoxText}>Venue: {props.venue}</Text>
+            <Text style={styles.purpleBoxText}>
+              Venue: {props.venue.toUpperCase()}
+            </Text>
           </View>
           <View style={styles.purpleBoxLast}>
             <Text style={styles.purpleBoxText}>Attendees count:</Text>
@@ -174,6 +187,13 @@ const GuestList = props => {
 const Box = props => {
   return (
     <View style={styles.indName}>
+      <Image
+        source={{
+          width: 35,
+          height: 35,
+          uri: 'https://i.pinimg.com/736x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg',
+        }}
+      />
       <Text style={styles.name}>{props.name}</Text>
     </View>
   );
@@ -182,27 +202,6 @@ const Box = props => {
 export default RoomsPage;
 
 const styles = StyleSheet.create({
-  header: {
-    fontSize: 30,
-    top: 8,
-    fontFamily: 'Poppins-Bold',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#4E1164',
-  },
-
-  back: {
-    // back arrow
-    position: 'relative',
-    justifyContent: 'flex-start',
-    top: 6,
-    right: 90,
-  },
-
-  head: {
-    backgroundColor: '#E9D7FD',
-  },
-
   container: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -216,24 +215,43 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#E9D7FD',
     minHeight: '10%',
     maxHeight: '10%',
     width: '100%',
+    paddingHorizontal: 20,
+  },
+
+  header: {
+    fontSize: 30,
+    top: 5,
+    marginLeft: 'auto',
+    fontFamily: 'Poppins-Bold',
+    color: '#4E1164',
+  },
+
+  back: {
+    // back arrow
+    position: 'relative',
+    justifyContent: 'flex-start',
+  },
+
+  head: {
+    backgroundColor: '#E9D7FD',
   },
 
   middle: {
     top: 10,
     flex: 2,
     flexDirection: 'column',
-    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#f0ecec',
     width: 500,
     minHeight: '90%',
     maxHeight: '90%',
     position: 'relative',
+    paddingHorizontal: 20,
   },
 
   event: {
@@ -294,8 +312,9 @@ const styles = StyleSheet.create({
   eventBox: {
     flexDirection: 'column',
     position: 'relative',
-    left: 19,
-    top: -15,
+    width: '85%',
+    left: 11,
+    top: -5,
   },
 
   eventTextEvent: {
@@ -304,7 +323,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: '#000000',
     position: 'relative',
-    margin: -7,
+    marginTop: 8,
+    marginBottom: -10,
   },
 
   eventText: {
@@ -313,12 +333,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: '#000000',
     position: 'relative',
-    margin: -7,
-    top: 5,
   },
 
   right: {
-    left: 20,
     justifyContent: 'space-evenly',
     flexDirection: 'row',
     width: 180,
@@ -345,7 +362,7 @@ const styles = StyleSheet.create({
   },
 
   purpleBoxTextFirstBox: {
-    fontSize: 12,
+    fontSize: 15,
     color: '#FFFFFF',
     fontFamily: 'Poppins-Regular',
   },
@@ -392,9 +409,11 @@ const styles = StyleSheet.create({
 
   indName: {
     justifyContent: 'flex-start',
+    alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
-    width: 340,
+    paddingStart: 15,
+    width: 320,
     height: 50,
     borderRadius: 10,
     margin: 5,
@@ -410,8 +429,8 @@ const styles = StyleSheet.create({
 
   name: {
     fontSize: 18,
-    top: 10,
-    left: 100,
+    fontFamily: 'Poppins-Medium',
+    left: 20,
     color: '#000000',
   },
 
@@ -422,7 +441,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     fontFamily: 'Poppins-Medium',
     top: -5,
-    left: -130,
+    left: -110,
   },
 
   list: {
@@ -430,7 +449,7 @@ const styles = StyleSheet.create({
     color: '#4E1164',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    left: -150,
+    left: -120,
     top: -5,
     fontFamily: 'Poppins-Medium',
   },

@@ -8,6 +8,7 @@ import {
   View,
   Image,
 } from 'react-native';
+import Config from 'react-native-config';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const GetSupermarkets = () => {
@@ -91,7 +92,7 @@ const GetSupermarkets = () => {
         fetchDetails={true}
         onPress={(data, details) => onSearch(details)}
         query={{
-          key: 'AIzaSyB6RtFpoPVa3mhGtfkTwf04wtOkNxCvq-4',
+          key: Config.GOOGLE_MAPS_API_KEY,
           language: 'en',
           components: 'country:sg',
         }}

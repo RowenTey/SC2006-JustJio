@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { AxiosContext } from '../context/axios';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
@@ -12,7 +12,7 @@ var signUpData = {
   password: '',
 };
 
-const initialState = {
+const initialRegistrationState = {
   ...signUpData,
   confirmPassword: '',
 };
@@ -25,9 +25,10 @@ const Signup = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    formState: {},
+    reset,
     watch,
-  } = useForm({ initialState });
+    formState: {},
+  } = useForm({ initialRegistrationState });
   const { publicAxios } = useContext(AxiosContext);
   const [loading, setLoading] = useState(false);
   const passwordCheck = watch('password');
@@ -54,6 +55,13 @@ const Signup = ({ navigation }) => {
       console.log('Signup failed', error);
       if (error.response) {
         console.log('Error response', error.response.data);
+        Alert.alert('Login failed', error.response.data.message, [
+          {
+            text: 'Retry',
+            onPress: () => reset(initialRegistrationState),
+            style: 'cancel',
+          },
+        ]);
       } else if (error.request) {
         console.log('Error request', error.request);
       }
@@ -119,7 +127,8 @@ const Signup = ({ navigation }) => {
           },
           pattern: {
             value: ALPHA_NUMERIC,
-            message: 'Password has to contain letters, numbers & symbols ',
+            message:
+              'Password has to contain upper and lower letters, numbers & symbols',
           },
         }}
         textStyles={styles.inputText}

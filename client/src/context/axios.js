@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import axios from 'axios';
+import Config from 'react-native-config';
 import { AuthContext } from './auth';
 
 const AxiosContext = createContext();
@@ -9,11 +10,11 @@ const AxiosProvider = ({ children }) => {
   const authContext = useContext(AuthContext);
 
   const authAxios = axios.create({
-    baseURL: 'http://192.168.0.101:8080',
+    baseURL: `http://${Config.IP_ADDRESS}:8080`,
   });
 
   const publicAxios = axios.create({
-    baseURL: 'http://192.168.0.101:8080',
+    baseURL: `http://${Config.IP_ADDRESS}:8080`,
   });
 
   if (authContext.getAuthenticated()) {

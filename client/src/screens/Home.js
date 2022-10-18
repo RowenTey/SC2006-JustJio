@@ -9,7 +9,6 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-
 import RoomCard from '../components/RoomCard.js';
 import TransactionBar from '../components/TransactionDetails';
 import TransactionData from '../components/TransactionData';
@@ -25,6 +24,8 @@ const ICONS = {
   mahjong: require('../../assets/images/mahjong.png'),
   vector: require('../../assets/images/Vector.png'),
   logout: require('../../assets/images/logout.png'),
+  bell: require('../../assets/images/bell.png'),
+  tick: require('../../assets/images/tick.png'),
 };
 
 const Home = ({ navigation }) => {
@@ -67,13 +68,65 @@ const Home = ({ navigation }) => {
         <View flexDirection="row">
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GIVE: </Text>
-            <TransactionBar transactions={TransactionData[4]} />
-            <TransactionBar transactions={TransactionData[3]} />
+            <View style={styles.smallContainer}>
+              <TransactionBar transactions={TransactionData[4]} />
+              <Image
+                source={ICONS.tick}
+                style={{
+                  width: 26,
+                  height: 26,
+                  position: 'relative',
+                  justifyContent: 'flex-start',
+                  top: 14,
+                  left: 10,
+                }}
+              />
+            </View>
+            <View style={styles.smallContainer}>
+              <TransactionBar transactions={TransactionData[3]} />
+              <Image
+                source={ICONS.tick}
+                style={{
+                  width: 26,
+                  height: 26,
+                  position: 'relative',
+                  justifyContent: 'flex-start',
+                  top: 14,
+                  left: 10,
+                }}
+              />
+            </View>
           </View>
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GET: </Text>
-            <TransactionBar transactions={TransactionData[0]} />
-            <TransactionBar transactions={TransactionData[1]} />
+            <View style={styles.smallContainer}>
+              <TransactionBar transactions={TransactionData[0]} />
+              <Image
+                source={ICONS.bell}
+                style={{
+                  width: 26,
+                  height: 26,
+                  position: 'relative',
+                  justifyContent: 'flex-start',
+                  top: 14,
+                  left: 10,
+                }}
+              />
+            </View>
+            <View style={styles.smallContainer}>
+              <TransactionBar transactions={TransactionData[1]} />
+              <Image
+                source={ICONS.bell}
+                style={{
+                  width: 26,
+                  height: 26,
+                  position: 'relative',
+                  justifyContent: 'flex-start',
+                  top: 14,
+                  left: 10,
+                }}
+              />
+            </View>
           </View>
         </View>
 
@@ -258,8 +311,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 15,
     marginBottom: 20,
-    marginRight: 20,
-    marginLeft: 20,
+    marginRight: 5,
+    marginLeft: 5,
   },
 
   transactionText: {
@@ -275,5 +328,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 35,
     paddingHorizontal: 30,
+  },
+
+  smallContainer: {
+    flexDirection: 'row',
   },
 });
