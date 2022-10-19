@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { AxiosContext } from '../context/axios';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
