@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -44,8 +45,15 @@ func createRoomUser(roomID_str string, username string, userType string) (*model
 
 func inviteUser(usernames []string, roomID_str string) error {
 	db := database.DB
+	var user model.User
 
 	for _, username := range usernames {
+		if err := db.Table("users").Where("username = ?", username).First(&user).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return err
+			}
+		}
+
 		roomUser, err := createRoomUser(roomID_str, username, "attendee")
 		if err != nil || roomUser == nil {
 			return err
@@ -189,6 +197,9 @@ func CreateRoom(c *fiber.Ctx) error {
 	var usernames []string
 	json.Unmarshal([]byte(roomInput.Invitees), &usernames)
 	if err := inviteUser(usernames, roomID_str); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User doesn't exist", "data": err})
+		}
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in creating room_user record (invitees)", "data": err})
 	}
 

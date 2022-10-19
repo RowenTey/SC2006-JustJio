@@ -12,7 +12,6 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
 )
@@ -59,9 +58,8 @@ func SignUp(c *fiber.Ctx) error {
 	}
 	user.Password = hash
 
-	var mysqlErr *mysql.MySQLError
 	if err := db.Create(&user).Error; err != nil {
-		if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "User already exists", "data": err})
 		}
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})

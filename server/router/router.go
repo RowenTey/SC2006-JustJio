@@ -19,7 +19,6 @@ func Initalize(router *fiber.App) {
 		return c.Status(200).SendString("Hello, World!")
 	})
 
-	// default
 	router.Get("/swagger/*", swagger.HandlerDefault)
 
 	auth := router.Group("/auth")
