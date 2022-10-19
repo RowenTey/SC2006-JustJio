@@ -45,9 +45,9 @@ func createRoomUser(roomID_str string, username string, userType string) (*model
 
 func inviteUser(usernames []string, roomID_str string) error {
 	db := database.DB
-	var user model.User
 
 	for _, username := range usernames {
+		var user model.User
 		if err := db.Table("users").Where("username = ?", username).First(&user).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return err

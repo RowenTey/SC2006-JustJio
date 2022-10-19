@@ -39,6 +39,7 @@ const CustomInput = ({
             <Text
               style={{
                 color: 'red',
+                fontFamily: 'Poppins',
                 alignSelf: 'auto',
                 textAlign: 'center',
                 paddingHorizontal: 15,

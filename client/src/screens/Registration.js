@@ -25,9 +25,9 @@ const Signup = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    reset,
+    setError,
     watch,
-    formState: {},
+    formState: { errors },
   } = useForm({ initialRegistrationState });
   const { publicAxios } = useContext(AxiosContext);
   const [loading, setLoading] = useState(false);
@@ -55,13 +55,16 @@ const Signup = ({ navigation }) => {
       console.log('Signup failed', error);
       if (error.response) {
         console.log('Error response', error.response.data);
-        Alert.alert('Login failed', error.response.data.message, [
-          {
-            text: 'Retry',
-            onPress: () => reset(initialRegistrationState),
-            style: 'cancel',
-          },
-        ]);
+        switch (error.response.data.message) {
+          case 'User already exists':
+            setError('username', {
+              type: 'string',
+              message: 'Username taken!',
+            });
+            break;
+          default:
+            break;
+        }
       } else if (error.request) {
         console.log('Error request', error.request);
       }
