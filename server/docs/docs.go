@@ -137,7 +137,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/rooms/decline/{4}": {
+        "/rooms/decline/{roomId}": {
             "delete": {
                 "description": "Delete the room invitation in database",
                 "consumes": [
@@ -169,7 +169,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/rooms/invites/{invites}": {
+        "/rooms/invites/{roomId}": {
             "get": {
                 "description": "Get invitations by user's username",
                 "consumes": [
@@ -199,7 +199,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/rooms/join/{id}": {
+        "/rooms/join/{roomId}": {
             "patch": {
                 "description": "Set accepted to true in invitation database",
                 "consumes": [
@@ -234,7 +234,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/rooms/{id}": {
+        "/rooms/{roomId}": {
             "delete": {
                 "description": "Delete a room from database",
                 "consumes": [

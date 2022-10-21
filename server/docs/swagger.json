@@ -130,7 +130,7 @@
                 }
             }
         },
-        "/rooms/decline/{4}": {
+        "/rooms/decline/{roomId}": {
             "delete": {
                 "description": "Delete the room invitation in database",
                 "consumes": [
@@ -162,7 +162,7 @@
                 }
             }
         },
-        "/rooms/invites/{invites}": {
+        "/rooms/invites/{roomId}": {
             "get": {
                 "description": "Get invitations by user's username",
                 "consumes": [
@@ -192,7 +192,7 @@
                 }
             }
         },
-        "/rooms/join/{id}": {
+        "/rooms/join/{roomId}": {
             "patch": {
                 "description": "Set accepted to true in invitation database",
                 "consumes": [
@@ -227,7 +227,7 @@
                 }
             }
         },
-        "/rooms/{id}": {
+        "/rooms/{roomId}": {
             "delete": {
                 "description": "Delete a room from database",
                 "consumes": [

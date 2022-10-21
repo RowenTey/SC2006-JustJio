@@ -130,7 +130,7 @@ paths:
       summary: Create a room
       tags:
       - rooms
-  /rooms/{id}:
+  /rooms/{roomId}:
     delete:
       consumes:
       - application/json
@@ -178,7 +178,7 @@ paths:
       summary: Get all attendees for a room
       tags:
       - rooms
-  /rooms/decline/{4}:
+  /rooms/decline/{roomId}:
     delete:
       consumes:
       - application/json
@@ -199,7 +199,7 @@ paths:
       summary: Decline a room
       tags:
       - rooms
-  /rooms/invites/{invites}:
+  /rooms/invites/{roomId}:
     get:
       consumes:
       - application/json
@@ -219,7 +219,7 @@ paths:
       tags:
       - rooms
       - invites
-  /rooms/join/{id}:
+  /rooms/join/{roomId}:
     patch:
       consumes:
       - application/json
