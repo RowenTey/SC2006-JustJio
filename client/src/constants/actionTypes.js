@@ -9,3 +9,11 @@ export const CLOSE_ROOM = 'CLOSE_ROOM';
 export const JOIN_ROOM = 'JOIN_ROOM';
 export const DECLINE_ROOM = 'DECLINE_ROOM';
 export const LOGOUT = 'LOGOUT';
+
+/*
+  Transaction actions
+*/
+
+export const FETCH_TRANSACTION = 'FETCH_TRANSACTION';
+export const CREATE_TRANSACTION = 'CREATE_TRANSACTION';
+
