@@ -1,7 +1,5 @@
-import React, { createContext, useReducer, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import * as Keychain from 'react-native-keychain';
-import RoomReducer from '../reducers/roomReducer';
-import { LOGOUT } from '../constants/actionTypes';
 
 const AuthContext = createContext(null);
 const { Provider } = AuthContext;
