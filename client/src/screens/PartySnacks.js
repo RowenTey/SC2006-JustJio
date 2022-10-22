@@ -87,6 +87,13 @@ const PartySnacks = () => {
     Linking.openURL(url);
   };
 
+  const kmOrMeter = dist => {
+    if (dist >= 1000) {
+      dist = (dist/1000).toFixed(2) + "k";
+    }
+    return dist;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
@@ -135,7 +142,8 @@ const PartySnacks = () => {
             <View>
               <Text style={styles.details}>{item.name}</Text>
               <Text style={styles.distanceText}>
-                {getDistance(
+                {kmOrMeter(
+                getDistance(
                   {
                     latitude: location.latitude,
                     longitude: location.longitude,
@@ -144,6 +152,7 @@ const PartySnacks = () => {
                     latitude: item.geometry.location.lat,
                     longitude: item.geometry.location.lng,
                   },
+                )
                 )}
                 m away
               </Text>

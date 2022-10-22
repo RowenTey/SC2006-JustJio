@@ -36,6 +36,7 @@ const HomeTab = () => {
         tabBarInactiveBackgroundColor: '#E9D7FD',
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
       })}
       initialRouteName={Home}>
       <Tab.Screen name="Home" component={Home} />
