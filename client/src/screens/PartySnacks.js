@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Config from 'react-native-config';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import {getDistance, getPreciseDistance} from 'geolib';
+import { getDistance } from 'geolib';
 
 const PartySnacks = () => {
   const [places, setPlaces] = useState({
@@ -29,8 +29,6 @@ const PartySnacks = () => {
     let longitude = long;
     const order = 'distance';
     const keyword = 'supermarket';
-    let radMetter = 2 * 1000; // Search withing 2 KM radius
-    const types = ['supermarket'];
     const key = Config.GOOGLE_MAPS_API_KEY;
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
     const getSupermarketsUrl =
@@ -138,10 +136,17 @@ const PartySnacks = () => {
               <Text style={styles.details}>{item.name}</Text>
               <Text style={styles.distanceText}>
                 {getDistance(
-                  {latitude: location.latitude, longitude: location.longitude},
-                  {latitude: item.geometry.location.lat, longitude: item.geometry.location.lng},
-                )}m away
-                </Text>
+                  {
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  },
+                  {
+                    latitude: item.geometry.location.lat,
+                    longitude: item.geometry.location.lng,
+                  },
+                )}
+                m away
+              </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -210,7 +215,7 @@ const styles = StyleSheet.create({
   distanceText: {
     color: '#4E1164',
     fontWeight: '400',
-    fontSize: 12
+    fontSize: 12,
   },
 
   bottombar: {
