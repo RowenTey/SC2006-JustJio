@@ -42,7 +42,7 @@ func validUser(id string, password string) bool {
 
 // GetUser godoc
 // @Summary      Get a specific user
-// @Description  get user by ID
+// @Description  Get user by ID
 // @Tags         users
 // @Accept       json
 // @Produce      json
@@ -64,7 +64,7 @@ func GetUser(c *fiber.Ctx) error {
 
 // UpdateUser godoc
 // @Summary      Update user attribute
-// @Description  update user attribute with new value
+// @Description  Update user attribute with new value
 // @Tags         users
 // @Accept       json
 // @Produce      json
@@ -115,7 +115,7 @@ func UpdateUser(c *fiber.Ctx) error {
 
 // DeleteUser godoc
 // @Summary      Delete a user
-// @Description  delete a user account
+// @Description  Delete a user account
 // @Tags         users
 // @Accept       json
 // @Produce      json

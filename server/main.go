@@ -21,6 +21,7 @@ import (
 // @contact.name   Kai Seong
 // @contact.email  kaiseong02@gmail.com
 // @license.name  MIT
+// @license.url  https://opensource.org/licenses/MIT
 // @host      localhost:8080
 // @BasePath  /
 // @securityDefinitions.basic  BasicAuth

@@ -110,7 +110,7 @@ func GetRooms(c *fiber.Ctx) error {
 // GetRoomInvitations godoc
 // @Summary      Get all invitations for a user
 // @Description  Get invitations by user's username
-// @Tags         rooms, invites
+// @Tags         invites
 // @Accept       json
 // @Produce      json
 // @Success      200  {array}   model.Room
@@ -245,7 +245,7 @@ func CloseRoom(c *fiber.Ctx) error {
 // JoinRoom godoc
 // @Summary      Join a room
 // @Description  Set accepted to true in invitation database
-// @Tags         rooms, invites
+// @Tags         invites
 // @Accept       json
 // @Produce      json
 // @Param        roomID   path      int  true  "Room ID"
@@ -297,7 +297,7 @@ func JoinRoom(c *fiber.Ctx) error {
 // DeclineRoom godoc
 // @Summary      Decline a room
 // @Description  Delete the room invitation in database
-// @Tags         rooms, invites
+// @Tags         invites
 // @Accept       json
 // @Produce      json
 // @Param        roomID   path      int  true  "Room ID"

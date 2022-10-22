@@ -16,13 +16,120 @@ const docTemplate = `{
             "email": "kaiseong02@gmail.com"
         },
         "license": {
-            "name": "MIT"
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
         },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/bills": {
+            "get": {
+                "description": "Get transactions by user's username",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Get all transactions for a user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handlers.GetTransactions.TransactionResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/bills/pay": {
+            "patch": {
+                "description": "User pays a unsettled bill",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Pay a bill",
+                "parameters": [
+                    {
+                        "description": "Pay Bill Details",
+                        "name": "payBillRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/bills/{roomId}": {
+            "post": {
+                "description": "Generate transactions after splitting a bill",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Generate transactions for a bill in a specific room",
+                "parameters": [
+                    {
+                        "description": "Bill Details",
+                        "name": "billRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.GenerateTransactions.BillReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.GenerateTransactions.TransactionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/rooms": {
             "get": {
                 "description": "Get rooms by user's username",
@@ -147,7 +254,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "rooms"
+                    "invites"
                 ],
                 "summary": "Decline a room",
                 "parameters": [
@@ -179,7 +286,6 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "rooms",
                     "invites"
                 ],
                 "summary": "Get all invitations for a user",
@@ -209,7 +315,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "rooms"
+                    "invites"
                 ],
                 "summary": "Join a room",
                 "parameters": [
@@ -271,7 +377,7 @@ const docTemplate = `{
         },
         "/users/{id}": {
             "get": {
-                "description": "get user by ID",
+                "description": "Get user by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -304,7 +410,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "delete a user account",
+                "description": "Delete a user account",
                 "consumes": [
                     "application/json"
                 ],
@@ -339,7 +445,7 @@ const docTemplate = `{
                 }
             },
             "patch": {
-                "description": "update user attribute with new value",
+                "description": "Update user attribute with new value",
                 "consumes": [
                     "application/json"
                 ],
@@ -413,6 +519,57 @@ const docTemplate = `{
                 }
             }
         },
+        "handlers.GenerateTransactions.BillReq": {
+            "type": "object",
+            "properties": {
+                "amountToPay": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "payers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "roomId": {
+                    "type": "string"
+                },
+                "shouldPay": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.GenerateTransactions.TransactionResponse": {
+            "type": "object",
+            "properties": {
+                "bill": {
+                    "$ref": "#/definitions/model.Bill"
+                },
+                "transactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Transaction"
+                    }
+                }
+            }
+        },
+        "handlers.GetTransactions.TransactionResponse": {
+            "type": "object",
+            "properties": {
+                "bill": {
+                    "$ref": "#/definitions/model.Bill"
+                },
+                "transaction": {
+                    "$ref": "#/definitions/model.Transaction"
+                }
+            }
+        },
         "handlers.JoinRoom.RoomResponse": {
             "type": "object",
             "properties": {
@@ -435,6 +592,26 @@ const docTemplate = `{
                 },
                 "value": {
                     "type": "string"
+                }
+            }
+        },
+        "model.Bill": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "roomID": {
+                    "type": "integer"
                 }
             }
         },
@@ -466,6 +643,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "venue": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Transaction": {
+            "type": "object",
+            "properties": {
+                "billID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isPaid": {
+                    "type": "boolean"
+                },
+                "paidOn": {
+                    "type": "string"
+                },
+                "payee": {
+                    "type": "string"
+                },
+                "payer": {
                     "type": "string"
                 }
             }
