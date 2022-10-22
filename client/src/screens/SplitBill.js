@@ -101,7 +101,7 @@ const SplitBill = ({ navigation, route }) => {
       </View>
 
       <View style={styles.middle}>
-        <Text style={styles.billTopText}>Bill for: {room.name} </Text>
+        <Text style={styles.billTopText}>Bill for: {roomName} </Text>
         <View style={styles.topLineStyle} />
 
         <Text style={styles.billText}>Bill name: </Text>
