@@ -143,6 +143,10 @@ func GetTransactions(c *fiber.Ctx) error {
 		transactionResponse = append(transactionResponse, transactionResponseElement)
 	}
 
+	if len(transactionResponse) == 0 {
+		return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "No transactions", "data": nil})
+	}
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions found", "data": transactionResponse})
 }
 
