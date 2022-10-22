@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Pressable,
   Alert,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -25,7 +24,25 @@ const initialState = {
 
 const SplitBill = ({ navigation, route }) => {
   const { roomName } = route.params;
-  const calcAmountToPay = () => {}; //need to work on this after today's commit
+  var a = ["3", "6", "7", "8"];
+  var people = 0;
+  for(var i=0; i< a.length; i++)
+  {
+    people++;
+  }
+  
+  var eachAmount = 0;
+  var billAmount = 0;
+
+  const calcAmountToPay = () => {
+    billAmount = billData.amount;
+    eachAmount = billAmount / people;
+    eachAmount = eachAmount.toFixed(2);
+    console.log("Total amount each person pays "+eachAmount);
+    //need to send to the Home Page and update the new amount to pay
+
+
+  }; //need to work on this after today's commit
 
   const {
     control,
@@ -47,6 +64,7 @@ const SplitBill = ({ navigation, route }) => {
 
     try {
       console.log('Split Bill Data', billData);
+      calcAmountToPay();
       const response = await authAxios.post('/bills', billData);
       console.log('Split Bill Successfully', response.data);
       setLoading(false);
@@ -71,7 +89,7 @@ const SplitBill = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.containerMain}>
       <View style={styles.title}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
@@ -139,7 +157,7 @@ const styles = StyleSheet.create({
     bottom: -10,
   },
 
-  container: {
+  containerMain: {
     //the background colour of the entire application
     flex: 1,
     justifyContent: 'space-between',
