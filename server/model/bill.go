@@ -1,11 +1,11 @@
 package model
 
 type Bill struct {
-	ID     uint   `gorm:"primaryKey"`
-	Name   string `gorm:"not null" json:"name"`
-	Amount int    `gorm:"not null" json:"amount"`
-	Date   string `gorm:"not null" json:"date"`
-	RoomID uint   `gorm:"not null" json:"roomID"`
+	ID     uint    `gorm:"primaryKey"`
+	Name   string  `gorm:"not null" json:"name"`
+	Amount float32 `gorm:"not null" json:"amount"`
+	Date   string  `gorm:"not null" json:"date"`
+	RoomID uint    `gorm:"not null" json:"roomID"`
 }
 
 type Transaction struct {

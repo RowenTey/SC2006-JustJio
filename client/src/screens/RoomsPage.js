@@ -89,7 +89,7 @@ const RoomsPage = ({ navigation, route }) => {
             ]}
             onPress={() =>
               navigation.navigate('SplitBillMembers', {
-                payees: attendees,
+                payers: attendees,
                 room,
               })
             }>

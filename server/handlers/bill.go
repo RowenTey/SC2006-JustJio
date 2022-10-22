@@ -14,7 +14,7 @@ import (
 	"gorm.io/datatypes"
 )
 
-func createBill(billName string, amount int, date string, roomID_str string) (*model.Bill, error) {
+func createBill(billName string, amount float32, date string, roomID_str string) (*model.Bill, error) {
 	db := database.DB
 
 	roomID_uint32, err := strconv.ParseUint(roomID_str, 10, 32)
@@ -71,7 +71,7 @@ func GenerateTransactions(c *fiber.Ctx) error {
 		Name        string         `json:"name"`
 		ShouldPay   string         `json:"shouldPay"`
 		Payers      datatypes.JSON `json:"payers" swaggertype:"array,string"`
-		AmountToPay int            `json:"amountToPay"`
+		AmountToPay float32        `json:"amountToPay"`
 		Date        string         `json:"date"`
 		RoomID      string         `json:"roomId"`
 	}
@@ -103,7 +103,7 @@ func GenerateTransactions(c *fiber.Ctx) error {
 		Bill:         *bill,
 	}
 
-	fmt.Println("Transaction generated for roomID " + bills.RoomID + " , everyone should pay $" + strconv.Itoa(bills.AmountToPay) + " to " + bills.ShouldPay)
+	fmt.Println("Transaction generated for roomID " + bills.RoomID + ", everyone should pay $" + fmt.Sprintf("%f", bills.AmountToPay) + " to " + bills.ShouldPay)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions generated succesfully", "data": transactionResponse})
 }
 

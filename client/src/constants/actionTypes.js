@@ -13,7 +13,5 @@ export const LOGOUT = 'LOGOUT';
 /*
   Transaction actions
 */
-
 export const FETCH_TRANSACTION = 'FETCH_TRANSACTION';
 export const CREATE_TRANSACTION = 'CREATE_TRANSACTION';
-

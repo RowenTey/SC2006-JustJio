@@ -15,9 +15,9 @@ const ICONS = {
 };
 
 const SplitBillMembers = ({ navigation, route }) => {
-  const { payees, room } = route.params;
+  const { payers, room } = route.params;
 
-  var toPay = [...payees];
+  var toPay = [...payers];
 
   const handleUncheck = (name, shouldRemove) => {
     if (shouldRemove) {
@@ -45,7 +45,7 @@ const SplitBillMembers = ({ navigation, route }) => {
           <Text style={styles.list}>List of Payers:</Text>
           <View style={styles.memberBox}>
             <FlatList
-              data={payees}
+              data={payers}
               renderItem={({ item }) => (
                 <Box name={item} handleUncheck={handleUncheck} />
               )}
@@ -56,7 +56,7 @@ const SplitBillMembers = ({ navigation, route }) => {
         <TouchableOpacity
           style={styles.confirm}
           onPress={() =>
-            navigation.navigate('SplitBill', { payees: toPay, room })
+            navigation.navigate('SplitBill', { payers: toPay, room })
           }>
           <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>

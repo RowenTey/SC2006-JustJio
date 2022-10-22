@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
 import {
   StyleSheet,
@@ -8,10 +9,11 @@ import {
   Alert,
   KeyboardAvoidingView,
 } from 'react-native';
-import { AxiosContext } from '../context/axios';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
+import { UserContext } from '../context/user';
+import { TransactionContext } from '../context/transaction';
 
 var billData = {
   billname: '',
@@ -23,55 +25,43 @@ const initialState = {
 };
 
 const SplitBill = ({ navigation, route }) => {
-  const { roomName } = route.params;
-  var a = ["3", "6", "7", "8"];
-  var people = 0;
-  for(var i=0; i< a.length; i++)
-  {
-    people++;
-  }
-  
-  var eachAmount = 0;
-  var billAmount = 0;
-
-  const calcAmountToPay = () => {
-    billAmount = billData.amount;
-    eachAmount = billAmount / people;
-    eachAmount = eachAmount.toFixed(2);
-    console.log("Total amount each person pays "+eachAmount);
-    //need to send to the Home Page and update the new amount to pay
-
-
-  }; //need to work on this after today's commit
+  const { payers, room } = route.params;
 
   const {
     control,
     handleSubmit,
     formState: {},
   } = useForm({ initialState });
-
-  const { authAxios } = useContext(AxiosContext);
+  const { createTransactions } = useContext(TransactionContext);
+  const [user, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+
+  const calcAmountToPay = amount => {
+    return (amount / payers.length).toFixed(2);
+  };
 
   const onSplitBill = async formData => {
     setLoading(true);
-    let { billname, amount } = formData;
+    let { billName, amount } = formData;
+    let curDate = new Date();
 
     billData = {
-      billname,
-      amount,
+      name: billName,
+      amountToPay: parseFloat(calcAmountToPay(amount)),
+      roomId: room.ID.toString(),
+      shouldPay: user.username,
+      date: curDate.toDateString(),
+      payers,
     };
 
     try {
       console.log('Split Bill Data', billData);
-      calcAmountToPay();
-      const response = await authAxios.post('/bills', billData);
-      console.log('Split Bill Successfully', response.data);
+      await createTransactions(billData, room.ID);
       setLoading(false);
       onSplitBillSuccess();
     } catch (error) {
       setLoading(false);
-      console.log('Failed to create bill', error);
+      console.log('Failed to create transactions', error);
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
@@ -101,7 +91,7 @@ const SplitBill = ({ navigation, route }) => {
       </View>
 
       <View style={styles.middle}>
-        <Text style={styles.billTopText}>Bill for: {roomName} </Text>
+        <Text style={styles.billTopText}>Bill for: {room.name} </Text>
         <View style={styles.topLineStyle} />
 
         <Text style={styles.billText}>Bill name: </Text>

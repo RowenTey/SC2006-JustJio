@@ -45,23 +45,35 @@ const TransactionProvider = ({ children }) => {
     }
   };
 
-  const createTransactions = async transactionData => {
+  const createTransactions = async (transactionData, roomId) => {
     try {
       dispatch({
         type: START_LOADING,
       });
 
       const { data: response } = await authAxios.post(
-        '/bills',
+        `/bills/${roomId}`,
         transactionData,
       );
-      const updatedTransactions = state.transactions.concat(response.data);
-      const updatedTotal = updatedTransactions.length;
+      console.log('Split bill successfully!', JSON.stringify(response));
+      const responseTransactions = response.data.transactions;
+      const responseBill = response.data.bill;
+      const currentTransaction = [];
+      for (let i = 0; i < responseTransactions.length; i++) {
+        const entry = {
+          transaction: responseTransactions[i],
+          bill: responseBill,
+        };
+        console.log('Entry', JSON.stringify(entry));
+        currentTransaction.push(entry);
+      }
+      console.log('currentTransaction', currentTransaction);
+      const updatedTransactions = state.transactions.concat(currentTransaction);
+      console.log('updatedTransactions', updatedTransactions);
       dispatch({
         type: CREATE_TRANSACTION,
         payload: {
           transactions: updatedTransactions,
-          total: updatedTotal,
         },
       });
 
@@ -69,12 +81,9 @@ const TransactionProvider = ({ children }) => {
         type: END_LOADING,
       });
     } catch (error) {
-      console.log('Failed to create transaction', error);
+      console.log('Failed to split bill', error);
       if (error.response) {
         console.log('Error response', error.response.data);
-        if (error.response.data.message === "User doesn't exist") {
-          throw new Error("User doesn't exist");
-        }
       } else if (error.request) {
         console.log('Error request', error.request);
       }
