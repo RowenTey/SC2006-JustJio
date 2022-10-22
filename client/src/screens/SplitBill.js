@@ -1,14 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Pressable,
-  Alert,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { AxiosContext } from '../context/axios';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
@@ -24,7 +15,7 @@ const initialState = {
 };
 
 const SplitBill = ({ navigation, route }) => {
-  const { roomName } = route.params;
+  const { room } = route.params;
   const calcAmountToPay = () => {}; //need to work on this after today's commit
 
   const {
@@ -83,8 +74,9 @@ const SplitBill = ({ navigation, route }) => {
       </View>
 
       <View style={styles.middle}>
-        <Text style={styles.billTopText}>Bill for: {roomName} </Text>
+        <Text style={styles.billTopText}>Bill for: {room.name} </Text>
         <View style={styles.topLineStyle} />
+
         <Text style={styles.billText}>Bill name: </Text>
         <CustomInput
           placeholder={''}
@@ -92,9 +84,9 @@ const SplitBill = ({ navigation, route }) => {
           name="billName"
           rules={{ required: 'Bill name is required' }}
           control={control}
-          textStyles={styles.billText}
+          textStyles={styles.input}
         />
-        <View style={styles.lineStyle} />
+
         <Text style={styles.billText}>Amount to split: </Text>
         <CustomInput
           placeholder={''}
@@ -102,9 +94,8 @@ const SplitBill = ({ navigation, route }) => {
           name="amount"
           rules={{ required: 'Amount is required' }}
           control={control}
-          textStyles={styles.billText}
+          textStyles={styles.input}
         />
-        <View style={styles.lineStyle} />
         <View style={styles.confirm}>
           <TouchableOpacity onPress={handleSubmit(onSplitBill)}>
             <Text style={styles.buttonText}>Split Bill</Text>
@@ -161,7 +152,7 @@ const styles = StyleSheet.create({
     // back arrow
     position: 'absolute',
     top: -1,
-    right: 100,
+    right: 90,
   },
 
   billText: {
@@ -172,7 +163,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     color: '#4E1164',
-    marginLeft: 30,
+    marginLeft: 45,
+    marginVertical: 8,
+  },
+
+  input: {
+    left: 45,
   },
 
   billTopText: {
@@ -186,16 +182,16 @@ const styles = StyleSheet.create({
   topLineStyle: {
     borderWidth: 1,
     borderColor: '#4E1164',
-    margin: 10,
-    width: 383,
+    marginVertical: 10,
+    width: 500,
   },
 
   lineStyle: {
     borderWidth: 1,
     borderColor: '#000000',
     margin: 5,
-    marginLeft: 12,
-    width: 298,
+    marginLeft: 45,
+    width: 300,
     alignSelf: 'center',
   },
 
@@ -225,14 +221,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'center',
-    width: '35%',
+    width: '45%',
     minHeight: '9%',
     maxHeight: '9%',
     position: 'relative',
-    top: 10,
+    top: 25,
     backgroundColor: '#4E1164',
     borderRadius: 10,
-    left: 90,
+    left: 23,
   },
 
   buttonText: {

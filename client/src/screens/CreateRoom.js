@@ -163,7 +163,7 @@ const CreateRoom = ({ navigation }) => {
         />
 
         <CustomInput
-          placeholder={'Invitees: (usernames)'}
+          placeholder={'Invitees: (username1,username2)'}
           placeholderTextColor="#000"
           name="invitees"
           rules={{ required: 'Invitee is required' }}

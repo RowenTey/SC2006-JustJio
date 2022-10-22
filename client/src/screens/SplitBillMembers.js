@@ -1,4 +1,5 @@
-import * as React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -13,17 +14,20 @@ const ICONS = {
   tick: require('../../assets/images/tick.png'),
 };
 
-import { Checkbox } from 'react-native-paper';
-
-let greytick = 0; //not selected
-let blacktick = 1; //selected
-tintColor : 'grey' //use this to transform black to grey when clicking and unclicking
-
-var array = ['amabel123','zh123','ks123'];
-
-
 const SplitBillMembers = ({ navigation, route }) => {
-  const { payees } = route.params;
+  const { payees, room } = route.params;
+
+  var toPay = [...payees];
+
+  const handleUncheck = (name, shouldRemove) => {
+    if (shouldRemove) {
+      toPay = toPay.filter(payee => payee !== name);
+    } else {
+      toPay = toPay.concat(name);
+    }
+    console.log(toPay);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -39,11 +43,21 @@ const SplitBillMembers = ({ navigation, route }) => {
       <View style={styles.middle}>
         <View style={styles.memberList}>
           <Text style={styles.list}>List of Payers:</Text>
-          <GuestList list={payees} />
+          <View style={styles.memberBox}>
+            <FlatList
+              data={payees}
+              renderItem={({ item }) => (
+                <Box name={item} handleUncheck={handleUncheck} />
+              )}
+              keyExtractor={(item, index) => index}
+            />
+          </View>
         </View>
         <TouchableOpacity
           style={styles.confirm}
-          onPress={() => navigation.navigate('SplitBill' , {payees : array })}>
+          onPress={() =>
+            navigation.navigate('SplitBill', { payees: toPay, room })
+          }>
           <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
@@ -51,46 +65,43 @@ const SplitBillMembers = ({ navigation, route }) => {
   );
 };
 
-const GuestList = props => {
-  const renderItem = ({ item }) => <Box name={item} />;
-  return (
-    <View style={styles.memberBox}>
-      <FlatList
-        data={props.list}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index}
-      />
-    </View>
-  );
-};
+const Box = ({ name, handleUncheck }) => {
+  const [check, setCheck] = useState(true);
 
-const Box = props => {
-  const [check, setcheck] = React.useState(false);
+  const onUncheck = () => {
+    setCheck(!check);
+    if (!check) {
+      return handleUncheck(name, false);
+    } else {
+      return handleUncheck(name, true);
+    }
+  };
+
   return (
-    <View style={styles.indName}>
-      <Image
-        source={{
-          width: 35,
-          height: 35,
-          uri: 'https://i.pinimg.com/736x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg',
-        }}
-      />
-      <Image source={ICONS.tick} 
-      style={{
-      width: 26,
-      height: 26,
-      position: 'absolute',
-      top: 14,
-      right: 20,
-      }}
-      />
-      <Pressable onPress={() => setcheck(!check)}>
-                            <Image source = {ICONS.tick} 
-                                name={check ? 'checkbox-marked' : 'checkbox-blank-outline'} color="#000" 
-                                style={{width: 26, height: 26,position:'absolute', top:14, right:20, }}/>
-                        </Pressable>
-      <Text style={styles.name}>{props.name}</Text>
-    </View>
+    <Pressable onPress={onUncheck}>
+      <View style={styles.indName}>
+        <Image
+          source={{
+            width: 35,
+            height: 35,
+            uri: 'https://i.pinimg.com/736x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg',
+          }}
+        />
+        <Text style={styles.name}>{name}</Text>
+        {check && (
+          <Image
+            source={ICONS.tick}
+            style={{
+              width: 26,
+              height: 26,
+              position: 'absolute',
+              top: 14,
+              right: 20,
+            }}
+          />
+        )}
+      </View>
+    </Pressable>
   );
 };
 
@@ -111,7 +122,7 @@ const styles = StyleSheet.create({
     // back arrow
     position: 'relative',
     justifyContent: 'flex-start',
-    top: 8,
+    top: 6,
     right: 100,
   },
 
@@ -189,12 +200,11 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 
-  tickBox: 
-  {
+  tickBox: {
     width: 26,
     height: 26,
     position: 'absolute',
-    top:10,
+    top: 10,
     right: 20,
   },
 

@@ -23,6 +23,10 @@ const RoomsPage = ({ navigation, route }) => {
   const { closeRoom } = useContext(RoomContext);
   const { room } = route.params;
 
+  const [day, month, year] = room.date.split('/');
+  const date = new Date(`${year}-${month}-${day}`);
+  const currentDate = new Date();
+
   const onCloseRoom = async roomId => {
     setLoading(true);
     await closeRoom(roomId);
@@ -66,7 +70,9 @@ const RoomsPage = ({ navigation, route }) => {
 
       <View style={styles.middle}>
         <View style={styles.event}>
-          <Text style={styles.upcomingEvent}>Upcoming Event</Text>
+          <Text style={styles.upcomingEvent}>
+            {currentDate > date ? 'Passed' : 'Upcoming'} Event
+          </Text>
           <EventDetail room={room} />
         </View>
         <View style={styles.memberList}>
@@ -84,7 +90,7 @@ const RoomsPage = ({ navigation, route }) => {
             onPress={() =>
               navigation.navigate('SplitBillMembers', {
                 payees: attendees,
-                roomName: room.name,
+                room,
               })
             }>
             <Text style={styles.buttonText}>Split Bill</Text>
@@ -109,7 +115,7 @@ const RoomsPage = ({ navigation, route }) => {
           <View style={styles.qrCode}>
             <Text style={styles.urlText}>QR Code:</Text>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.buttonText}>QRCODE</Text>
+              <Text style={styles.QRText}>QRCODE</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -239,6 +245,7 @@ const styles = StyleSheet.create({
   back: {
     // back arrow
     position: 'relative',
+    top: 3,
     justifyContent: 'flex-start',
   },
 
@@ -510,6 +517,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  QRText: {
+    fontSize: 20,
+    marginTop: -5,
+    fontFamily: 'Poppins-Bold',
+    alignItems: 'center',
+  },
+
   urlQrCode: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -519,6 +533,10 @@ const styles = StyleSheet.create({
     maxHeight: '13%',
     position: 'relative',
     marginTop: 3,
+  },
+
+  qrCode: {
+    marginTop: 10,
   },
 
   urlText: {
