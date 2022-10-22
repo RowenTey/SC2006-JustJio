@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
   StyleSheet,
   View,
@@ -6,11 +6,24 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
+
+const ICONS = {
+  tick: require('../../assets/images/tick.png'),
+};
+
+import { Checkbox } from 'react-native-paper';
+
+let greytick = 0; //not selected
+let blacktick = 1; //selected
+tintColor : 'grey' //use this to transform black to grey when clicking and unclicking
+
+var array = ['amabel123','zh123','ks123'];
+
 
 const SplitBillMembers = ({ navigation, route }) => {
   const { payees } = route.params;
-
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -30,7 +43,7 @@ const SplitBillMembers = ({ navigation, route }) => {
         </View>
         <TouchableOpacity
           style={styles.confirm}
-          onPress={() => navigation.navigate('SplitBill')}>
+          onPress={() => navigation.navigate('SplitBill' , {payees : array })}>
           <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
@@ -52,6 +65,7 @@ const GuestList = props => {
 };
 
 const Box = props => {
+  const [check, setcheck] = React.useState(false);
   return (
     <View style={styles.indName}>
       <Image
@@ -61,6 +75,20 @@ const Box = props => {
           uri: 'https://i.pinimg.com/736x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg',
         }}
       />
+      <Image source={ICONS.tick} 
+      style={{
+      width: 26,
+      height: 26,
+      position: 'absolute',
+      top: 14,
+      right: 20,
+      }}
+      />
+      <Pressable onPress={() => setcheck(!check)}>
+                            <Image source = {ICONS.tick} 
+                                name={check ? 'checkbox-marked' : 'checkbox-blank-outline'} color="#000" 
+                                style={{width: 26, height: 26,position:'absolute', top:14, right:20, }}/>
+                        </Pressable>
       <Text style={styles.name}>{props.name}</Text>
     </View>
   );
@@ -159,6 +187,15 @@ const styles = StyleSheet.create({
     margin: 5,
     top: 5,
     bottom: 5,
+  },
+
+  tickBox: 
+  {
+    width: 26,
+    height: 26,
+    position: 'absolute',
+    top:10,
+    right: 20,
   },
 
   count: {
