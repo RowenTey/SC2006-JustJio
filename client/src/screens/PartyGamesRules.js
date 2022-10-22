@@ -1,7 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 
-const MusicalChairs = ({ navigation }) => {
+const PartyGamesRules = ({ navigation, route }) => {
+
+  const { rule } = route.params;
+
+  console.log('Hello', rule.imageURL); 
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -11,7 +16,7 @@ const MusicalChairs = ({ navigation }) => {
             source={require('../../assets/images/back.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.header}>Musical Chairs</Text>
+        <Text style={styles.header}>{rule.name}</Text>
       </View>
 
       <View style={styles.middle}>
@@ -22,23 +27,14 @@ const MusicalChairs = ({ navigation }) => {
             source={{
               width: 240,
               height: 120,
-              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
+              uri: rule.imageURL,
             }}
           />
         </View>
 
         <ScrollView style={styles.rulesContainer}>
             <Text style={styles.rulesText}>
-            Okay, it's a popular party game for kids, but adults can also get in 
-            on the fun. Set up chairs (or seat cushions) in a circle facing outward, 
-            with enough seating for everyone playing, minus one. Designate one person 
-            as the music player and have everyone else stand in a circle around the 
-            circle of seats. When the music starts, walk around the seats; everyone 
-            must find a seat when the music ends. Whoever doesn't is out. Remove one 
-            more chair and begin again, until two people are fighting for one seat. 
-            To make musical chairs more interesting, add your own rules. Allow people 
-            to sit on top of each other (as long as their feet are off the floor), for 
-            example, or make your own alterations.
+            {rule.description}
             </Text>
         </ScrollView>
 
@@ -47,7 +43,7 @@ const MusicalChairs = ({ navigation }) => {
   );
 };
 
-export default MusicalChairs;
+export default PartyGamesRules;
 
 const styles = StyleSheet.create({
   container: {
@@ -58,7 +54,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    marginHorizontal: 60,
+    marginHorizontal: 80,
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -89,7 +85,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    fontSize: 25,
+    fontSize: 20,
     top: 8,
     fontFamily: 'Poppins-Bold',
     alignItems: 'center',
@@ -118,9 +114,8 @@ const styles = StyleSheet.create({
 
   back: {
     // back arrow
-    position: 'relative',
-    justifyContent: 'flex-start',
-    top: 6,
-    right: 70,
+    position: 'absolute',
+    top: -5,
+    right: 100,
   },
 });
