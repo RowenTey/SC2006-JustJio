@@ -16,6 +16,7 @@ import Spinner from '../components/Spinner.js';
 import { initialUserState, UserContext } from '../context/user.js';
 import { AuthContext } from '../context/auth.js';
 import { RoomContext } from '../context/room.js';
+import { TransactionContext } from '../context/transaction.js';
 
 const ICONS = {
   add: require('../../assets/images/add.png'),
@@ -31,11 +32,17 @@ const ICONS = {
 const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
-  const { rooms, isLoading, fetchRooms } = useContext(RoomContext);
+  const { rooms , isLoading, fetchRooms } = useContext(RoomContext);
+  const { transactions , fetchTransactions } = useContext(TransactionContext);
 
   useEffect(() => {
     fetchRooms();
   }, []);
+
+
+
+
+  
 
   const handleLogout = async () => {
     await logout();

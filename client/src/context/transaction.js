@@ -10,7 +10,7 @@ import {
 import { AxiosContext } from './axios';
 import TransactionReducer, { initialTransactionState } from '../reducers/transactionReducers';
 
-const TransactionContext = createContext(null);
+const TransactionContext = createContext(null); 
 const { Provider } = TransactionContext;
 
 
@@ -24,7 +24,7 @@ const TransactionProvider = ({ children }) => {
         dispatch({
           type: START_LOADING,
         });
-        const { data: response } = await authAxios.get('/transactions');
+        const { data: response } = await authAxios.get('/bills');
         dispatch({
           type: FETCH_TRANSACTION,
           payload: response,
@@ -48,7 +48,7 @@ const TransactionProvider = ({ children }) => {
           type: START_LOADING,
         });
   
-        const { data: response } = await authAxios.post('/transactions', TransactionData);
+        const { data: response } = await authAxios.post('/bills', TransactionData);
         const updatedTransactions = state.transactions.concat(response.data);
         const updatedTotal = updatedTransactions.length;
         dispatch({
