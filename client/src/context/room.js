@@ -162,7 +162,7 @@ const RoomProvider = ({ children }) => {
   const value = {
     total: state.total,
     rooms: state.rooms,
-    isLoading: state.isLoading,
+    isRoomsLoading: state.isLoading,
     fetchRooms,
     createRoom,
     joinRoom,

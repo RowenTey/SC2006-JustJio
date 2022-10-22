@@ -32,7 +32,7 @@ const ICONS = {
 const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
-  const { rooms, isLoading, fetchRooms } = useContext(RoomContext);
+  const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
   const { transactions, fetchTransactions } = useContext(TransactionContext);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Home = ({ navigation }) => {
     navigation.navigate('Signin');
   };
 
-  if (isLoading) {
+  if (isRoomsLoading) {
     return <Spinner />;
   }
 

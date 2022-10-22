@@ -84,7 +84,7 @@ const TransactionProvider = ({ children }) => {
   const value = {
     total: state.total,
     transactions: state.transactions,
-    isLoading: state.isLoading,
+    isTransactionsLoading: state.isLoading,
     createTransactions,
     fetchTransactions,
   };
