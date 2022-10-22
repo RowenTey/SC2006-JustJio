@@ -8,7 +8,6 @@ import {
 
 export const initialTransactionState = {
   isLoading: false,
-  total: 0,
   transactions: [],
 };
 
@@ -29,13 +28,12 @@ const TransactionReducer = (state, action) => {
       return {
         ...state,
         transactions: payload.data,
-        total: payload.data.length || 0,
       };
     case CREATE_TRANSACTION:
       return {
         ...state,
-        // transactions: payload.rooms,
-        // total: payload.total,
+        transactions: payload.rooms,
+        total: payload.total,
       };
     case LOGOUT:
       return initialTransactionState;
