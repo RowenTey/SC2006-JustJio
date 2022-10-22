@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Linking,
 } from 'react-native';
 import Config from 'react-native-config';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -71,6 +72,21 @@ const GetSupermarkets = () => {
     });
     await fetchNearestPlacesFromGoogle(lat, long);
   };
+  
+  const openMaps = (item) => {
+    const lati = item.geometry.location.lat;
+    const longi = item.geometry.location.lng;
+    console.log(lati, longi);
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    const latLng = `${lati},${longi}`;
+    const label = 'Custom Label';
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`
+    });
+
+    Linking.openURL(url);
+  };
 
   return (
     <View style={styles.container}>
@@ -108,7 +124,7 @@ const GetSupermarkets = () => {
         contentContainerStyle={{ alignItems: 'center' }}
         keyExtractor={item => item.place_id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.box}>
+          <TouchableOpacity style={styles.box} onPress={() => openMaps(item)}>
             <Image
               style={styles.images}
               source={{
