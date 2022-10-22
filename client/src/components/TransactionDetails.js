@@ -18,6 +18,7 @@ const ICONS = {
   bell: require('../../assets/images/bell.png'),
   tick: require('../../assets/images/tick.png'),
 };
+import { View, StyleSheet, Text, Image } from 'react-native';
 
 const TransactionBar = ({ transactions , navigation , icon , name }) => {
   console.log(transactions.transaction.payer)

@@ -23,7 +23,6 @@ const initialCreateRoomState = {
 };
 
 const CreateRoom = ({ navigation }) => {
-  //still need to define logic of ensuring have event name, date , time and venu
   const DATE_REGEX =
     /^([1-9]|0[1-9]|[12][0-9]|3[0-1])\/([1-9]|0[1-9]|1[0-2])\/\d{4}$/;
   const TIME_REGEX = /((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/;
@@ -163,7 +162,7 @@ const CreateRoom = ({ navigation }) => {
         />
 
         <CustomInput
-          placeholder={'Invitees: (usernames)'}
+          placeholder={'Invitees: (username1,username2)'}
           placeholderTextColor="#000"
           name="invitees"
           rules={{ required: 'Invitee is required' }}

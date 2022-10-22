@@ -32,7 +32,7 @@ const ICONS = {
 const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
-  const { rooms, isLoading, fetchRooms } = useContext(RoomContext);
+  const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
   const { transactions, fetchTransactions } = useContext(TransactionContext);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const Home = ({ navigation }) => {
   };
   const duplicateTransactions = transactions;
 
-  if (isLoading) {
+  if (isRoomsLoading) {
     return <Spinner />;
   }
   console.log(duplicateTransactions);

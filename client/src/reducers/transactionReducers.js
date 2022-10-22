@@ -32,8 +32,7 @@ const TransactionReducer = (state, action) => {
     case CREATE_TRANSACTION:
       return {
         ...state,
-        transactions: payload.rooms,
-        total: payload.total,
+        transactions: payload.transactions,
       };
     case LOGOUT:
       return initialTransactionState;

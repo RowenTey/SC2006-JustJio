@@ -11,8 +11,6 @@ import {
 const PartyGamesRules = ({ navigation, route }) => {
   const { rule } = route.params;
 
-  console.log('Hello', rule.imageURL);
-
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -66,8 +64,8 @@ const styles = StyleSheet.create({
   rulesContainer: {
     marginHorizontal: 80,
     marginVertical: 30,
-    minHeight: '55%',
-    maxHeight: '55%',
+    minHeight: '65%',
+    maxHeight: '65%',
     flexDirection: 'column',
     backgroundColor: 'white',
     borderRadius: 15,
@@ -87,11 +85,10 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    fontSize: 20,
-    top: 8,
+    fontSize: 25,
+    top: 5,
+    marginLeft: 'auto',
     fontFamily: 'Poppins-Bold',
-    alignItems: 'center',
-    justifyContent: 'center',
     color: '#4E1164',
   },
 
@@ -99,10 +96,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#E9D7FD',
     minHeight: '10%',
     maxHeight: '10%',
+    width: '100%',
+    paddingHorizontal: 20,
   },
 
   middle: {
@@ -116,8 +115,8 @@ const styles = StyleSheet.create({
 
   back: {
     // back arrow
-    position: 'absolute',
-    top: -5,
-    right: 100,
+    position: 'relative',
+    top: 2,
+    justifyContent: 'flex-start',
   },
 });
