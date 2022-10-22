@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Config from 'react-native-config';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {getDistance, getPreciseDistance} from 'geolib';
 
 const PartySnacks = () => {
   const [places, setPlaces] = useState({
@@ -74,7 +75,6 @@ const PartySnacks = () => {
   const openMaps = item => {
     const lati = item.geometry.location.lat;
     const longi = item.geometry.location.lng;
-    console.log(lati, longi);
     const scheme = Platform.select({
       ios: 'maps:0,0?q=',
       android: 'geo:0,0?q=',
@@ -136,6 +136,12 @@ const PartySnacks = () => {
             />
             <View>
               <Text style={styles.details}>{item.name}</Text>
+              <Text style={styles.distanceText}>
+                {getDistance(
+                  {latitude: location.latitude, longitude: location.longitude},
+                  {latitude: item.geometry.location.lat, longitude: item.geometry.location.lng},
+                )}m away
+                </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -199,6 +205,12 @@ const styles = StyleSheet.create({
   smallText: {
     color: '#4E1164',
     fontWeight: '400',
+  },
+
+  distanceText: {
+    color: '#4E1164',
+    fontWeight: '400',
+    fontSize: 12
   },
 
   bottombar: {
