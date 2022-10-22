@@ -45,11 +45,12 @@ const Home = ({ navigation }) => {
     setUser(initialUserState);
     navigation.navigate('Signin');
   };
+  const duplicateTransactions = transactions;
 
   if (isLoading) {
     return <Spinner />;
   }
-
+  console.log(duplicateTransactions);
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -72,64 +73,37 @@ const Home = ({ navigation }) => {
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GIVE: </Text>
             <View style={styles.smallContainer}>
-              <TransactionBar transactions={TransactionData[4]} />
-              <Image
-                source={ICONS.tick}
-                style={{
-                  width: 26,
-                  height: 26,
-                  position: 'relative',
-                  justifyContent: 'flex-start',
-                  top: 14,
-                  left: 10,
-                }}
+
+              <FlatList
+              data = {transactions}
+              renderItem={({ item }) => (
+                item.transaction.payer != user.username ? 
+                <TransactionBar transactions={item} icon = {ICONS.tick} navigation ={navigation} name = {item.transaction.payer} />
+                
+                : null 
+              )}
+              key={'_'}
+              keyExtractor={item => item.id}
               />
+
             </View>
-            <View style={styles.smallContainer}>
-              <TransactionBar transactions={TransactionData[3]} />
-              <Image
-                source={ICONS.tick}
-                style={{
-                  width: 26,
-                  height: 26,
-                  position: 'relative',
-                  justifyContent: 'flex-start',
-                  top: 14,
-                  left: 10,
-                }}
-              />
-            </View>
+            
           </View>
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GET: </Text>
             <View style={styles.smallContainer}>
-              <TransactionBar transactions={TransactionData[0]} />
-              <Image
-                source={ICONS.bell}
-                style={{
-                  width: 26,
-                  height: 26,
-                  position: 'relative',
-                  justifyContent: 'flex-start',
-                  top: 14,
-                  left: 10,
-                }}
+              <FlatList
+              data = {duplicateTransactions}
+              renderItem={({ item }) => (
+                item.transaction.payer == user.username ? 
+                <TransactionBar transactions={item} icon = {ICONS.bell} navigation={navigation} name = {item.transaction.payee} />
+                : null
+              )}
+              key={'_'}
+              keyExtractor={item => item.id}
               />
             </View>
-            <View style={styles.smallContainer}>
-              <TransactionBar transactions={TransactionData[1]} />
-              <Image
-                source={ICONS.bell}
-                style={{
-                  width: 26,
-                  height: 26,
-                  position: 'relative',
-                  justifyContent: 'flex-start',
-                  top: 14,
-                  left: 10,
-                }}
-              />
-            </View>
+            
           </View>
         </View>
 
@@ -335,5 +309,7 @@ const styles = StyleSheet.create({
 
   smallContainer: {
     flexDirection: 'row',
+    height : 100,
+    
   },
 });
