@@ -23,7 +23,8 @@ const initialState = {
   ...billData,
 };
 
-const SplitBill = ({ navigation }) => {
+const SplitBill = ({ navigation, route }) => {
+  const { roomName } = route.params;
   const calcAmountToPay = () => {}; //need to work on this after today's commit
 
   const {
@@ -82,7 +83,7 @@ const SplitBill = ({ navigation }) => {
       </View>
 
       <View style={styles.middle}>
-        <Text style={styles.billTopText}>Bill for: 6D </Text>
+        <Text style={styles.billTopText}>Bill for: {roomName} </Text>
         <View style={styles.topLineStyle} />
         <Text style={styles.billText}>Bill name: </Text>
         <CustomInput

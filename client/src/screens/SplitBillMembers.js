@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 const SplitBillMembers = ({ navigation, route }) => {
-  const { payees } = route.params;
+  const { payees, roomName } = route.params;
 
   return (
     <View style={styles.container}>
@@ -30,7 +30,7 @@ const SplitBillMembers = ({ navigation, route }) => {
         </View>
         <TouchableOpacity
           style={styles.confirm}
-          onPress={() => navigation.navigate('SplitBill')}>
+          onPress={() => navigation.navigate('SplitBill', { roomName })}>
           <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'flex-start',
     top: 8,
-    right: 120,
+    right: 100,
   },
 
   head: {

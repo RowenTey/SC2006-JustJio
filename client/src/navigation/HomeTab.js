@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import PartyGames from '../screens/PartyGames';
 import TransactionHistory from '../screens/TransactionHistory';
-import GetSupermarkets from '../screens/GetSupermarkets';
+import GetSupermarkets from '../screens/PartySnacks';
 
 const Tab = createBottomTabNavigator();
 

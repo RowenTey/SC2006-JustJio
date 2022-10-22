@@ -9,11 +9,11 @@ import CreateRoom from '../screens/CreateRoom';
 import RoomsPage from '../screens/RoomsPage';
 import HomeTab from './HomeTab';
 import JoinRoom from '../screens/JoinRoom';
-import GetSupermarkets from '../screens/GetSupermarkets';
 import SplitBill from '../screens/SplitBill';
 import SplitBillMembers from '../screens/SplitBillMembers';
 import PartyGames from '../screens/PartyGames';
 import PartyGamesRules from '../screens/PartyGamesRules';
+import PartySnacks from '../screens/PartySnacks';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -32,7 +32,7 @@ const Navigation = () => {
         <Stack.Screen name="JoinRoom" component={JoinRoom} />
         <Stack.Screen name="SplitBill" component={SplitBill} />
         <Stack.Screen name="SplitBillMembers" component={SplitBillMembers} />
-        <Stack.Screen name="GetSupermarkets" component={GetSupermarkets} />
+        <Stack.Screen name="PartySnacks" component={PartySnacks} />
         <Stack.Screen name="PartyGames" component={PartyGames} />
         <Stack.Screen name="PartyGamesRules" component={PartyGamesRules} />
       </Stack.Navigator>
