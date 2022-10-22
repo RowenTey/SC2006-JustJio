@@ -54,8 +54,12 @@ const TransactionBox = props => {
   return (
     <View style={styles.transactionBox}>
       <View style={styles.oneDate}>
-        <Text style={styles.name}>{props.name}</Text>
-        <Text style={styleSheet}>{props.amount}</Text>
+        <View style={styles.up}>
+          <Text style={styles.name}>{props.name}</Text>
+        </View>
+        <View style={styles.down}>
+          <Text style={styleSheet}>SGD {props.amount}</Text>
+        </View>
       </View>
     </View>
   );
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#f0ecec',
     width: 500,
     minHeight: '90%',
@@ -106,9 +110,9 @@ const styles = StyleSheet.create({
   },
 
   oneDate: {
-    alignItems: 'center',
+    flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#E9D7FD',
+    backgroundColor: '#FFFFFF',
     width: 370,
     height: 80,
     borderRadius: 15,
@@ -121,25 +125,40 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
+  up:{
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    height: '50%',
+  },
+
+  down:{
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    height: '50%',
+  },
+
   name: {
-    fontSize: 20,
-    top: -5,
-    left: -110,
+    fontSize: 18,
+    fontFamily: 'Poppins-Medium',
+    left: 15,
     color: '#000000',
+    justifyContent: 'flex-start',
   },
 
   amountReceive: {
     fontSize: 20,
-    top: 12,
-    left: 140,
+    fontFamily: 'Poppins-Medium',
     color: '#00FF00',
+    bottom: 7,
+    right: 10,
   },
 
   amountGive: {
     fontSize: 20,
-    top: 12,
-    left: 140,
+    fontFamily: 'Poppins-Medium',
     color: '#FF0000',
+    bottom: 7,
+    right: 10,
   },
 
   smallText: {
