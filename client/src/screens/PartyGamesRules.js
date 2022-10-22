@@ -1,11 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
 const PartyGamesRules = ({ navigation, route }) => {
-
   const { rule } = route.params;
 
-  console.log('Hello', rule.imageURL); 
+  console.log('Hello', rule.imageURL);
 
   return (
     <View style={styles.container}>
@@ -20,7 +26,6 @@ const PartyGamesRules = ({ navigation, route }) => {
       </View>
 
       <View style={styles.middle}>
-
         <View style={styles.image}>
           <Image
             style={styles.gameImage}
@@ -33,11 +38,8 @@ const PartyGamesRules = ({ navigation, route }) => {
         </View>
 
         <ScrollView style={styles.rulesContainer}>
-            <Text style={styles.rulesText}>
-            {rule.description}
-            </Text>
+          <Text style={styles.rulesText}>{rule.description}</Text>
         </ScrollView>
-
       </View>
     </View>
   );
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'justify',
     color: 'black',
-    fontFamily: "Cochin",
+    fontFamily: 'Cochin',
     padding: 10,
   },
 

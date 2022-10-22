@@ -32,17 +32,13 @@ const ICONS = {
 const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
-  const { rooms , isLoading, fetchRooms } = useContext(RoomContext);
-  const { transactions , fetchTransactions } = useContext(TransactionContext);
+  const { rooms, isLoading, fetchRooms } = useContext(RoomContext);
+  const { transactions, fetchTransactions } = useContext(TransactionContext);
 
   useEffect(() => {
     fetchRooms();
+    fetchTransactions();
   }, []);
-
-
-
-
-  
 
   const handleLogout = async () => {
     await logout();
