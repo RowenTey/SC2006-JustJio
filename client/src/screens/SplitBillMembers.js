@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'flex-start',
     top: 8,
-    right: 120,
+    right: 100,
   },
 
   head: {

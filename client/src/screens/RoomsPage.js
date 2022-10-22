@@ -82,7 +82,10 @@ const RoomsPage = ({ navigation, route }) => {
               },
             ]}
             onPress={() =>
-              navigation.navigate('SplitBillMembers', { payees: attendees })
+              navigation.navigate('SplitBillMembers', {
+                payees: attendees,
+                roomName: room.name,
+              })
             }>
             <Text style={styles.buttonText}>Split Bill</Text>
           </TouchableOpacity>
@@ -98,7 +101,9 @@ const RoomsPage = ({ navigation, route }) => {
           <View style={styles.url}>
             <Text style={styles.urlText}>URL:</Text>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.link}>http://www.JoinRoom/6D.com</Text>
+              <Text style={styles.link}>
+                http://www.justjio/{room.name.replaceAll(' ', '-')}.com
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.qrCode}>

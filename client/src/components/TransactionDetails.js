@@ -1,13 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  Image,
-  ImageURISource,
-} from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 
 const TransactionBar = ({ transactions }) => {
   return (

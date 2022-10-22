@@ -1,121 +1,145 @@
-import React from 'react';
-
+/* eslint-disable react-native/no-inline-styles */
+import React, { useState } from 'react';
 import {
+  FlatList,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
+  View,
   Image,
-  ScrollView,
+  Linking,
 } from 'react-native';
+import Config from 'react-native-config';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const PartySnacks = () => {
+  const [places, setPlaces] = useState({
+    placesArray: [],
+  });
+
+  const [location, setLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+    locationName: 'none',
+  });
+
+  const fetchNearestPlacesFromGoogle = async (lat, long) => {
+    let latitude = lat;
+    let longitude = long;
+    const order = 'distance';
+    const keyword = 'supermarket';
+    let radMetter = 2 * 1000; // Search withing 2 KM radius
+    const types = ['supermarket'];
+    const key = Config.GOOGLE_MAPS_API_KEY;
+    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
+    const getSupermarketsUrl =
+      url +
+      'location=' +
+      latitude +
+      ',' +
+      longitude +
+      '&keyword=' +
+      keyword +
+      '&rankby=' +
+      order +
+      '&key=' +
+      key;
+
+    console.log(getSupermarketsUrl);
+    await fetch(getSupermarketsUrl)
+      .then(res => {
+        return res.json();
+      })
+      .then(result =>
+        setPlaces({
+          placesArray: result,
+        }),
+      )
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onSearch = async details => {
+    const lat = details.geometry.location.lat;
+    const long = details.geometry.location.lng;
+    setLocation({
+      latitude: lat,
+      longitude: long,
+      locationName: details.formatted_address,
+    });
+    await fetchNearestPlacesFromGoogle(lat, long);
+  };
+
+  const openMaps = item => {
+    const lati = item.geometry.location.lat;
+    const longi = item.geometry.location.lng;
+    console.log(lati, longi);
+    const scheme = Platform.select({
+      ios: 'maps:0,0?q=',
+      android: 'geo:0,0?q=',
+    });
+    const latLng = `${lati},${longi}`;
+    const label = 'Custom Label';
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`,
+    });
+
+    Linking.openURL(url);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.bigText}>Party Snacks</Text>
-        <Text style={styles.smallText}>
-          Current location: Bukit Batok Street 21
+        <Text
+          style={{
+            textAlign: 'center',
+            flexWrap: 'wrap',
+            width: 350,
+            color: '#4E1164',
+            fontWeight: '400',
+          }}>
+          Current location: {location.locationName}
         </Text>
       </View>
+      <GooglePlacesAutocomplete
+        placeholder="Search"
+        fetchDetails={true}
+        onPress={(data, details) => onSearch(details)}
+        query={{
+          key: Config.GOOGLE_MAPS_API_KEY,
+          language: 'en',
+          components: 'country:sg',
+        }}
+        styles={{
+          container: { flex: 0, width: '90%', zIndex: 1, marginTop: 10 },
+          listView: { backgroundColor: 'white' },
+        }}
+      />
 
-      <ScrollView style={styles.middle}>
-        <TouchableOpacity style={styles.box}>
-          <Image
-            style={styles.images}
-            source={{
-              width: 90,
-              height: 65,
-              uri: 'https://mustsharenews.com/wp-content/uploads/2022/03/sheng-siong.png',
-            }}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.details}>Sheng Shiong Commonwealth</Text>
-            <Text style={styles.details}>5 km</Text>
-            <Text style={styles.details}>$</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.box}>
-          <Image
-            style={styles.images}
-            source={{
-              width: 90,
-              height: 65,
-              uri: 'https://lh5.googleusercontent.com/p/AF1QipPFW2cMfqIoguGFjtKpBLWpIV3fVtPRGlICFIpd=w408-h306-k-no',
-            }}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.details}>Fairprice Stirling Road</Text>
-            <Text style={styles.details}>2.7 km</Text>
-            <Text style={styles.details}>$$</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.box}>
-          <Image
-            style={styles.images}
-            source={{
-              width: 90,
-              height: 65,
-              uri: 'https://lh3.googleusercontent.com/p/AF1QipPtdWDY8T0YiekdvFFj67pPASt_S1YwVtTvsOEw=s1360-w1360-h1020',
-            }}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.details}>Fairprice Dawson Road</Text>
-            <Text style={styles.details}>4.9 km</Text>
-            <Text style={styles.details}>$$</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.box}>
-          <Image
-            style={styles.images}
-            source={{
-              width: 90,
-              height: 65,
-              uri: 'https://shopsinsg.com/wp-content/uploads/2016/06/cold-storage-stores-singapore.jpg',
-            }}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.details}>Cold Storage Holland Village</Text>
-            <Text style={styles.details}>3.1 km</Text>
-            <Text style={styles.details}>$$$</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.box}>
-          <Image
-            style={styles.images}
-            source={{
-              width: 90,
-              height: 65,
-              uri: 'https://d3ckgtbv0fk1sf.cloudfront.net/media/uploads/af48320d2b22356a0bfff0bb341ee74b.png',
-            }}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.details}>CS Fresh The Star Vista</Text>
-            <Text style={styles.details}>1.4 km</Text>
-            <Text style={styles.details}>$$$</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.box}>
-          <Image
-            style={styles.images}
-            source={{
-              width: 90,
-              height: 65,
-              uri: 'https://nestia-food.obs.ap-southeast-3.myhuaweicloud.com/201609/26/69644666e0c6f231d630023e78d9c30a.jpg',
-            }}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.details}>Sheng Shiong Ghim Moh Link</Text>
-            <Text style={styles.details}>1.2 km</Text>
-            <Text style={styles.details}>$</Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
+      <FlatList
+        data={places.placesArray.results}
+        style={{ flex: 1, width: '100%' }}
+        contentContainerStyle={{ alignItems: 'center' }}
+        keyExtractor={item => item.place_id}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.box} onPress={() => openMaps(item)}>
+            <Image
+              style={styles.images}
+              source={{
+                width: 90,
+                height: 65,
+                uri: 'https://mustsharenews.com/wp-content/uploads/2022/03/sheng-siong.png',
+              }}
+            />
+            <View>
+              <Text style={styles.details}>{item.name}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 };
@@ -123,19 +147,12 @@ const PartySnacks = () => {
 export default PartySnacks;
 
 const styles = StyleSheet.create({
-  box: {
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'flex-start',
+  container: {
+    flex: 1,
     alignItems: 'center',
-    borderRadius: 15,
-    marginHorizontal: 75,
-    marginVertical: 10,
-    flexDirection: 'row',
-    paddingVertical: 5,
-  },
-
-  textContainer: {
-    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#EEEEEE',
+    height: '100%',
   },
 
   topBar: {
@@ -149,18 +166,28 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 
-  middle: {
-    flex: 2,
-    flexDirection: 'column',
-    backgroundColor: '#EEEEEE',
-    width: 500,
-    minHeight: '90%',
-    maxHeight: '90%',
+  box: {
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderRadius: 15,
+    marginHorizontal: 75,
+    marginVertical: 10,
+    flexDirection: 'row',
+    paddingVertical: 5,
+    width: 350,
+  },
+
+  images: {
+    margin: 8,
+    borderRadius: 10,
   },
 
   details: {
     color: '#4E1164',
     fontWeight: '500',
+    flexWrap: 'wrap',
+    width: 200,
   },
 
   bigText: {
@@ -174,15 +201,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
 
-  container: {
-    alignItems: 'center',
+  bottombar: {
+    flex: 3,
+    flexDirection: 'column',
+    backgroundColor: '#E9D7FD',
+    minHeight: '7%',
+    maxHeight: '7%',
     justifyContent: 'center',
-    backgroundColor: '#EEEEEE',
-    height: '100%',
-  },
-
-  images: {
-    margin: 8,
-    borderRadius: 10,
+    alignItems: 'center',
+    width: '100%',
   },
 });
