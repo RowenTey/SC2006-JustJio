@@ -7,7 +7,10 @@ import {
   Text,
   Image,
   ImageURISource,
+  useContext,
 } from 'react-native';
+import { TransactionContext } from '../context/transaction.js';
+
 const ICONS = {
   add: require('../../assets/images/add.png'),
   mail: require('../../assets/images/mail.png'),
@@ -18,7 +21,15 @@ const ICONS = {
   bell: require('../../assets/images/bell.png'),
   tick: require('../../assets/images/tick.png'),
 };
-import { View, StyleSheet, Text, Image } from 'react-native';
+
+const { payBill } = useContext(TransactionContext);
+
+const OnPayBill = async (transactions, roomId) => {
+  setLoading(true);
+  await payBill(transactions, roomId);
+  setLoading(false);
+};
+
 
 const TransactionBar = ({ transactions , navigation , icon , name }) => {
   console.log(transactions.transaction.payer)
@@ -34,7 +45,7 @@ const TransactionBar = ({ transactions , navigation , icon , name }) => {
             }}
           />
       <TouchableOpacity style={styles.button}
-      onPress={() => navigation.navigate('')}
+      onPress={() => OnPayBill(transactions,transactions.bill.roomID)}
       >
       <View style={styles.informationContainer}>
         <Text style={styles.name}>{name}</Text>
