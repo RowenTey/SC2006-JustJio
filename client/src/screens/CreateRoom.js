@@ -11,8 +11,6 @@ import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
 import { RoomContext } from '../context/room';
-//for images being imported in no need to specify dimensions
-//for images online need to specify dimensions such as width: height: uri:(image url)
 
 const initialCreateRoomState = {
   eventName: '',

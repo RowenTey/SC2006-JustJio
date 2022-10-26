@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Alert,
 } from 'react-native';
 import Spinner from '../components/Spinner';
 import { AxiosContext } from '../context/axios';
@@ -17,6 +16,11 @@ import { RoomContext } from '../context/room';
 const initialInvitationsState = {
   total: 0,
   invites: [],
+};
+
+const INVITATION_ACTIONS = {
+  JOiN: 'join',
+  DECLINE: 'decline',
 };
 
 const JoinRoom = ({ navigation }) => {
@@ -43,10 +47,10 @@ const JoinRoom = ({ navigation }) => {
   const onClick = async (roomId, type) => {
     setLoading(true);
 
-    if (type == 'join') {
+    if (type === INVITATION_ACTIONS.JOiN) {
       console.log('join room');
       await joinRoom(roomId);
-    } else if (type == 'decline') {
+    } else if (type === INVITATION_ACTIONS.DECLINE) {
       console.log('decline room');
       await declineRoom(roomId);
     }
@@ -111,7 +115,7 @@ const InvitationCard = ({ invite, handleClick }) => {
       <View style={styles.invitation}>
         <TouchableOpacity
           style={styles.greenBox}
-          onPress={() => handleClick(invite.ID, 'join')}>
+          onPress={() => handleClick(invite.ID, INVITATION_ACTIONS.JOiN)}>
           <Text style={[styles.confirmationBoxText, { color: '#71C291' }]}>
             Accept
           </Text>
@@ -119,7 +123,7 @@ const InvitationCard = ({ invite, handleClick }) => {
         <View style={styles.gap} />
         <TouchableOpacity
           style={styles.redBox}
-          onPress={() => handleClick(invite.ID, 'decline')}>
+          onPress={() => handleClick(invite.ID, INVITATION_ACTIONS.DECLINE)}>
           <Text style={[styles.confirmationBoxText, { color: '#D2644B' }]}>
             Decline
           </Text>

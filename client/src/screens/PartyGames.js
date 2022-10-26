@@ -1,12 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
-
 import RuleCard from '../components/RuleCard.js';
 import Rules from '../constants/Rules.js';
-
-const IMAGES = {
-  mafia: require('../../assets/images/mafia.png'),
-};
 
 const PartyGames = ({ navigation }) => {
   return (
