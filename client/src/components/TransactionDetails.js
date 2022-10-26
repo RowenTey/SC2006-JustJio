@@ -9,7 +9,9 @@ import {
   ImageURISource,
   useContext,
 } from 'react-native';
-import { TransactionContext } from '../context/transaction.js';
+import { initialUserState, UserContext } from '../context/user.js';
+import { AuthContext } from '../context/auth.js';
+import { RoomContext } from '../context/room.js';
 
 const ICONS = {
   add: require('../../assets/images/add.png'),
@@ -23,10 +25,10 @@ const ICONS = {
 };
 
 const TransactionBar = ({ transactions, navigation, icon, name }) => {
-  console.log(transactions.transaction.payer);
-
+  
+  
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
       <Image
         source={icon}
         style={{
@@ -34,13 +36,13 @@ const TransactionBar = ({ transactions, navigation, icon, name }) => {
           height: 30,
         }}
       />
-      <TouchableOpacity style={styles.button}>
+      <View style={styles.button} >
         <View style={styles.informationContainer}>
           <Text style={styles.name}>{name}</Text>
 
           <Text style={styles.name}>${transactions.bill.amount}</Text>
         </View>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };

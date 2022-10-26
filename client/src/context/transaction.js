@@ -89,39 +89,28 @@ const TransactionProvider = ({ children }) => {
         console.log('Error request', error.request);
       }
     }
-  };
+  };  
 
-  // const payBill = async (transactionData, roomId) => {
-  //   try {
-  //     dispatch({
-  //       type: START_LOADING,
-  //     });
+   const payBill = async transactionData => {
+     try {
+       dispatch({
+         type: START_LOADING,
+       });
 
-  //     await authAxios.patch(`/bills/${roomId}`, transactionData);
-  //     console.log(transactionData);
+      const { response } = await authAxios.patch(`/bills/pay`, transactionData);
+      console.log(response);
+       dispatch({
+        type: END_TRANSACTION,
+      });
+       dispatch({
+        type: END_LOADING,
+       });
+     } catch (error) {
+       console.log('Failed to pay bill', error);
 
-  //     dispatch({
-  //       type: END_TRANSACTION,
-  //       payload: {
-  //         transactions: transactions,
-  //       },
-  //     });
+   }
 
-  //     dispatch({
-  //       type: END_LOADING,
-  //     });
-  //   } catch (error) {
-  //     console.log('Failed to pay bill', error);
-  //     if (error.response) {
-  //       console.log('Error response', error.response.data);
-  //       if (error.response.data.message === "User doesn't exist") {
-  //         throw new Error("User doesn't exist");
-  //       }
-  //     } else if (error.request) {
-  //       console.log('Error request', error.request);
-  //     }
-  //   }
-  // };
+  }
 
   const value = {
     total: state.total,
@@ -129,7 +118,7 @@ const TransactionProvider = ({ children }) => {
     isTransactionsLoading: state.isLoading,
     createTransactions,
     fetchTransactions,
-    // payBill,
+    payBill,
   };
 
   return <Provider value={value}>{children}</Provider>;

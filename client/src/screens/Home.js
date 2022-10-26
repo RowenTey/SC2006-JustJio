@@ -18,6 +18,7 @@ import { AuthContext } from '../context/auth.js';
 import { RoomContext } from '../context/room.js';
 import { TransactionContext } from '../context/transaction.js';
 
+
 const ICONS = {
   add: require('../../assets/images/add.png'),
   mail: require('../../assets/images/mail.png'),
@@ -34,6 +35,29 @@ const Home = ({ navigation }) => {
   const { logout } = useContext(AuthContext);
   const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
   const { transactions, fetchTransactions } = useContext(TransactionContext);
+  const { payBill } = useContext(TransactionContext);
+  
+  
+  const paybilFunction = async transaction => {
+      console.log("button pressed");
+      let curDate = new Date();
+      console.log(transaction)
+      billData = {
+        paidOn: curDate.toString(),
+        payee: transaction.transaction.payee,
+        payer: transaction.transaction.payer
+      }
+  
+      try {
+        console.log('Bill Data', billData);
+        await payBill(billData);
+      } catch (error) {
+        console.log('Failed to create transactions', error);
+      }
+    };
+    
+  
+
 
   useEffect(() => {
     fetchRooms();
@@ -50,7 +74,8 @@ const Home = ({ navigation }) => {
   if (isRoomsLoading) {
     return <Spinner />;
   }
-  console.log(duplicateTransactions);
+
+  
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -78,8 +103,9 @@ const Home = ({ navigation }) => {
               data = {transactions}
               renderItem={({ item }) => (
                 item.transaction.payer != user.username ? 
+                <TouchableOpacity onPress={()=> paybilFunction(item)}>
                 <TransactionBar transactions={item} icon = {ICONS.tick} navigation ={navigation} name = {item.transaction.payer} />
-                
+                </TouchableOpacity>
                 : null 
               )}
               key={'_'}
@@ -96,8 +122,11 @@ const Home = ({ navigation }) => {
               data = {duplicateTransactions}
               renderItem={({ item }) => (
                 item.transaction.payer == user.username ? 
-                <TransactionBar transactions={item} icon = {ICONS.bell} navigation={navigation} name = {item.transaction.payee} />
+                <TouchableOpacity onPress={()=> paybilFunction(item)}>
+                <TransactionBar transactions={item} icon = {ICONS.bell} navigation={navigation} name = {item.transaction.payee}  />
+                </TouchableOpacity>
                 : null
+                
               )}
               key={'_'}
               keyExtractor={item => item.id}

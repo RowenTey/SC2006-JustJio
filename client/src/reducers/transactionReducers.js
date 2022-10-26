@@ -4,6 +4,7 @@ import {
   CREATE_TRANSACTION,
   START_LOADING,
   LOGOUT,
+  END_TRANSACTION,
 } from '../constants/actionTypes';
 
 export const initialTransactionState = {
@@ -33,6 +34,11 @@ const TransactionReducer = (state, action) => {
       return {
         ...state,
         transactions: payload.transactions,
+      };
+    case END_TRANSACTION:
+      return{
+        ...state,
+        isLoading: true,
       };
     case LOGOUT:
       return initialTransactionState;
