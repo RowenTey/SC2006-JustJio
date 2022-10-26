@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import RoomCard from '../components/RoomCard.js';
 import TransactionBar from '../components/TransactionDetails';
-import TransactionData from '../components/TransactionData';
 import Spinner from '../components/Spinner.js';
 import { initialUserState, UserContext } from '../context/user.js';
 import { AuthContext } from '../context/auth.js';
@@ -23,7 +22,6 @@ const ICONS = {
   mail: require('../../assets/images/mail.png'),
   group: require('../../assets/images/group.png'),
   mahjong: require('../../assets/images/mahjong.png'),
-  vector: require('../../assets/images/Vector.png'),
   logout: require('../../assets/images/logout.png'),
   bell: require('../../assets/images/bell.png'),
   tick: require('../../assets/images/tick.png'),
@@ -33,7 +31,8 @@ const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
   const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
-  const { transactions, fetchTransactions } = useContext(TransactionContext);
+  const { transactions, fetchTransactions, isTransactionsLoading } =
+    useContext(TransactionContext);
 
   useEffect(() => {
     fetchRooms();
@@ -45,12 +44,14 @@ const Home = ({ navigation }) => {
     setUser(initialUserState);
     navigation.navigate('Signin');
   };
-  const duplicateTransactions = transactions;
 
-  if (isRoomsLoading) {
+  const duplicateTransactions = transactions;
+  console.log(duplicateTransactions);
+
+  if (isRoomsLoading || isTransactionsLoading) {
     return <Spinner />;
   }
-  console.log(duplicateTransactions);
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -76,7 +77,7 @@ const Home = ({ navigation }) => {
               <FlatList
                 data={transactions}
                 renderItem={({ item }) =>
-                  item.transaction.payer != user.username ? (
+                  item.transaction.payer !== user.username ? (
                     <TransactionBar
                       transactions={item}
                       icon={ICONS.tick}
@@ -86,7 +87,7 @@ const Home = ({ navigation }) => {
                   ) : null
                 }
                 key={'_'}
-                keyExtractor={item => item.id}
+                keyExtractor={(item, index) => index}
               />
             </View>
           </View>
@@ -96,7 +97,7 @@ const Home = ({ navigation }) => {
               <FlatList
                 data={duplicateTransactions}
                 renderItem={({ item }) =>
-                  item.transaction.payer == user.username ? (
+                  item.transaction.payer === user.username ? (
                     <TransactionBar
                       transactions={item}
                       icon={ICONS.bell}
@@ -106,7 +107,7 @@ const Home = ({ navigation }) => {
                   ) : null
                 }
                 key={'_'}
-                keyExtractor={item => item.id}
+                keyExtractor={(item, index) => index}
               />
             </View>
           </View>

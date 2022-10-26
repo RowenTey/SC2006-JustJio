@@ -56,7 +56,6 @@ const TransactionProvider = ({ children }) => {
         `/bills/${roomId}`,
         transactionData,
       );
-      console.log('Split bill successfully!', JSON.stringify(response));
       const responseTransactions = response.data.transactions;
       const responseBill = response.data.bill;
       const currentTransaction = [];
@@ -65,7 +64,6 @@ const TransactionProvider = ({ children }) => {
           transaction: responseTransactions[i],
           bill: responseBill,
         };
-        console.log('Entry', JSON.stringify(entry));
         currentTransaction.push(entry);
       }
       console.log('currentTransaction', currentTransaction);

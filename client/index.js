@@ -6,24 +6,12 @@ import React from 'react';
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
 import App from './src/App';
-import { AuthProvider } from './src/context/auth';
-import { AxiosProvider } from './src/context/axios';
-import { RoomProvider } from './src/context/room';
-import { TransactionProvider } from './src/context/transaction';
-import { UserProvider } from './src/context/user';
+import { AppContextProvider } from './src/context';
 
 const Root = () => (
-  <AuthProvider>
-    <AxiosProvider>
-      <UserProvider>
-        <RoomProvider>
-          <TransactionProvider>
-            <App />
-          </TransactionProvider>
-        </RoomProvider>
-      </UserProvider>
-    </AxiosProvider>
-  </AuthProvider>
+  <AppContextProvider>
+    <App />
+  </AppContextProvider>
 );
 
 AppRegistry.registerComponent(appName, () => Root);
