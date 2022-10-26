@@ -25,7 +25,6 @@ const SplitBillMembers = ({ navigation, route }) => {
     } else {
       toPay = toPay.concat(name);
     }
-    console.log(toPay);
   };
 
   return (

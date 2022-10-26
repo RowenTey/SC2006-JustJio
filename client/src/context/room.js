@@ -81,7 +81,6 @@ const RoomProvider = ({ children }) => {
       });
 
       const { data: response } = await authAxios.patch(`/rooms/join/${roomId}`);
-      console.log('joinRoom response', JSON.stringify(response.data.room));
       const updatedRooms = state.rooms.concat(response.data.room);
       const updatedTotal = updatedRooms.length;
       dispatch({
