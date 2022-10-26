@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import RoomCard from '../components/RoomCard.js';
 import TransactionBar from '../components/TransactionDetails';
-import TransactionData from '../components/TransactionData';
 import Spinner from '../components/Spinner.js';
 import { initialUserState, UserContext } from '../context/user.js';
 import { AuthContext } from '../context/auth.js';
@@ -24,7 +23,6 @@ const ICONS = {
   mail: require('../../assets/images/mail.png'),
   group: require('../../assets/images/group.png'),
   mahjong: require('../../assets/images/mahjong.png'),
-  vector: require('../../assets/images/Vector.png'),
   logout: require('../../assets/images/logout.png'),
   bell: require('../../assets/images/bell.png'),
   tick: require('../../assets/images/tick.png'),
@@ -35,6 +33,7 @@ const Home = ({ navigation }) => {
   const { logout } = useContext(AuthContext);
   const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
   const { transactions, fetchTransactions } = useContext(TransactionContext);
+  const { isTransactionsLoading } = useContext(TransactionContext);
   const { payBill } = useContext(TransactionContext);
   
   
@@ -58,6 +57,7 @@ const Home = ({ navigation }) => {
     
   
 
+  
 
   useEffect(() => {
     fetchRooms();
@@ -69,13 +69,18 @@ const Home = ({ navigation }) => {
     setUser(initialUserState);
     navigation.navigate('Signin');
   };
-  const duplicateTransactions = transactions;
 
-  if (isRoomsLoading) {
+  const duplicateTransactions = transactions;
+  console.log(duplicateTransactions);
+
+  if (isRoomsLoading || isTransactionsLoading) {
     return <Spinner />;
   }
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> f906fc3115547f930f7b73501a346ec4f52c9869
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -98,7 +103,6 @@ const Home = ({ navigation }) => {
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GIVE: </Text>
             <View style={styles.smallContainer}>
-
               <FlatList
               data = {transactions}
               renderItem={({ item }) => (
@@ -111,9 +115,7 @@ const Home = ({ navigation }) => {
               key={'_'}
               keyExtractor={item => item.id}
               />
-
             </View>
-            
           </View>
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GET: </Text>
@@ -132,7 +134,6 @@ const Home = ({ navigation }) => {
               keyExtractor={item => item.id}
               />
             </View>
-            
           </View>
         </View>
 
@@ -312,13 +313,13 @@ const styles = StyleSheet.create({
   box: {
     borderRadius: 15,
     backgroundColor: '#ffffff',
-    paddingHorizontal: 30,
-    paddingVertical: 0,
+    width: 180,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     justifyContent: 'space-between',
     marginTop: 15,
     marginBottom: 20,
-    marginRight: 5,
-    marginLeft: 5,
+    marginHorizontal: 5,
   },
 
   transactionText: {
@@ -338,7 +339,6 @@ const styles = StyleSheet.create({
 
   smallContainer: {
     flexDirection: 'row',
-    height : 100,
-    
+    height: 100,
   },
 });
