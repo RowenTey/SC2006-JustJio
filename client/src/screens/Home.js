@@ -71,16 +71,12 @@ const Home = ({ navigation }) => {
   };
 
   const duplicateTransactions = transactions;
-  console.log(duplicateTransactions);
 
   if (isRoomsLoading || isTransactionsLoading) {
     return <Spinner />;
   }
 
-<<<<<<< HEAD
   
-=======
->>>>>>> f906fc3115547f930f7b73501a346ec4f52c9869
   return (
     <View style={styles.container}>
       <View style={styles.top}>
