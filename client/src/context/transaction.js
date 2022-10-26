@@ -91,39 +91,37 @@ const TransactionProvider = ({ children }) => {
     }
   };
 
-  const payBill = async (transactionData, roomId) => {
-    try {2
-      dispatch({
-        type: START_LOADING,
-      });
+  // const payBill = async (transactionData, roomId) => {
+  //   try {
+  //     dispatch({
+  //       type: START_LOADING,
+  //     });
 
-      await authAxios.delete(`/bills/${roomId}`,transactionData);
-      console.log(transactions);
-      
-  
-      
-      dispatch({
-        type: END_TRANSACTION,
-        payload: {
-          transactions: transactions,
-        },
-      });
+  //     await authAxios.patch(`/bills/${roomId}`, transactionData);
+  //     console.log(transactionData);
 
-      dispatch({
-        type: END_LOADING,
-      });
-    } catch (error) {
-      console.log('Failed to pay bill', error);
-      if (error.response) {
-        console.log('Error response', error.response.data);
-        if (error.response.data.message === "User doesn't exist") {
-          throw new Error("User doesn't exist");
-        }
-      } else if (error.request) {
-        console.log('Error request', error.request);
-      }
-    }
-  };
+  //     dispatch({
+  //       type: END_TRANSACTION,
+  //       payload: {
+  //         transactions: transactions,
+  //       },
+  //     });
+
+  //     dispatch({
+  //       type: END_LOADING,
+  //     });
+  //   } catch (error) {
+  //     console.log('Failed to pay bill', error);
+  //     if (error.response) {
+  //       console.log('Error response', error.response.data);
+  //       if (error.response.data.message === "User doesn't exist") {
+  //         throw new Error("User doesn't exist");
+  //       }
+  //     } else if (error.request) {
+  //       console.log('Error request', error.request);
+  //     }
+  //   }
+  // };
 
   const value = {
     total: state.total,
@@ -131,7 +129,7 @@ const TransactionProvider = ({ children }) => {
     isTransactionsLoading: state.isLoading,
     createTransactions,
     fetchTransactions,
-    payBill,
+    // payBill,
   };
 
   return <Provider value={value}>{children}</Provider>;

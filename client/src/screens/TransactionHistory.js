@@ -125,13 +125,13 @@ const styles = StyleSheet.create({
     color: '#4E1164',
   },
 
-  up:{
+  up: {
     alignItems: 'flex-start',
     justifyContent: 'center',
     height: '50%',
   },
 
-  down:{
+  down: {
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     height: '50%',

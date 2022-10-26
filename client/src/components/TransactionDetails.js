@@ -22,39 +22,30 @@ const ICONS = {
   tick: require('../../assets/images/tick.png'),
 };
 
+const TransactionBar = ({ transactions, navigation, icon, name }) => {
+  console.log(transactions.transaction.payer);
 
-
-
-
-const TransactionBar = ({ transactions , navigation , icon , name }) => {
-  console.log(transactions.transaction.payer)
-  
   return (
     <View style={styles.container}>
       <Image
-            
-            source={icon}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-      <TouchableOpacity style={styles.button}
-     
-      >
-      <View style={styles.informationContainer}>
-        <Text style={styles.name}>{name}</Text>
-        
-        <Text style={styles.name}>${transactions.bill.amount}</Text>
-      </View>
+        source={icon}
+        style={{
+          width: 30,
+          height: 30,
+        }}
+      />
+      <TouchableOpacity style={styles.button}>
+        <View style={styles.informationContainer}>
+          <Text style={styles.name}>{name}</Text>
+
+          <Text style={styles.name}>${transactions.bill.amount}</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
 };
 
-
-export default TransactionBar ; 
-
+export default TransactionBar;
 
 const styles = StyleSheet.create({
   container: {
@@ -66,7 +57,6 @@ const styles = StyleSheet.create({
   informationContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-
   },
 
   button: {
@@ -131,8 +121,6 @@ const styles = StyleSheet.create({
     width: 70,
     marginStart: 6,
   },
-
-  
 
   name: {
     color: '#000000',

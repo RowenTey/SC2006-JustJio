@@ -156,7 +156,7 @@ func GetTransactions(c *fiber.Ctx) error {
 // @Tags         transactions
 // @Accept       json
 // @Produce      json
-// @Param        payBillRequest   body      int  true  "Pay Bill Details"
+// @Param        payBillRequest   body      handlers.PayBill.PayBillInput  true  "Pay Bill Details"
 // @Success      200  {object}  nil
 // @Failure      400  {object}  nil
 // @Failure      500  {object}  nil

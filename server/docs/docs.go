@@ -73,7 +73,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/handlers.PayBill.PayBillInput"
                         }
                     }
                 ],
@@ -523,7 +523,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "amountToPay": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "date": {
                     "type": "string"
@@ -584,6 +584,20 @@ const docTemplate = `{
                 }
             }
         },
+        "handlers.PayBill.PayBillInput": {
+            "type": "object",
+            "properties": {
+                "paidOn": {
+                    "type": "string"
+                },
+                "payee": {
+                    "type": "string"
+                },
+                "payer": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.UpdateUser.UpdateUserInput": {
             "type": "object",
             "properties": {
@@ -599,7 +613,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "amount": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "date": {
                     "type": "string"

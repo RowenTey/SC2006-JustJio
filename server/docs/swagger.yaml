@@ -17,7 +17,7 @@ definitions:
   handlers.GenerateTransactions.BillReq:
     properties:
       amountToPay:
-        type: integer
+        type: number
       date:
         type: string
       name:
@@ -56,6 +56,15 @@ definitions:
       room:
         $ref: '#/definitions/model.Room'
     type: object
+  handlers.PayBill.PayBillInput:
+    properties:
+      paidOn:
+        type: string
+      payee:
+        type: string
+      payer:
+        type: string
+    type: object
   handlers.UpdateUser.UpdateUserInput:
     properties:
       field:
@@ -66,7 +75,7 @@ definitions:
   model.Bill:
     properties:
       amount:
-        type: integer
+        type: number
       date:
         type: string
       id:
@@ -198,7 +207,7 @@ paths:
         name: payBillRequest
         required: true
         schema:
-          type: integer
+          $ref: '#/definitions/handlers.PayBill.PayBillInput'
       produces:
       - application/json
       responses:
