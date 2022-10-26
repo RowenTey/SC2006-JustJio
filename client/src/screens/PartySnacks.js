@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import {
@@ -89,10 +90,10 @@ const PartySnacks = () => {
 
   const kmOrMeter = dist => {
     if (dist >= 1000) {
-      dist = (dist/1000).toFixed(2) + "k";
+      dist = (dist / 1000).toFixed(2) + 'k';
     }
     return dist;
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -143,16 +144,16 @@ const PartySnacks = () => {
               <Text style={styles.details}>{item.name}</Text>
               <Text style={styles.distanceText}>
                 {kmOrMeter(
-                getDistance(
-                  {
-                    latitude: location.latitude,
-                    longitude: location.longitude,
-                  },
-                  {
-                    latitude: item.geometry.location.lat,
-                    longitude: item.geometry.location.lng,
-                  },
-                )
+                  getDistance(
+                    {
+                      latitude: location.latitude,
+                      longitude: location.longitude,
+                    },
+                    {
+                      latitude: item.geometry.location.lat,
+                      longitude: item.geometry.location.lng,
+                    },
+                  ),
                 )}
                 m away
               </Text>
