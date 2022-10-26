@@ -22,13 +22,8 @@ const ICONS = {
   tick: require('../../assets/images/tick.png'),
 };
 
-const { payBill } = useContext(TransactionContext);
 
-const OnPayBill = async (transactions, roomId) => {
-  setLoading(true);
-  await payBill(transactions, roomId);
-  setLoading(false);
-};
+
 
 
 const TransactionBar = ({ transactions , navigation , icon , name }) => {
@@ -45,7 +40,7 @@ const TransactionBar = ({ transactions , navigation , icon , name }) => {
             }}
           />
       <TouchableOpacity style={styles.button}
-      onPress={() => OnPayBill(transactions,transactions.bill.roomID)}
+     
       >
       <View style={styles.informationContainer}>
         <Text style={styles.name}>{name}</Text>
