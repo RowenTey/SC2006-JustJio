@@ -7,25 +7,59 @@ import {
   Text,
   Image,
   ImageURISource,
+  useContext,
 } from 'react-native';
+import { TransactionContext } from '../context/transaction.js';
 
-const TransactionBar = ({ transactions }) => {
+const ICONS = {
+  add: require('../../assets/images/add.png'),
+  mail: require('../../assets/images/mail.png'),
+  group: require('../../assets/images/group.png'),
+  mahjong: require('../../assets/images/mahjong.png'),
+  vector: require('../../assets/images/Vector.png'),
+  logout: require('../../assets/images/logout.png'),
+  bell: require('../../assets/images/bell.png'),
+  tick: require('../../assets/images/tick.png'),
+};
+
+const { payBill } = useContext(TransactionContext);
+
+const OnPayBill = async (transactions, roomId) => {
+  setLoading(true);
+  await payBill(transactions, roomId);
+  setLoading(false);
+};
+
+
+const TransactionBar = ({ transactions , navigation , icon , name }) => {
+  console.log(transactions.transaction.payer)
+  
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: transactions.imageURL }}
-        style={{ width: 30, height: 30 }}
-      />
+            
+            source={icon}
+            style={{
+              width: 30,
+              height: 30,
+            }}
+          />
+      <TouchableOpacity style={styles.button}
+      onPress={() => OnPayBill(transactions,transactions.bill.roomID)}
+      >
       <View style={styles.informationContainer}>
-        <Text style={styles.name}>{transactions.name}</Text>
-
-        <Text style={styles.name}>{transactions.amount}</Text>
+        <Text style={styles.name}>{name}</Text>
+        
+        <Text style={styles.name}>${transactions.bill.amount}</Text>
       </View>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default TransactionBar;
+
+export default TransactionBar ; 
+
 
 const styles = StyleSheet.create({
   container: {
@@ -35,6 +69,12 @@ const styles = StyleSheet.create({
   },
 
   informationContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+
+  },
+
+  button: {
     alignItems: 'center',
     flexDirection: 'column',
   },
@@ -97,20 +137,7 @@ const styles = StyleSheet.create({
     marginStart: 6,
   },
 
-  roomsTitle: {
-    fontSize: 30,
-    fontFamily: 'Poppins-Bold',
-    color: '#4E1164',
-    marginTop: -5,
-  },
-
-  rooms: {
-    marginTop: -10,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
+  
 
   name: {
     color: '#000000',

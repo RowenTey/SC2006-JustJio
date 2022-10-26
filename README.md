@@ -1,4 +1,4 @@
-# JustJio
+# SC2006-JustJio
 
 > Project for SC2006 -> Invite your friends to hangout easily 🀄
 
@@ -74,6 +74,7 @@ cd <PROJECT-PATH>
 
 - Database: https://app.planetscale.com/rowen/sc2006-justjio
 - Documentation: https://rapidapi.com/RowenTey/api/sc2006-justjio
+- Dynamic Links: https://pagepro.co/blog/react-native-firebase-dynamic-links/
 - https://www.karanpratapsingh.com/
 - https://gowebexamples.com/
 - OAuth https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth

@@ -1,106 +1,34 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 
+import RuleCard from '../components/RuleCard.js';
+import Rules from '../constants/Rules.js';
+
 const IMAGES = {
   mafia: require('../../assets/images/mafia.png'),
 };
 
 const PartyGames = ({ navigation }) => {
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.header}>Party Games</Text>
       </View>
 
-      <ScrollView style={styles.middle}>
+      <View style={styles.middle}>
 
-        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('BeerPong')}>
-          <Image
-            style={styles.gameImage}
-            source={{
-              width: 92,
-              height: 67,
-              uri: 'https://s.hdnux.com/photos/01/25/42/54/22424372/4/ratio3x2_1200.jpg',
-            }}
-          />
-          <Text style={styles.gameText}>Beer Pong</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('Charades')}>
-          <Image
-            style={styles.gameImage}
-            source={{
-              width: 92,
-              height: 67,
-              uri: 'https://www.brightful.me/content/images/size/w2000/2020/09/shutterstock_1400121068.jpg',
-            }}
-          />
-          <Text style={styles.gameText}>Charades</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.gameContainer}  onPress={() => navigation.navigate('CardsAgainstHumanity')}>
-          <Image
-            style={styles.gameImage}
-            resizeMode="stretch"
-            source={{
-              width: 92,
-              height: 67,
-              uri: 'https://cdn.appuals.com/wp-content/uploads/2021/10/intro-1.jpg',
-            }}
-          />
-          <Text style={styles.gameText}>Cards Against Humanity</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('Mahjong')}>
-          <Image
-            style={styles.gameImage}
-            source={{
-              width: 92,
-              height: 67,
-              uri: 'https://www.lovehkfilm.com/reviews_2/ab5734/bet_to_basic_a.jpg',
-            }}
-          />
-          <Text style={styles.gameText}>Mahjong</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('HeadsUp')}>
-          <Image
-            style={styles.gameImage}
-            source={{
-              width: 92,
-              height: 67,
-              uri: 'https://i.ytimg.com/vi/Qm5-zohOKFc/maxresdefault.jpg',
-            }}
-          />
-          <Text style={styles.gameText}>Heads Up</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.gameContainer} onPress={() => navigation.navigate('MusicalChairs')}>
-          <Image
-            style={styles.gameImage}
-            source={{
-              width: 92,
-              height: 67,
-              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
-            }}
-          />
-          <Text style={styles.gameText}>Musical Chairs</Text>
-        </TouchableOpacity>
-  
-        <TouchableOpacity style={styles.gameContainerLast} onPress={() => navigation.navigate('Mafia')}>
-          <Image
-            source={IMAGES.mafia}
-            style={{
-              width: 92,
-              height: 67,
-              margin: 8,
-              borderRadius: 10,
-            }}
-          />
-          <Text style={styles.gameText}>Mafia</Text>
-        </TouchableOpacity>
-
-      </ScrollView>
+        <FlatList 
+          data={Rules}
+          renderItem={({ item }) => (
+            <RuleCard mainRule={item} navigation={navigation} />
+          )}
+          numColumns={1}
+          key={'_'}
+          keyExtractor={ (item, index) => index }
+        />
+        
+      </View>
 
     </View>
   );

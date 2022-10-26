@@ -9,6 +9,7 @@ import App from './src/App';
 import { AuthProvider } from './src/context/auth';
 import { AxiosProvider } from './src/context/axios';
 import { RoomProvider } from './src/context/room';
+import { TransactionProvider } from './src/context/transaction';
 import { UserProvider } from './src/context/user';
 
 const Root = () => (
@@ -16,7 +17,9 @@ const Root = () => (
     <AxiosProvider>
       <UserProvider>
         <RoomProvider>
-          <App />
+          <TransactionProvider>
+            <App />
+          </TransactionProvider>
         </RoomProvider>
       </UserProvider>
     </AxiosProvider>

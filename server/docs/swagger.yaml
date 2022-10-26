@@ -14,6 +14,39 @@ definitions:
       password:
         type: string
     type: object
+  handlers.GenerateTransactions.BillReq:
+    properties:
+      amountToPay:
+        type: integer
+      date:
+        type: string
+      name:
+        type: string
+      payers:
+        items:
+          type: string
+        type: array
+      roomId:
+        type: string
+      shouldPay:
+        type: string
+    type: object
+  handlers.GenerateTransactions.TransactionResponse:
+    properties:
+      bill:
+        $ref: '#/definitions/model.Bill'
+      transactions:
+        items:
+          $ref: '#/definitions/model.Transaction'
+        type: array
+    type: object
+  handlers.GetTransactions.TransactionResponse:
+    properties:
+      bill:
+        $ref: '#/definitions/model.Bill'
+      transaction:
+        $ref: '#/definitions/model.Transaction'
+    type: object
   handlers.JoinRoom.RoomResponse:
     properties:
       attendees:
@@ -29,6 +62,19 @@ definitions:
         type: string
       value:
         type: string
+    type: object
+  model.Bill:
+    properties:
+      amount:
+        type: integer
+      date:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      roomID:
+        type: integer
     type: object
   model.Room:
     properties:
@@ -49,6 +95,21 @@ definitions:
       url:
         type: string
       venue:
+        type: string
+    type: object
+  model.Transaction:
+    properties:
+      billID:
+        type: integer
+      id:
+        type: integer
+      isPaid:
+        type: boolean
+      paidOn:
+        type: string
+      payee:
+        type: string
+      payer:
         type: string
     type: object
   model.User:
@@ -76,10 +137,80 @@ info:
   description: This is a server for NTU SC2006's project - JustJio.
   license:
     name: MIT
+    url: https://opensource.org/licenses/MIT
   termsOfService: http://swagger.io/terms/
   title: JustJio API
   version: "1.0"
 paths:
+  /bills:
+    get:
+      consumes:
+      - application/json
+      description: Get transactions by user's username
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handlers.GetTransactions.TransactionResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all transactions for a user
+      tags:
+      - transactions
+  /bills/{roomId}:
+    post:
+      consumes:
+      - application/json
+      description: Generate transactions after splitting a bill
+      parameters:
+      - description: Bill Details
+        in: body
+        name: billRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.GenerateTransactions.BillReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.GenerateTransactions.TransactionResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Generate transactions for a bill in a specific room
+      tags:
+      - transactions
+  /bills/pay:
+    patch:
+      consumes:
+      - application/json
+      description: User pays a unsettled bill
+      parameters:
+      - description: Pay Bill Details
+        in: body
+        name: payBillRequest
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Pay a bill
+      tags:
+      - transactions
   /rooms:
     get:
       consumes:
@@ -130,7 +261,7 @@ paths:
       summary: Create a room
       tags:
       - rooms
-  /rooms/{id}:
+  /rooms/{roomId}:
     delete:
       consumes:
       - application/json
@@ -178,7 +309,7 @@ paths:
       summary: Get all attendees for a room
       tags:
       - rooms
-  /rooms/decline/{4}:
+  /rooms/decline/{roomId}:
     delete:
       consumes:
       - application/json
@@ -198,8 +329,8 @@ paths:
           description: Internal Server Error
       summary: Decline a room
       tags:
-      - rooms
-  /rooms/invites/{invites}:
+      - invites
+  /rooms/invites/{roomId}:
     get:
       consumes:
       - application/json
@@ -217,9 +348,8 @@ paths:
           description: Internal Server Error
       summary: Get all invitations for a user
       tags:
-      - rooms
       - invites
-  /rooms/join/{id}:
+  /rooms/join/{roomId}:
     patch:
       consumes:
       - application/json
@@ -241,12 +371,12 @@ paths:
           description: Internal Server Error
       summary: Join a room
       tags:
-      - rooms
+      - invites
   /users/{id}:
     delete:
       consumes:
       - application/json
-      description: delete a user account
+      description: Delete a user account
       parameters:
       - description: User Password
         in: body
@@ -269,7 +399,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get user by ID
+      description: Get user by ID
       parameters:
       - description: User ID
         in: path
@@ -291,7 +421,7 @@ paths:
     patch:
       consumes:
       - application/json
-      description: update user attribute with new value
+      description: Update user attribute with new value
       parameters:
       - description: Field
         in: body

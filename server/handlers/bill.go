@@ -14,7 +14,7 @@ import (
 	"gorm.io/datatypes"
 )
 
-func createBill(billName string, amount int, date string, roomID_str string) (*model.Bill, error) {
+func createBill(billName string, amount float32, date string, roomID_str string) (*model.Bill, error) {
 	db := database.DB
 
 	roomID_uint32, err := strconv.ParseUint(roomID_str, 10, 32)
@@ -55,12 +55,23 @@ func createTransactions(payer []string, payee string, billID uint) (*[]model.Tra
 	return &toReturn, nil
 }
 
+// GenerateTransactions godoc
+// @Summary      Generate transactions for a bill in a specific room
+// @Description  Generate transactions after splitting a bill
+// @Tags         transactions
+// @Accept       json
+// @Produce      json
+// @Param        billRequest   body      handlers.GenerateTransactions.BillReq  true  "Bill Details"
+// @Success      200  {object}   handlers.GenerateTransactions.TransactionResponse
+// @Failure      400  {object}  nil
+// @Failure      500  {object}  nil
+// @Router       /bills/{roomId} [post]
 func GenerateTransactions(c *fiber.Ctx) error {
 	type BillReq struct {
 		Name        string         `json:"name"`
 		ShouldPay   string         `json:"shouldPay"`
-		Payers      datatypes.JSON `json:"payers"`
-		AmountToPay int            `json:"amountToPay"`
+		Payers      datatypes.JSON `json:"payers" swaggertype:"array,string"`
+		AmountToPay float32        `json:"amountToPay"`
 		Date        string         `json:"date"`
 		RoomID      string         `json:"roomId"`
 	}
@@ -92,11 +103,19 @@ func GenerateTransactions(c *fiber.Ctx) error {
 		Bill:         *bill,
 	}
 
-	fmt.Println("Transaction generated for roomID " + bills.RoomID + " , everyone should pay $" + strconv.Itoa(bills.AmountToPay) + " to " + bills.ShouldPay)
+	fmt.Println("Transaction generated for roomID " + bills.RoomID + ", everyone should pay $" + fmt.Sprintf("%f", bills.AmountToPay) + " to " + bills.ShouldPay)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions generated succesfully", "data": transactionResponse})
 }
 
-// Get Transactions for a user
+// GetTransactions godoc
+// @Summary      Get all transactions for a user
+// @Description  Get transactions by user's username
+// @Tags         transactions
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   handlers.GetTransactions.TransactionResponse
+// @Failure      500  {object}  nil
+// @Router       /bills [get]
 func GetTransactions(c *fiber.Ctx) error {
 	db := database.DB
 
@@ -124,9 +143,24 @@ func GetTransactions(c *fiber.Ctx) error {
 		transactionResponse = append(transactionResponse, transactionResponseElement)
 	}
 
+	if len(transactionResponse) == 0 {
+		return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "No transactions", "data": nil})
+	}
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions found", "data": transactionResponse})
 }
 
+// PayBill godoc
+// @Summary      Pay a bill
+// @Description  User pays a unsettled bill
+// @Tags         transactions
+// @Accept       json
+// @Produce      json
+// @Param        payBillRequest   body      int  true  "Pay Bill Details"
+// @Success      200  {object}  nil
+// @Failure      400  {object}  nil
+// @Failure      500  {object}  nil
+// @Router       /bills/pay [patch]
 func PayBill(c *fiber.Ctx) error {
 	db := database.DB
 

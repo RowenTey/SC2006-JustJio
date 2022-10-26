@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -46,6 +47,13 @@ func inviteUser(usernames []string, roomID_str string) error {
 	db := database.DB
 
 	for _, username := range usernames {
+		var user model.User
+		if err := db.Table("users").Where("username = ?", username).First(&user).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return err
+			}
+		}
+
 		roomUser, err := createRoomUser(roomID_str, username, "attendee")
 		if err != nil || roomUser == nil {
 			return err
@@ -102,12 +110,12 @@ func GetRooms(c *fiber.Ctx) error {
 // GetRoomInvitations godoc
 // @Summary      Get all invitations for a user
 // @Description  Get invitations by user's username
-// @Tags         rooms, invites
+// @Tags         invites
 // @Accept       json
 // @Produce      json
 // @Success      200  {array}   model.Room
 // @Failure      500  {object}  nil
-// @Router       /rooms/invites/{invites} [get]
+// @Router       /rooms/invites/{roomId} [get]
 func GetRoomInvitations(c *fiber.Ctx) error {
 	db := database.DB
 
@@ -189,6 +197,9 @@ func CreateRoom(c *fiber.Ctx) error {
 	var usernames []string
 	json.Unmarshal([]byte(roomInput.Invitees), &usernames)
 	if err := inviteUser(usernames, roomID_str); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User doesn't exist", "data": err})
+		}
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in creating room_user record (invitees)", "data": err})
 	}
 
@@ -215,7 +226,7 @@ func CreateRoom(c *fiber.Ctx) error {
 // @Param        roomID   path      int  true  "Room ID"
 // @Success      200  {object}   model.Room
 // @Failure      500  {object}  nil
-// @Router       /rooms/{id} [delete]
+// @Router       /rooms/{roomId} [delete]
 func CloseRoom(c *fiber.Ctx) error {
 	db := database.DB
 	roomID_str := c.Params("id")
@@ -234,13 +245,13 @@ func CloseRoom(c *fiber.Ctx) error {
 // JoinRoom godoc
 // @Summary      Join a room
 // @Description  Set accepted to true in invitation database
-// @Tags         rooms
+// @Tags         invites
 // @Accept       json
 // @Produce      json
 // @Param        roomID   path      int  true  "Room ID"
 // @Success      200  {object}    handlers.JoinRoom.RoomResponse
 // @Failure      500  {object}  nil
-// @Router       /rooms/join/{id} [patch]
+// @Router       /rooms/join/{roomId} [patch]
 func JoinRoom(c *fiber.Ctx) error {
 	db := database.DB
 	token := c.Locals("user").(*jwt.Token)
@@ -286,13 +297,13 @@ func JoinRoom(c *fiber.Ctx) error {
 // DeclineRoom godoc
 // @Summary      Decline a room
 // @Description  Delete the room invitation in database
-// @Tags         rooms
+// @Tags         invites
 // @Accept       json
 // @Produce      json
 // @Param        roomID   path      int  true  "Room ID"
 // @Success      200  {object}  nil
 // @Failure      500  {object}  nil
-// @Router       /rooms/decline/{4} [delete]
+// @Router       /rooms/decline/{roomId} [delete]
 func DeclineRoom(c *fiber.Ctx) error {
 	db := database.DB
 	token := c.Locals("user").(*jwt.Token)

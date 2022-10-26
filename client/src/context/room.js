@@ -65,6 +65,9 @@ const RoomProvider = ({ children }) => {
       console.log('Failed to create room', error);
       if (error.response) {
         console.log('Error response', error.response.data);
+        if (error.response.data.message === "User doesn't exist") {
+          throw new Error("User doesn't exist");
+        }
       } else if (error.request) {
         console.log('Error request', error.request);
       }
@@ -117,7 +120,7 @@ const RoomProvider = ({ children }) => {
         type: END_LOADING,
       });
     } catch (error) {
-      console.log('Failed to join room', error);
+      console.log('Failed to decline room', error);
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
@@ -159,7 +162,7 @@ const RoomProvider = ({ children }) => {
   const value = {
     total: state.total,
     rooms: state.rooms,
-    isLoading: state.isLoading,
+    isRoomsLoading: state.isLoading,
     fetchRooms,
     createRoom,
     joinRoom,

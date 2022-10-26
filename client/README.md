@@ -5,8 +5,8 @@
 ![landing](./assets/gifs/JustJio-Client.gif)
 
 ## 🛠 Getting Started
-> From your command line go to the project client directory and run the following scripts in the terminal.
 
+> From your command line go to the project client directory and run the following scripts in the terminal.
 
 1\. Install [Android studio](https://developer.android.com/studio)
 
@@ -20,7 +20,13 @@
 npm install
 ```
 
-5\. Start the react-native development server
+5\. Make a copy of `.env` and populate the environment variables inside
+
+```terminal
+copy .env.example .env
+```
+
+6\. Start the react-native development server
 
 ```terminal
 npm start android

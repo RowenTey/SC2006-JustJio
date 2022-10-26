@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
 import {
   StyleSheet,
@@ -5,14 +6,14 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Pressable,
   Alert,
   KeyboardAvoidingView,
 } from 'react-native';
-import { AxiosContext } from '../context/axios';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
+import { UserContext } from '../context/user';
+import { TransactionContext } from '../context/transaction';
 
 var billData = {
   billname: '',
@@ -23,36 +24,44 @@ const initialState = {
   ...billData,
 };
 
-const SplitBill = ({ navigation }) => {
-  const calcAmountToPay = () => {}; //need to work on this after today's commit
+const SplitBill = ({ navigation, route }) => {
+  const { payers, room } = route.params;
 
   const {
     control,
     handleSubmit,
     formState: {},
   } = useForm({ initialState });
-
-  const { authAxios } = useContext(AxiosContext);
+  const { createTransactions } = useContext(TransactionContext);
+  const [user, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+
+  const calcAmountToPay = amount => {
+    return (amount / payers.length).toFixed(2);
+  };
 
   const onSplitBill = async formData => {
     setLoading(true);
-    let { billname, amount } = formData;
+    let { billName, amount } = formData;
+    let curDate = new Date();
 
     billData = {
-      billname,
-      amount,
+      name: billName,
+      amountToPay: parseFloat(calcAmountToPay(amount)),
+      roomId: room.ID.toString(),
+      shouldPay: user.username,
+      date: curDate.toDateString(),
+      payers,
     };
 
     try {
       console.log('Split Bill Data', billData);
-      const response = await authAxios.post('/bills', billData);
-      console.log('Split Bill Successfully', response.data);
+      await createTransactions(billData, room.ID);
       setLoading(false);
       onSplitBillSuccess();
     } catch (error) {
       setLoading(false);
-      console.log('Failed to create bill', error);
+      console.log('Failed to create transactions', error);
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
@@ -70,7 +79,7 @@ const SplitBill = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.containerMain}>
       <View style={styles.title}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
@@ -82,8 +91,9 @@ const SplitBill = ({ navigation }) => {
       </View>
 
       <View style={styles.middle}>
-        <Text style={styles.billTopText}>Bill for: 6D </Text>
+        <Text style={styles.billTopText}>Bill for: {room.name} </Text>
         <View style={styles.topLineStyle} />
+
         <Text style={styles.billText}>Bill name: </Text>
         <CustomInput
           placeholder={''}
@@ -91,9 +101,9 @@ const SplitBill = ({ navigation }) => {
           name="billName"
           rules={{ required: 'Bill name is required' }}
           control={control}
-          textStyles={styles.billText}
+          textStyles={styles.input}
         />
-        <View style={styles.lineStyle} />
+
         <Text style={styles.billText}>Amount to split: </Text>
         <CustomInput
           placeholder={''}
@@ -101,9 +111,8 @@ const SplitBill = ({ navigation }) => {
           name="amount"
           rules={{ required: 'Amount is required' }}
           control={control}
-          textStyles={styles.billText}
+          textStyles={styles.input}
         />
-        <View style={styles.lineStyle} />
         <View style={styles.confirm}>
           <TouchableOpacity onPress={handleSubmit(onSplitBill)}>
             <Text style={styles.buttonText}>Split Bill</Text>
@@ -138,7 +147,7 @@ const styles = StyleSheet.create({
     bottom: -10,
   },
 
-  container: {
+  containerMain: {
     //the background colour of the entire application
     flex: 1,
     justifyContent: 'space-between',
@@ -160,7 +169,7 @@ const styles = StyleSheet.create({
     // back arrow
     position: 'absolute',
     top: -1,
-    right: 100,
+    right: 90,
   },
 
   billText: {
@@ -171,7 +180,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     color: '#4E1164',
-    marginLeft: 30,
+    marginLeft: 45,
+    marginVertical: 8,
+  },
+
+  input: {
+    left: 45,
   },
 
   billTopText: {
@@ -185,16 +199,16 @@ const styles = StyleSheet.create({
   topLineStyle: {
     borderWidth: 1,
     borderColor: '#4E1164',
-    margin: 10,
-    width: 383,
+    marginVertical: 10,
+    width: 500,
   },
 
   lineStyle: {
     borderWidth: 1,
     borderColor: '#000000',
     margin: 5,
-    marginLeft: 12,
-    width: 298,
+    marginLeft: 45,
+    width: 300,
     alignSelf: 'center',
   },
 
@@ -224,14 +238,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'center',
-    width: '35%',
+    width: '45%',
     minHeight: '9%',
     maxHeight: '9%',
     position: 'relative',
-    top: 10,
+    top: 25,
     backgroundColor: '#4E1164',
     borderRadius: 10,
-    left: 90,
+    left: 23,
   },
 
   buttonText: {

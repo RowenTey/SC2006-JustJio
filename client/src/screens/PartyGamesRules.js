@@ -1,7 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
-const MusicalChairs = ({ navigation }) => {
+const PartyGamesRules = ({ navigation, route }) => {
+  const { rule } = route.params;
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -11,43 +20,30 @@ const MusicalChairs = ({ navigation }) => {
             source={require('../../assets/images/back.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.header}>Musical Chairs</Text>
+        <Text style={styles.header}>{rule.name}</Text>
       </View>
 
       <View style={styles.middle}>
-
         <View style={styles.image}>
           <Image
             style={styles.gameImage}
             source={{
               width: 240,
               height: 120,
-              uri: 'https://www.todayville.com/wp-content/uploads/2021/12/tvrd-tvrd-dow-woke-musical-chairs-image-2021-12-16.jpg',
+              uri: rule.imageURL,
             }}
           />
         </View>
 
         <ScrollView style={styles.rulesContainer}>
-            <Text style={styles.rulesText}>
-            Okay, it's a popular party game for kids, but adults can also get in 
-            on the fun. Set up chairs (or seat cushions) in a circle facing outward, 
-            with enough seating for everyone playing, minus one. Designate one person 
-            as the music player and have everyone else stand in a circle around the 
-            circle of seats. When the music starts, walk around the seats; everyone 
-            must find a seat when the music ends. Whoever doesn't is out. Remove one 
-            more chair and begin again, until two people are fighting for one seat. 
-            To make musical chairs more interesting, add your own rules. Allow people 
-            to sit on top of each other (as long as their feet are off the floor), for 
-            example, or make your own alterations.
-            </Text>
+          <Text style={styles.rulesText}>{rule.description}</Text>
         </ScrollView>
-
       </View>
     </View>
   );
 };
 
-export default MusicalChairs;
+export default PartyGamesRules;
 
 const styles = StyleSheet.create({
   container: {
@@ -58,7 +54,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    marginHorizontal: 60,
+    marginHorizontal: 80,
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -68,8 +64,8 @@ const styles = StyleSheet.create({
   rulesContainer: {
     marginHorizontal: 80,
     marginVertical: 30,
-    minHeight: '55%',
-    maxHeight: '55%',
+    minHeight: '65%',
+    maxHeight: '65%',
     flexDirection: 'column',
     backgroundColor: 'white',
     borderRadius: 15,
@@ -79,7 +75,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'justify',
     color: 'black',
-    fontFamily: "Cochin",
+    fontFamily: 'Cochin',
     padding: 10,
   },
 
@@ -90,10 +86,9 @@ const styles = StyleSheet.create({
 
   header: {
     fontSize: 25,
-    top: 8,
+    top: 5,
+    marginLeft: 'auto',
     fontFamily: 'Poppins-Bold',
-    alignItems: 'center',
-    justifyContent: 'center',
     color: '#4E1164',
   },
 
@@ -101,10 +96,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#E9D7FD',
     minHeight: '10%',
     maxHeight: '10%',
+    width: '100%',
+    paddingHorizontal: 20,
   },
 
   middle: {
@@ -119,8 +116,7 @@ const styles = StyleSheet.create({
   back: {
     // back arrow
     position: 'relative',
+    top: 2,
     justifyContent: 'flex-start',
-    top: 6,
-    right: 70,
   },
 });

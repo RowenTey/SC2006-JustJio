@@ -23,37 +23,71 @@ const initialCreateRoomState = {
 };
 
 const CreateRoom = ({ navigation }) => {
-  //still need to define logic of ensuring have event name, date , time and venu
+  const DATE_REGEX =
+    /^([1-9]|0[1-9]|[12][0-9]|3[0-1])\/([1-9]|0[1-9]|1[0-2])\/\d{4}$/;
+  const TIME_REGEX = /((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/;
 
   const {
     control,
     handleSubmit,
     reset,
-    formState: {},
+    setError,
+    formState: { errors },
   } = useForm({ initialCreateRoomState });
   const { createRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
 
   const onCreateRoom = async formData => {
     setLoading(true);
-    let { eventName, date, time, venue, invitees } = formData;
-    invitees = invitees.split(',');
 
-    let roomData = {
-      room: {
-        name: eventName,
-        date,
-        time,
-        venue,
-      },
-      invitees,
-    };
+    try {
+      let { eventName, date, time, venue, invitees } = formData;
+      invitees = invitees.split(',');
+      let [day, month, year] = date.split('/');
+      let currentDate = new Date();
+      let dateObj = new Date(`${year}-${month}-${day}`);
 
-    await createRoom(roomData);
-    setLoading(false);
-    reset(initialCreateRoomState);
-    Alert.alert('Room created successfully');
-    navigation.navigate('HomeTab');
+      if (currentDate > dateObj) {
+        throw new Error('Date entered has passed');
+      }
+
+      let roomData = {
+        room: {
+          name: eventName,
+          date,
+          time,
+          venue,
+        },
+        invitees,
+      };
+
+      await createRoom(roomData).catch(error => {
+        throw error;
+      });
+      setLoading(false);
+      reset(initialCreateRoomState);
+      Alert.alert('Room created successfully');
+      navigation.navigate('HomeTab');
+    } catch (error) {
+      setLoading(false);
+      console.log('Error creating room', error.message);
+      switch (error.message) {
+        case "User doesn't exist":
+          setError('invitees', {
+            type: 'string',
+            message: 'Username entered is not valid!',
+          });
+          break;
+        case 'Date entered has passed':
+          setError('date', {
+            type: 'string',
+            message: 'Date entered has passed',
+          });
+          break;
+        default:
+          break;
+      }
+    }
   };
 
   if (loading) {
@@ -77,7 +111,13 @@ const CreateRoom = ({ navigation }) => {
           placeholder={'Name of Event:'}
           placeholderTextColor="#000"
           name="eventName"
-          rules={{ required: 'Event name is required' }}
+          rules={{
+            required: 'Event name is required',
+            minLength: {
+              value: 5,
+              message: 'Should be minimum of 5 characters',
+            },
+          }}
           control={control}
           textStyles={styles.roomText}
         />
@@ -86,7 +126,13 @@ const CreateRoom = ({ navigation }) => {
           placeholder={'Date: dd/mm/yyyy'}
           placeholderTextColor="#000"
           name="date"
-          rules={{ required: 'Date is required' }}
+          rules={{
+            required: 'Date is required',
+            pattern: {
+              value: DATE_REGEX,
+              message: 'Invalid date',
+            },
+          }}
           control={control}
           textStyles={styles.roomText}
         />
@@ -95,7 +141,13 @@ const CreateRoom = ({ navigation }) => {
           placeholder={'Time: 08:00pm'}
           placeholderTextColor="#000"
           name="time"
-          rules={{ required: 'Time is required' }}
+          rules={{
+            required: 'Time is required',
+            pattern: {
+              value: TIME_REGEX,
+              message: 'Invalid time',
+            },
+          }}
           control={control}
           textStyles={styles.roomText}
         />
@@ -110,9 +162,10 @@ const CreateRoom = ({ navigation }) => {
         />
 
         <CustomInput
-          placeholder={'Invitees: (usernames)'}
+          placeholder={'Invitees: (username1,username2)'}
           placeholderTextColor="#000"
           name="invitees"
+          rules={{ required: 'Invitee is required' }}
           control={control}
           textStyles={styles.roomText}
         />
