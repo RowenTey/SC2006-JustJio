@@ -73,37 +73,42 @@ const Home = ({ navigation }) => {
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GIVE: </Text>
             <View style={styles.smallContainer}>
-
               <FlatList
-              data = {transactions}
-              renderItem={({ item }) => (
-                item.transaction.payer != user.username ? 
-                <TransactionBar transactions={item} icon = {ICONS.tick} navigation ={navigation} name = {item.transaction.payer} />
-                
-                : null 
-              )}
-              key={'_'}
-              keyExtractor={item => item.id}
+                data={transactions}
+                renderItem={({ item }) =>
+                  item.transaction.payer != user.username ? (
+                    <TransactionBar
+                      transactions={item}
+                      icon={ICONS.tick}
+                      navigation={navigation}
+                      name={item.transaction.payer}
+                    />
+                  ) : null
+                }
+                key={'_'}
+                keyExtractor={item => item.id}
               />
-
             </View>
-            
           </View>
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GET: </Text>
             <View style={styles.smallContainer}>
               <FlatList
-              data = {duplicateTransactions}
-              renderItem={({ item }) => (
-                item.transaction.payer == user.username ? 
-                <TransactionBar transactions={item} icon = {ICONS.bell} navigation={navigation} name = {item.transaction.payee} />
-                : null
-              )}
-              key={'_'}
-              keyExtractor={item => item.id}
+                data={duplicateTransactions}
+                renderItem={({ item }) =>
+                  item.transaction.payer == user.username ? (
+                    <TransactionBar
+                      transactions={item}
+                      icon={ICONS.bell}
+                      navigation={navigation}
+                      name={item.transaction.payee}
+                    />
+                  ) : null
+                }
+                key={'_'}
+                keyExtractor={item => item.id}
               />
             </View>
-            
           </View>
         </View>
 
@@ -283,13 +288,13 @@ const styles = StyleSheet.create({
   box: {
     borderRadius: 15,
     backgroundColor: '#ffffff',
-    paddingHorizontal: 30,
-    paddingVertical: 0,
+    width: 180,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     justifyContent: 'space-between',
     marginTop: 15,
     marginBottom: 20,
-    marginRight: 5,
-    marginLeft: 5,
+    marginHorizontal: 5,
   },
 
   transactionText: {
@@ -309,7 +314,6 @@ const styles = StyleSheet.create({
 
   smallContainer: {
     flexDirection: 'row',
-    height : 100,
-    
+    height: 100,
   },
 });

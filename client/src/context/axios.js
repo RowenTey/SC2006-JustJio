@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from 'react';
 import axios from 'axios';
-import Config from 'react-native-config';
 import { AuthContext } from './auth';
 
 const AxiosContext = createContext();
@@ -10,11 +9,11 @@ const AxiosProvider = ({ children }) => {
   const authContext = useContext(AuthContext);
 
   const authAxios = axios.create({
-    baseURL: `https://justjio-server-o44bmvzlsa-as.a.run.app/`,
+    baseURL: 'https://justjio-server-o44bmvzlsa-as.a.run.app/',
   });
 
   const publicAxios = axios.create({
-    baseURL: `https://justjio-server-o44bmvzlsa-as.a.run.app/`,
+    baseURL: 'https://justjio-server-o44bmvzlsa-as.a.run.app/',
   });
 
   if (authContext.getAuthenticated()) {
