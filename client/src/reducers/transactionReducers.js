@@ -41,7 +41,6 @@ const TransactionReducer = (state, action) => {
         toGet: payload.toGet,
       };
     case SETTLE_TRANSACTION:
-      console.log('toPay', payload.toPay);
       return {
         ...state,
         transactions: payload.transactions,
