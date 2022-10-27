@@ -1,10 +1,11 @@
+/* eslint-disable eqeqeq */
 import React, { createContext, useContext, useReducer } from 'react';
 import {
   END_LOADING,
   FETCH_TRANSACTION,
   CREATE_TRANSACTION,
   START_LOADING,
-  END_TRANSACTION,
+  SETTLE_TRANSACTION,
 } from '../constants/actionTypes';
 
 import { AxiosContext } from './axios';
@@ -28,7 +29,6 @@ const TransactionProvider = ({ children }) => {
         type: START_LOADING,
       });
       const { data: response } = await authAxios.get('/bills');
-      console.log('Transactions fetched', response);
       dispatch({
         type: FETCH_TRANSACTION,
         payload: response,
@@ -38,6 +38,9 @@ const TransactionProvider = ({ children }) => {
       });
     } catch (error) {
       console.log('Failed to fetch transactions', error);
+      dispatch({
+        type: END_LOADING,
+      });
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
@@ -66,9 +69,10 @@ const TransactionProvider = ({ children }) => {
         };
         currentTransaction.push(entry);
       }
-      console.log('currentTransaction', currentTransaction);
-      const updatedTransactions = state.transactions.concat(currentTransaction);
-      console.log('updatedTransactions', updatedTransactions);
+      const updatedTransactions = [
+        ...state.transactions,
+        ...currentTransaction,
+      ];
       dispatch({
         type: CREATE_TRANSACTION,
         payload: {
@@ -81,34 +85,64 @@ const TransactionProvider = ({ children }) => {
       });
     } catch (error) {
       console.log('Failed to split bill', error);
+      dispatch({
+        type: END_LOADING,
+      });
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
         console.log('Error request', error.request);
       }
     }
-  };  
+  };
 
-   const payBill = async transactionData => {
-     try {
-       dispatch({
-         type: START_LOADING,
-       });
-
-      const { response } = await authAxios.patch(`/bills/pay`, transactionData);
-      console.log(response);
-       dispatch({
-        type: END_TRANSACTION,
+  const payBill = async transactionData => {
+    try {
+      dispatch({
+        type: START_LOADING,
       });
-       dispatch({
+
+      const response = await authAxios.patch('/bills/pay', transactionData);
+
+      if (response.status === 200) {
+        const updatedTransactions = state.transactions.map(
+          ({ transaction }) => {
+            if (
+              transaction.payer == transactionData.payer &&
+              transaction.payee == transactionData.payee &&
+              transaction.billID == transactionData.billID
+            ) {
+              console.log('In the update block!');
+              transaction = {
+                ...transaction,
+                isPaid: true,
+                paidOn: transactionData.paidOn,
+              };
+              console.log('Updated transaction', transaction);
+            }
+            return transaction;
+          },
+        );
+        console.log('Updated transactions', updatedTransactions);
+
+        dispatch({
+          type: SETTLE_TRANSACTION,
+          payload: {
+            transactions: updatedTransactions,
+          },
+        });
+      }
+
+      dispatch({
         type: END_LOADING,
-       });
-     } catch (error) {
-       console.log('Failed to pay bill', error);
-
-   }
-
-  }
+      });
+    } catch (error) {
+      dispatch({
+        type: END_LOADING,
+      });
+      console.log('Failed to pay bill', error);
+    }
+  };
 
   const value = {
     total: state.total,

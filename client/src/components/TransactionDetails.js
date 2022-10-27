@@ -1,32 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  Image,
-  ImageURISource,
-  useContext,
-} from 'react-native';
-import { initialUserState, UserContext } from '../context/user.js';
-import { AuthContext } from '../context/auth.js';
-import { RoomContext } from '../context/room.js';
+import { View, StyleSheet, Text, Image } from 'react-native';
 
 const ICONS = {
   add: require('../../assets/images/add.png'),
-  mail: require('../../assets/images/mail.png'),
-  group: require('../../assets/images/group.png'),
-  mahjong: require('../../assets/images/mahjong.png'),
-  vector: require('../../assets/images/Vector.png'),
-  logout: require('../../assets/images/logout.png'),
-  bell: require('../../assets/images/bell.png'),
   tick: require('../../assets/images/tick.png'),
 };
 
-const TransactionBar = ({ transactions, navigation, icon, name }) => {
-  
-  
+const TransactionBar = ({ transactions, icon, name }) => {
   return (
     <View style={styles.container}>
       <View style={styles.button}>

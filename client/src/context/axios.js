@@ -10,11 +10,11 @@ const AxiosProvider = ({ children }) => {
   const authContext = useContext(AuthContext);
 
   const authAxios = axios.create({
-    baseURL: `https://justjio-server-o44bmvzlsa-as.a.run.app`,
+    baseURL: `http://${Config.IP_ADDRESS}:8080`,
   });
 
   const publicAxios = axios.create({
-    baseURL: `https://justjio-server-o44bmvzlsa-as.a.run.app`,
+    baseURL: `http://${Config.IP_ADDRESS}:8080`,
   });
 
   if (authContext.getAuthenticated()) {

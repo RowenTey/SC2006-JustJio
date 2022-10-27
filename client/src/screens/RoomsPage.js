@@ -89,7 +89,7 @@ const RoomsPage = ({ navigation, route }) => {
             ]}
             onPress={() =>
               navigation.navigate('SplitBillMembers', {
-                payers: attendees,
+                payers: attendees.filter(payee => payee !== user.username),
                 room,
               })
             }>

@@ -1,12 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
@@ -64,7 +57,6 @@ const CreateRoom = ({ navigation }) => {
       });
       setLoading(false);
       reset(initialCreateRoomState);
-      Alert.alert('Room created successfully');
       navigation.navigate('HomeTab');
     } catch (error) {
       setLoading(false);

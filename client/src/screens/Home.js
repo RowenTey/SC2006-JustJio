@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -17,7 +17,6 @@ import { AuthContext } from '../context/auth.js';
 import { RoomContext } from '../context/room.js';
 import { TransactionContext } from '../context/transaction.js';
 
-
 const ICONS = {
   add: require('../../assets/images/add.png'),
   mail: require('../../assets/images/mail.png'),
@@ -32,37 +31,51 @@ const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
   const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
-  const { transactions, fetchTransactions } = useContext(TransactionContext);
-  const { isTransactionsLoading } = useContext(TransactionContext);
+  const { transactions, fetchTransactions, isTransactionsLoading } =
+    useContext(TransactionContext);
   const { payBill } = useContext(TransactionContext);
-  
-  
-  const paybilFunction = async transaction => {
-      console.log("button pressed");
-      let curDate = new Date();
-      console.log(transaction)
-      billData = {
-        paidOn: curDate.toString(),
-        payee: transaction.transaction.payee,
-        payer: transaction.transaction.payer
-      }
-  
-      try {
-        console.log('Bill Data', billData);
-        await payBill(billData);
-      } catch (error) {
-        console.log('Failed to create transactions', error);
-      }
-    };
-    
-  
+  const [toPay, setToPay] = useState([]);
+  const [toGet, setToGet] = useState([]);
 
-  
+  const handlePayBill = async ({ transaction }) => {
+    let curDate = new Date();
+    let billData = {
+      paidOn: curDate.toString(),
+      payee: transaction.payee,
+      payer: transaction.payer,
+      billId: transaction.billID.toString(),
+    };
+
+    try {
+      console.log('Bill Data', billData);
+      await payBill(billData);
+    } catch (error) {
+      console.log('Failed to settle transactions', error);
+    }
+  };
 
   useEffect(() => {
-    fetchRooms();
-    fetchTransactions();
+    async function fetchData() {
+      await fetchRooms();
+      await fetchTransactions();
+    }
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    setToPay(
+      transactions.filter(
+        ({ transaction }) =>
+          transaction?.payer === user.username && !transaction?.isPaid,
+      ),
+    );
+    setToGet(
+      transactions.filter(
+        ({ transaction }) =>
+          transaction?.payee === user.username && !transaction?.isPaid,
+      ),
+    );
+  }, [transactions]);
 
   const handleLogout = async () => {
     await logout();
@@ -70,13 +83,12 @@ const Home = ({ navigation }) => {
     navigation.navigate('Signin');
   };
 
-  const duplicateTransactions = transactions;
+  console.log('Transactions', transactions);
 
   if (isRoomsLoading || isTransactionsLoading) {
     return <Spinner />;
   }
 
-  
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -100,16 +112,19 @@ const Home = ({ navigation }) => {
             <Text style={styles.transactionText}> TO GIVE: </Text>
             <View style={styles.smallContainer}>
               <FlatList
-              data = {transactions}
-              renderItem={({ item }) => (
-                item.transaction.payer != user.username ? 
-                <TouchableOpacity onPress={()=> paybilFunction(item)}>
-                <TransactionBar transactions={item} icon = {ICONS.tick} navigation ={navigation} name = {item.transaction.payer} />
-                </TouchableOpacity>
-                : null 
-              )}
-              key={'_'}
-              keyExtractor={item => item.id}
+                data={toPay}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => handlePayBill(item)}>
+                    <TransactionBar
+                      transactions={item}
+                      icon={ICONS.tick}
+                      navigation={navigation}
+                      name={item.transaction.payee}
+                    />
+                  </TouchableOpacity>
+                )}
+                key={'_'}
+                keyExtractor={(item, index) => index}
               />
             </View>
           </View>
@@ -117,17 +132,19 @@ const Home = ({ navigation }) => {
             <Text style={styles.transactionText}> TO GET: </Text>
             <View style={styles.smallContainer}>
               <FlatList
-              data = {duplicateTransactions}
-              renderItem={({ item }) => (
-                item.transaction.payer == user.username ? 
-                <TouchableOpacity onPress={()=> paybilFunction(item)}>
-                <TransactionBar transactions={item} icon = {ICONS.bell} navigation={navigation} name = {item.transaction.payee}  />
-                </TouchableOpacity>
-                : null
-                
-              )}
-              key={'_'}
-              keyExtractor={item => item.id}
+                data={toGet}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => {}}>
+                    <TransactionBar
+                      transactions={item}
+                      icon={ICONS.bell}
+                      navigation={navigation}
+                      name={item.transaction.payer}
+                    />
+                  </TouchableOpacity>
+                )}
+                key={'_'}
+                keyExtractor={(item, index) => index}
               />
             </View>
           </View>
@@ -172,7 +189,7 @@ const Home = ({ navigation }) => {
               )}
               numColumns={2}
               key={'_'}
-              keyExtractor={item => item.ID}
+              keyExtractor={(item, index) => index}
             />
           ) : (
             <Text style={styles.noRooms}>
