@@ -48,10 +48,8 @@ const JoinRoom = ({ navigation }) => {
     setLoading(true);
 
     if (type === INVITATION_ACTIONS.JOiN) {
-      console.log('join room');
       await joinRoom(roomId);
     } else if (type === INVITATION_ACTIONS.DECLINE) {
-      console.log('decline room');
       await declineRoom(roomId);
     }
     setLoading(false);

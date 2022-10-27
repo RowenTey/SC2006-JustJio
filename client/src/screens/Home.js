@@ -31,11 +31,9 @@ const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
   const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
-  const { transactions, fetchTransactions, isTransactionsLoading } =
+  const { toPay, toGet, fetchTransactions, isTransactionsLoading } =
     useContext(TransactionContext);
   const { payBill } = useContext(TransactionContext);
-  const [toPay, setToPay] = useState([]);
-  const [toGet, setToGet] = useState([]);
 
   const handlePayBill = async ({ transaction }) => {
     let curDate = new Date();
@@ -47,8 +45,7 @@ const Home = ({ navigation }) => {
     };
 
     try {
-      console.log('Bill Data', billData);
-      await payBill(billData);
+      await payBill(billData, transaction.billID);
     } catch (error) {
       console.log('Failed to settle transactions', error);
     }
@@ -62,28 +59,11 @@ const Home = ({ navigation }) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    setToPay(
-      transactions.filter(
-        ({ transaction }) =>
-          transaction?.payer === user.username && !transaction?.isPaid,
-      ),
-    );
-    setToGet(
-      transactions.filter(
-        ({ transaction }) =>
-          transaction?.payee === user.username && !transaction?.isPaid,
-      ),
-    );
-  }, [transactions]);
-
   const handleLogout = async () => {
     await logout();
     setUser(initialUserState);
     navigation.navigate('Signin');
   };
-
-  console.log('Transactions', transactions);
 
   if (isRoomsLoading || isTransactionsLoading) {
     return <Spinner />;
@@ -111,41 +91,49 @@ const Home = ({ navigation }) => {
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GIVE: </Text>
             <View style={styles.smallContainer}>
-              <FlatList
-                data={toPay}
-                renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => handlePayBill(item)}>
-                    <TransactionBar
-                      transactions={item}
-                      icon={ICONS.tick}
-                      navigation={navigation}
-                      name={item.transaction.payee}
-                    />
-                  </TouchableOpacity>
-                )}
-                key={'_'}
-                keyExtractor={(item, index) => index}
-              />
+              {toPay.length > 0 ? (
+                <FlatList
+                  data={toPay}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => handlePayBill(item)}>
+                      <TransactionBar
+                        transactions={item}
+                        icon={ICONS.tick}
+                        navigation={navigation}
+                        name={item.transaction.payee}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  key={'_'}
+                  keyExtractor={(item, index) => index}
+                />
+              ) : (
+                <Text>No one to pay</Text>
+              )}
             </View>
           </View>
           <View style={styles.box}>
             <Text style={styles.transactionText}> TO GET: </Text>
             <View style={styles.smallContainer}>
-              <FlatList
-                data={toGet}
-                renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => {}}>
-                    <TransactionBar
-                      transactions={item}
-                      icon={ICONS.bell}
-                      navigation={navigation}
-                      name={item.transaction.payer}
-                    />
-                  </TouchableOpacity>
-                )}
-                key={'_'}
-                keyExtractor={(item, index) => index}
-              />
+              {toGet.length > 0 ? (
+                <FlatList
+                  data={toGet}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => {}}>
+                      <TransactionBar
+                        transactions={item}
+                        icon={ICONS.bell}
+                        navigation={navigation}
+                        name={item.transaction.payer}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  key={'_'}
+                  keyExtractor={(item, index) => index}
+                />
+              ) : (
+                <Text>No one to get</Text>
+              )}
             </View>
           </View>
         </View>

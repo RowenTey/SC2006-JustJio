@@ -10,6 +10,8 @@ import {
 export const initialTransactionState = {
   isLoading: false,
   transactions: [],
+  toPay: [],
+  toGet: [],
 };
 
 const TransactionReducer = (state, action) => {
@@ -26,15 +28,25 @@ const TransactionReducer = (state, action) => {
         isLoading: false,
       };
     case FETCH_TRANSACTION:
+      console.log('toPay', payload.toPay);
+      console.log('toGet', payload.toGet);
       return {
         ...state,
-        transactions: payload.data,
+        transactions: payload.transactions,
+        toPay: payload.toPay,
+        toGet: payload.toGet,
       };
     case CREATE_TRANSACTION:
+      return {
+        ...state,
+        transactions: payload.transactions,
+        toGet: payload.toGet,
+      };
     case SETTLE_TRANSACTION:
       return {
         ...state,
         transactions: payload.transactions,
+        toPay: payload.toPay,
       };
     case LOGOUT:
       return initialTransactionState;

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable eqeqeq */
 import React, { createContext, useContext, useReducer } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
 } from '../constants/actionTypes';
 
 import { AxiosContext } from './axios';
+import { UserContext } from './user';
 import TransactionReducer, {
   initialTransactionState,
 } from '../reducers/transactionReducers';
@@ -22,6 +24,7 @@ const TransactionProvider = ({ children }) => {
     initialTransactionState,
   );
   const { authAxios } = useContext(AxiosContext);
+  const [user, setUser] = useContext(UserContext);
 
   const fetchTransactions = async () => {
     try {
@@ -31,8 +34,23 @@ const TransactionProvider = ({ children }) => {
       const { data: response } = await authAxios.get('/bills');
       dispatch({
         type: FETCH_TRANSACTION,
-        payload: response,
+        payload: {
+          transactions: response.data ? response.data : [],
+          toPay: response.data
+            ? response.data.filter(
+                ({ transaction }) =>
+                  transaction?.payer === user.username && !transaction?.isPaid,
+              )
+            : [],
+          toGet: response.data
+            ? response.data.filter(
+                ({ transaction }) =>
+                  transaction?.payee === user.username && !transaction?.isPaid,
+              )
+            : [],
+        },
       });
+
       dispatch({
         type: END_LOADING,
       });
@@ -73,10 +91,12 @@ const TransactionProvider = ({ children }) => {
         ...state.transactions,
         ...currentTransaction,
       ];
+      const updatedToGet = [...state.toGet, ...currentTransaction];
       dispatch({
         type: CREATE_TRANSACTION,
         payload: {
           transactions: updatedTransactions,
+          toGet: updatedToGet,
         },
       });
 
@@ -96,39 +116,39 @@ const TransactionProvider = ({ children }) => {
     }
   };
 
-  const payBill = async transactionData => {
+  const payBill = async (transactionData, billId) => {
     try {
       dispatch({
         type: START_LOADING,
       });
 
       const response = await authAxios.patch('/bills/pay', transactionData);
-
       if (response.status === 200) {
         const updatedTransactions = state.transactions.map(
           ({ transaction }) => {
             if (
               transaction.payer == transactionData.payer &&
               transaction.payee == transactionData.payee &&
-              transaction.billID == transactionData.billID
+              transaction.billID == billId
             ) {
-              console.log('In the update block!');
-              transaction = {
+              return {
                 ...transaction,
                 isPaid: true,
                 paidOn: transactionData.paidOn,
               };
-              console.log('Updated transaction', transaction);
             }
             return transaction;
           },
         );
-        console.log('Updated transactions', updatedTransactions);
+        const updatedToPay = state.toPay.filter(
+          ({ transaction }) => transaction.billID != billId,
+        );
 
         dispatch({
           type: SETTLE_TRANSACTION,
           payload: {
             transactions: updatedTransactions,
+            toPay: updatedToPay,
           },
         });
       }
@@ -147,6 +167,8 @@ const TransactionProvider = ({ children }) => {
   const value = {
     total: state.total,
     transactions: state.transactions,
+    toPay: state.toPay,
+    toGet: state.toGet,
     isTransactionsLoading: state.isLoading,
     createTransactions,
     fetchTransactions,
