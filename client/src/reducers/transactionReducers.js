@@ -28,8 +28,6 @@ const TransactionReducer = (state, action) => {
         isLoading: false,
       };
     case FETCH_TRANSACTION:
-      console.log('toPay', payload.toPay);
-      console.log('toGet', payload.toGet);
       return {
         ...state,
         transactions: payload.transactions,
@@ -43,6 +41,7 @@ const TransactionReducer = (state, action) => {
         toGet: payload.toGet,
       };
     case SETTLE_TRANSACTION:
+      console.log('toPay', payload.toPay);
       return {
         ...state,
         transactions: payload.transactions,

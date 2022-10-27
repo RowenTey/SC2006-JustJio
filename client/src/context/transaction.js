@@ -122,13 +122,14 @@ const TransactionProvider = ({ children }) => {
         type: START_LOADING,
       });
 
+      console.log(transactionData);
       const response = await authAxios.patch('/bills/pay', transactionData);
       if (response.status === 200) {
         const updatedTransactions = state.transactions.map(
           ({ transaction }) => {
             if (
-              transaction.payer == transactionData.payer &&
-              transaction.payee == transactionData.payee &&
+              transaction?.payer == transactionData.payer &&
+              transaction?.payee == transactionData.payee &&
               transaction.billID == billId
             ) {
               return {
@@ -143,6 +144,7 @@ const TransactionProvider = ({ children }) => {
         const updatedToPay = state.toPay.filter(
           ({ transaction }) => transaction.billID != billId,
         );
+        console.log(updatedTransactions);
 
         dispatch({
           type: SETTLE_TRANSACTION,
@@ -153,9 +155,11 @@ const TransactionProvider = ({ children }) => {
         });
       }
 
-      dispatch({
-        type: END_LOADING,
-      });
+      setTimeout(() => {
+        dispatch({
+          type: END_LOADING,
+        });
+      }, 1000);
     } catch (error) {
       dispatch({
         type: END_LOADING,

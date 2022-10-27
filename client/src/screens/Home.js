@@ -108,7 +108,7 @@ const Home = ({ navigation }) => {
                   keyExtractor={(item, index) => index}
                 />
               ) : (
-                <Text>No one to pay</Text>
+                <Text style={styles.noAction}>No one to pay</Text>
               )}
             </View>
           </View>
@@ -132,7 +132,7 @@ const Home = ({ navigation }) => {
                   keyExtractor={(item, index) => index}
                 />
               ) : (
-                <Text>No one to get</Text>
+                <Text style={styles.noAction}>No one to get</Text>
               )}
             </View>
           </View>
@@ -336,6 +336,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 35,
     paddingHorizontal: 30,
+  },
+
+  noAction: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 15,
+    alignSelf: 'center',
+    marginStart: 25,
   },
 
   smallContainer: {
