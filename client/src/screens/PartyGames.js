@@ -14,7 +14,11 @@ const PartyGames = ({ navigation }) => {
         <FlatList
           data={Rules}
           renderItem={({ item }) => (
-            <RuleCard mainRule={item} navigation={navigation} />
+            <RuleCard
+              mainRule={item}
+              navigation={navigation}
+              isStatic={item.isStatic}
+            />
           )}
           numColumns={1}
           key={'_'}
