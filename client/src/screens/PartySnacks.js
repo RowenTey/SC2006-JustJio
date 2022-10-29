@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -13,6 +13,10 @@ import {
 import Config from 'react-native-config';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { getDistance } from 'geolib';
+import Geolocation from '@react-native-community/geolocation'
+import Geocoder from 'react-native-geocoding'
+
+Geocoder.init(Config.GOOGLE_MAPS_API_KEY);
 
 const PartySnacks = () => {
   const [places, setPlaces] = useState({
@@ -45,7 +49,7 @@ const PartySnacks = () => {
       '&key=' +
       key;
 
-    console.log(getSupermarketsUrl);
+    //console.log(getSupermarketsUrl);
     await fetch(getSupermarketsUrl)
       .then(res => {
         return res.json();
@@ -69,6 +73,31 @@ const PartySnacks = () => {
       locationName: details.formatted_address,
     });
     await fetchNearestPlacesFromGoogle(lat, long);
+  };
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+  
+  const getLocation = async () => {
+    await Geolocation.getCurrentPosition(
+      async (pos) => {
+        const curLat = pos.coords.latitude;
+        const curLng = pos.coords.longitude;
+        var addrName;
+        await Geocoder.from(curLat, curLng)
+          .then(json => {
+            var addressComponent = json.results[0].address_components[0];
+            addrName = addressComponent.long_name;
+          })
+        setLocation({
+          latitude: curLat,
+          longitude: curLng,
+          locationName: addrName
+        });
+        await fetchNearestPlacesFromGoogle(curLat, curLng);
+      }
+    );
   };
 
   const openMaps = item => {
@@ -99,32 +128,41 @@ const PartySnacks = () => {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.bigText}>Party Snacks</Text>
-        <Text
-          style={{
-            textAlign: 'center',
-            flexWrap: 'wrap',
-            width: 350,
-            color: '#4E1164',
-            fontWeight: '400',
-          }}>
-          Current location: {location.locationName}
-        </Text>
+        <Text style={styles.locationText}> Current location: {location.locationName} </Text>
       </View>
-      <GooglePlacesAutocomplete
-        placeholder="Search"
-        fetchDetails={true}
-        onPress={(data, details) => onSearch(details)}
-        query={{
-          key: Config.GOOGLE_MAPS_API_KEY,
-          language: 'en',
-          components: 'country:sg',
-        }}
-        styles={{
-          container: { flex: 0, width: '90%', zIndex: 1, marginTop: 10 },
-          listView: { backgroundColor: 'white' },
-        }}
-      />
 
+      <View style={styles.searchBar}>
+        <GooglePlacesAutocomplete
+          placeholder="Search"
+          fetchDetails={true}
+          onPress={(data, details) => onSearch(details)}
+          query={{
+            key: Config.GOOGLE_MAPS_API_KEY,
+            language: 'en',
+            components: 'country:sg',
+          }}
+          styles={{
+            container: { flex: 0, width: 350, marginTop: 5, },
+            listView: { backgroundColor: 'white' },
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 25,
+          }}
+          onPress={getLocation}>
+          <Image
+            style={styles.images}
+            source={{
+              width: 20,
+              height: 20,
+              uri: 'https://static.thenounproject.com/png/2819186-200.png',
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+      
       <FlatList
         data={places.placesArray.results}
         style={{ flex: 1, width: '100%' }}
@@ -185,6 +223,21 @@ const styles = StyleSheet.create({
     minHeight: '10%',
     maxHeight: '10%',
     width: '100%',
+  },
+
+  locationText: {
+    textAlign: 'center',
+    flexWrap: 'wrap',
+    width: 350,
+    color: '#4E1164',
+    fontWeight: '400',
+  },
+
+  searchBar: {
+    flexDirection: 'row',
+        justifyContent: 'center',
+        width: '100%',
+        alignItems: 'center',
   },
 
   box: {
