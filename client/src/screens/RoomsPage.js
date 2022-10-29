@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   },
 
   upcomingEvent: {
-    fontSize: 15,
+    fontSize: 13,
     color: '#4E1164',
     flexDirection: 'column',
     justifyContent: 'flex-start',
