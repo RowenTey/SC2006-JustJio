@@ -122,7 +122,6 @@ const TransactionProvider = ({ children }) => {
         type: START_LOADING,
       });
 
-      console.log(transactionData);
       const response = await authAxios.patch('/bills/pay', transactionData);
       if (response.status === 200) {
         const updatedTransactions = state.transactions.map(
@@ -144,7 +143,6 @@ const TransactionProvider = ({ children }) => {
         const updatedToPay = state.toPay.filter(
           ({ transaction }) => transaction.billID != billId,
         );
-        console.log(updatedTransactions);
 
         dispatch({
           type: SETTLE_TRANSACTION,

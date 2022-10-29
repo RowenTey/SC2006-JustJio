@@ -65,9 +65,9 @@ func seedDB(db *gorm.DB) error {
 	}
 
 	rooms := []model.Room{
-		{Name: "ks birthday", Date: "04/09/2022", Time: "5:00pm-10:00pm", Venue: "ntu hall 9", Host: "ks123"},
-		{Name: "harish birthday", Date: "04/10/2022", Time: "6:00pm-10:00pm", Venue: "clementi mall", Host: "harish123"},
-		{Name: "amabel birthday", Date: "04/11/2022", Time: "9:00am-11:00am", Venue: "marina bay sand", Host: "amabel123"},
+		{Name: "ks birthday", Date: "04/09/2022", Time: "5:00pm", Venue: "ntu hall 9", Host: "ks123"},
+		{Name: "harish birthday", Date: "04/10/2022", Time: "6:00pm", Venue: "clementi mall", Host: "harish123"},
+		{Name: "amabel birthday", Date: "04/11/2022", Time: "9:00am", Venue: "marina bay sand", Host: "amabel123"},
 	}
 	for _, r := range rooms {
 		db.Create(&r)
