@@ -33,6 +33,7 @@ const SpinTheWheel = ({ navigation }) => {
     innerRadius: 50,
     duration: 4000,
     backgroundColor: 'transparent',
+    knobSource: require('../../assets/images/knob.png'),
     textAngle: 'horizontal',
     onRef: ref => (wheelRef.current = ref),
   };
