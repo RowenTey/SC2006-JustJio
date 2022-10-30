@@ -57,8 +57,8 @@ const Signin = ({ navigation }) => {
       setLoading(false);
       navigation.navigate('HomeTab');
     } catch (error) {
-      console.log('Login failed', error);
       setLoading(false);
+      console.log('Login failed', error);
       if (error.response) {
         console.log('Error response', error.response.data);
         Alert.alert('Login failed', error.response.data.message, [
