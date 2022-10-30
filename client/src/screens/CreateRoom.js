@@ -23,7 +23,7 @@ const CreateRoom = ({ navigation }) => {
     handleSubmit,
     reset,
     setError,
-    formState: { errors },
+    formState: {},
   } = useForm({ initialCreateRoomState });
   const { createRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
@@ -60,21 +60,20 @@ const CreateRoom = ({ navigation }) => {
       navigation.navigate('HomeTab');
     } catch (error) {
       setLoading(false);
-      console.log('Error creating room', error.message);
+      console.log('Error creating room', error);
       switch (error.message) {
-        case "User doesn't exist":
-          setError('invitees', {
-            type: 'string',
-            message: 'Username entered is not valid!',
-          });
-          break;
         case 'Date entered has passed':
           setError('date', {
             type: 'string',
             message: 'Date entered has passed',
           });
           break;
+        // TODO: should find a better way to handle
         default:
+          setError('invitees', {
+            type: 'string',
+            message: error.message,
+          });
           break;
       }
     }
