@@ -48,7 +48,8 @@ func validateUser(usernames []string) (error, string) {
 
 	for _, username := range usernames {
 		var user model.User
-		if err := db.Table("users").Where("username = ?", username).First(&user).Error; err != nil {
+		user.Username = username
+		if err := db.Table("users").First(&user).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return err, username
 			}
