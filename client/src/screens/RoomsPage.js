@@ -25,6 +25,7 @@ const RoomsPage = ({ navigation, route }) => {
     control,
     handleSubmit,
     setError,
+    reset,
     formState: {},
   } = useForm({});
   const [loading, setLoading] = useState(false);
@@ -57,6 +58,7 @@ const RoomsPage = ({ navigation, route }) => {
         });
 
       setTimeout(() => {
+        reset({ invitees: '' });
         setModalVisible(false);
         setLoading(false);
       }, 500);
@@ -152,78 +154,84 @@ const RoomsPage = ({ navigation, route }) => {
           </View>
         </Modal>
 
-        <View style={styles.event}>
-          <Text style={styles.upcomingEvent}>
-            {currentDate > date ? 'Passed' : 'Upcoming'} Event
-          </Text>
-          <EventDetail room={room} />
-        </View>
-        <View style={styles.memberList}>
-          <View
-            style={[
-              styles.memberTitle,
-              {
-                justifyContent:
-                  user.username === room.host ? 'space-between' : 'flex-start',
-              },
-            ]}>
-            <Text style={styles.list}>Members</Text>
-            {user.username === room.host && (
-              <Pressable
-                style={styles.addButton}
-                onPress={() => setModalVisible(true)}>
-                <Image
-                  source={require('../../assets/images/add.png')}
-                  style={{
-                    width: 15,
-                    height: 15,
-                  }}
-                />
-              </Pressable>
-            )}
-          </View>
-          <GuestList list={attendees} />
-        </View>
-        <View style={styles.splitBillCloseRoom}>
-          <TouchableOpacity
-            style={[
-              styles.splitBill,
-              {
-                left: user.username === room.host ? 10 : 0,
-              },
-            ]}
-            onPress={() =>
-              navigation.navigate('SplitBillMembers', {
-                payers: attendees.filter(payee => payee !== user.username),
-                room,
-              })
-            }>
-            <Text style={styles.buttonText}>Split Bill</Text>
-          </TouchableOpacity>
-          {user.username === room.host && (
-            <TouchableOpacity
-              style={styles.closeRoom}
-              onPress={() => onCloseRoom(room.ID)}>
-              <Text style={styles.buttonText}>Close Room</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={styles.urlQrCode}>
-          <View style={styles.url}>
-            <Text style={styles.urlText}>URL:</Text>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.link}>
-                http://www.justjio/{room.name.replaceAll(' ', '-')}.com
+        {!modalVisible && (
+          <>
+            <View style={styles.event}>
+              <Text style={styles.upcomingEvent}>
+                {currentDate > date ? 'Passed' : 'Upcoming'} Event
               </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.qrCode}>
-            <Text style={styles.urlText}>QR Code:</Text>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.QRText}>QRCODE</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+              <EventDetail room={room} />
+            </View>
+            <View style={styles.memberList}>
+              <View
+                style={[
+                  styles.memberTitle,
+                  {
+                    justifyContent:
+                      user.username === room.host
+                        ? 'space-between'
+                        : 'flex-start',
+                  },
+                ]}>
+                <Text style={styles.list}>Members</Text>
+                {user.username === room.host && (
+                  <Pressable
+                    style={styles.addButton}
+                    onPress={() => setModalVisible(true)}>
+                    <Image
+                      source={require('../../assets/images/add.png')}
+                      style={{
+                        width: 15,
+                        height: 15,
+                      }}
+                    />
+                  </Pressable>
+                )}
+              </View>
+              <GuestList list={attendees} />
+            </View>
+            <View style={styles.splitBillCloseRoom}>
+              <TouchableOpacity
+                style={[
+                  styles.splitBill,
+                  {
+                    left: user.username === room.host ? 10 : 0,
+                  },
+                ]}
+                onPress={() =>
+                  navigation.navigate('SplitBillMembers', {
+                    payers: attendees.filter(payee => payee !== user.username),
+                    room,
+                  })
+                }>
+                <Text style={styles.buttonText}>Split Bill</Text>
+              </TouchableOpacity>
+              {user.username === room.host && (
+                <TouchableOpacity
+                  style={styles.closeRoom}
+                  onPress={() => onCloseRoom(room.ID)}>
+                  <Text style={styles.buttonText}>Close Room</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View style={styles.urlQrCode}>
+              <View style={styles.url}>
+                <Text style={styles.urlText}>URL:</Text>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Text style={styles.link}>
+                    http://www.justjio/{room.name.replaceAll(' ', '-')}.com
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.qrCode}>
+                <Text style={styles.urlText}>QR Code:</Text>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Text style={styles.QRText}>QRCODE</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </>
+        )}
       </View>
     </View>
   );
@@ -671,6 +679,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 50,
+    backfaceVisibility: 'hidden',
   },
 
   modalView: {

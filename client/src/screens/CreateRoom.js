@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
+import CustomModal from '../components/CustomModal';
 import { RoomContext } from '../context/room';
 
 const initialCreateRoomState = {
@@ -27,6 +28,11 @@ const CreateRoom = ({ navigation }) => {
   } = useForm({ initialCreateRoomState });
   const { createRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
+  const [modalState, setModalState] = useState({
+    showModal: false,
+    title: '',
+    message: '',
+  });
 
   const onCreateRoom = async formData => {
     setLoading(true);
@@ -56,8 +62,15 @@ const CreateRoom = ({ navigation }) => {
         throw error;
       });
       setLoading(false);
+      setModalState(prev => {
+        return {
+          ...prev,
+          title: 'Room created!',
+          message: 'Your room has been created successfully',
+          showModal: true,
+        };
+      });
       reset(initialCreateRoomState);
-      navigation.navigate('HomeTab');
     } catch (error) {
       setLoading(false);
       console.log('Error creating room', error);
@@ -79,6 +92,18 @@ const CreateRoom = ({ navigation }) => {
     }
   };
 
+  const onCloseModal = () => {
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: '',
+        message: '',
+        showModal: false,
+      };
+    });
+    navigation.navigate('HomeTab');
+  };
+
   if (loading) {
     return <Spinner />;
   }
@@ -96,6 +121,14 @@ const CreateRoom = ({ navigation }) => {
       </View>
 
       <View style={styles.form}>
+        <CustomModal
+          title={modalState.title}
+          message={modalState.message}
+          modalVisible={modalState.showModal}
+          closeModal={onCloseModal}
+          type="success"
+        />
+
         <CustomInput
           placeholder={'Name of Event:'}
           placeholderTextColor="#000"

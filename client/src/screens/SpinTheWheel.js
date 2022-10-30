@@ -26,6 +26,7 @@ const SpinTheWheel = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(true);
   const [loading, setLoading] = useState(false);
   const [participants, setParticipants] = useState([]);
+  const colors = ['#75F4F4', '#EDDEA4', '#B8B3E9', '#D999B9', '#FF9B42'];
 
   const onEnterPlayers = formData => {
     setLoading(true);
@@ -58,6 +59,7 @@ const SpinTheWheel = ({ navigation }) => {
 
   const wheelOptions = {
     rewards: participants,
+    colors: colors,
     knobSize: 35,
     borderWidth: 5,
     borderColor: '#4E1164',
@@ -66,6 +68,7 @@ const SpinTheWheel = ({ navigation }) => {
     backgroundColor: 'transparent',
     knobSource: require('../../assets/images/knob.png'),
     textAngle: 'horizontal',
+    textColor: '#000',
     onRef: ref => (wheelRef.current = ref),
   };
 

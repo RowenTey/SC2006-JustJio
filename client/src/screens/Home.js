@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 import RoomCard from '../components/RoomCard.js';
-import TransactionBar from '../components/TransactionDetails';
+import TransactionBar from '../components/TransactionBar';
 import Spinner from '../components/Spinner.js';
 import { initialUserState, UserContext } from '../context/user.js';
 import { AuthContext } from '../context/auth.js';

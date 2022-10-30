@@ -7,7 +7,6 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Alert,
 } from 'react-native';
 import { AuthContext } from '../context/auth';
 import { AxiosContext } from '../context/axios';
@@ -15,6 +14,7 @@ import { UserContext } from '../context/user';
 import * as KeyChain from 'react-native-keychain';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
+import CustomModal from '../components/CustomModal';
 
 const initialLoginState = {
   username: '',
@@ -32,6 +32,11 @@ const Signin = ({ navigation }) => {
   const { publicAxios } = useContext(AxiosContext);
   const [user, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [modalState, setModalState] = useState({
+    showModal: false,
+    title: '',
+    message: '',
+  });
 
   const onLogin = async formData => {
     setLoading(true);
@@ -61,13 +66,14 @@ const Signin = ({ navigation }) => {
       console.log('Login failed', error);
       if (error.response) {
         console.log('Error response', error.response.data);
-        Alert.alert('Login failed', error.response.data.message, [
-          {
-            text: 'Retry',
-            onPress: () => reset(initialLoginState),
-            style: 'cancel',
-          },
-        ]);
+        setModalState(prev => {
+          return {
+            ...prev,
+            title: 'Login failed!',
+            message: error.response.data.message,
+            showModal: true,
+          };
+        });
       } else if (error.request) {
         console.log('Error request', error.request);
       }
@@ -78,12 +84,31 @@ const Signin = ({ navigation }) => {
     navigation.navigate('Signup');
   };
 
+  const onCloseModal = () => {
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: '',
+        message: '',
+        showModal: false,
+      };
+    });
+  };
+
   if (loading) {
     return <Spinner />;
   }
 
   return (
     <View style={styles.container}>
+      <CustomModal
+        title={modalState.title}
+        message={modalState.message}
+        modalVisible={modalState.showModal}
+        closeModal={onCloseModal}
+        type="error"
+      />
+
       <TextInput style={styles.text}>JustJio</TextInput>
 
       <CustomInput

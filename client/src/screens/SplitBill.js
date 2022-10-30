@@ -18,7 +18,6 @@ const initialState = {
 
 const SplitBill = ({ navigation, route }) => {
   const { payers, room } = route.params;
-
   const {
     control,
     handleSubmit,
@@ -83,7 +82,10 @@ const SplitBill = ({ navigation, route }) => {
       </View>
 
       <View style={styles.middle}>
-        <Text style={styles.billTopText}>Bill for: {room.name} </Text>
+        <View style={styles.billTop}>
+          <Text style={styles.billTopText}>Bill for:</Text>
+          <Text style={styles.billRoomName}>{room.name}</Text>
+        </View>
         <View style={styles.topLineStyle} />
 
         <Text style={styles.billText}>Bill name: </Text>
@@ -180,12 +182,31 @@ const styles = StyleSheet.create({
     left: 45,
   },
 
-  billTopText: {
-    //text details of the text
-    fontSize: 15,
-    fontFamily: 'Poppins',
-    color: '#4E1164',
+  billTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginLeft: 12,
+  },
+
+  billTopText: {
+    color: '#000000',
+    fontSize: 15,
+    fontFamily: 'Poppins-SemiBold',
+  },
+
+  billRoomName: {
+    marginLeft: 10,
+    color: '#000000',
+    textAlign: 'center',
+    justifyContent: 'center',
+    borderColor: '#4E1164',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 15,
+    borderWidth: 2,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingTop: 5,
+    paddingBottom: 3,
   },
 
   topLineStyle: {

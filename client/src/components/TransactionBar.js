@@ -2,11 +2,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 
-const ICONS = {
-  add: require('../../assets/images/add.png'),
-  tick: require('../../assets/images/tick.png'),
-};
-
 const TransactionBar = ({ transactions, icon, name }) => {
   return (
     <View style={styles.container}>

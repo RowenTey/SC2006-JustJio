@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect, useRef } from 'react';
@@ -14,8 +15,8 @@ import {
 import Config from 'react-native-config';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { getDistance } from 'geolib';
-import Geolocation from '@react-native-community/geolocation'
-import Geocoder from 'react-native-geocoding'
+import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
 
 Geocoder.init(Config.GOOGLE_MAPS_API_KEY);
 
@@ -81,29 +82,26 @@ const PartySnacks = () => {
   useEffect(() => {
     getLocation();
   }, []);
-  
+
   const getLocation = async () => {
     ref.current?.clear();
-    await Geolocation.getCurrentPosition(
-      async (pos) => {
-        const curLat = pos.coords.latitude;
-        const curLng = pos.coords.longitude;
-        var addrName;
-        await Geocoder.from(curLat, curLng)
-          .then(json => {
-            var addressComponent = json.results[0].address_components[0];
-            var add1 = json.results[0].address_components[1].long_name;
-            var add2 = json.results[0].address_components[2].long_name;
-            addrName = add1 + ", " + add2;
-          })
-        setLocation({
-          latitude: curLat,
-          longitude: curLng,
-          locationName: addrName
-        });
-        await fetchNearestPlacesFromGoogle(curLat, curLng);
-      }
-    );
+    await Geolocation.getCurrentPosition(async pos => {
+      const curLat = pos.coords.latitude;
+      const curLng = pos.coords.longitude;
+      var addrName;
+      await Geocoder.from(curLat, curLng).then(json => {
+        var addressComponent = json.results[0].address_components[0];
+        var add1 = json.results[0].address_components[1].long_name;
+        var add2 = json.results[0].address_components[2].long_name;
+        addrName = add1 + ', ' + add2;
+      });
+      setLocation({
+        latitude: curLat,
+        longitude: curLng,
+        locationName: addrName,
+      });
+      await fetchNearestPlacesFromGoogle(curLat, curLng);
+    });
   };
 
   const openMaps = item => {
@@ -134,13 +132,14 @@ const PartySnacks = () => {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.bigText}>Party Snacks</Text>
-        <Text style={styles.locationText}> Current location: {location.locationName} </Text>
+        <Text style={styles.locationText}>
+          {' '}
+          Current location: {location.locationName}{' '}
+        </Text>
       </View>
 
       <View style={styles.searchBar}>
-        <TextInput
-          editable={false}
-          style={styles.searchBarSpacer}/>
+        <TextInput editable={false} style={styles.searchBarSpacer} />
         <GooglePlacesAutocomplete
           ref={ref}
           placeholder="Search"
@@ -152,10 +151,9 @@ const PartySnacks = () => {
             components: 'country:sg',
           }}
           styles={{
-            container: { flex: 0, width: 350, marginTop: 5, },
+            container: { flex: 0, width: 350, marginTop: 5 },
             listView: { backgroundColor: 'white' },
-            textInputContainer: { width: 315, },
-
+            textInputContainer: { width: 315 },
           }}
         />
         <TouchableOpacity
@@ -175,7 +173,7 @@ const PartySnacks = () => {
           />
         </TouchableOpacity>
       </View>
-      
+
       <FlatList
         data={places.placesArray.results}
         style={{ flex: 1, width: '100%' }}
@@ -248,9 +246,9 @@ const styles = StyleSheet.create({
 
   searchBar: {
     flexDirection: 'row',
-        justifyContent: 'center',
-        width: '100%',
-        alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    alignItems: 'center',
   },
 
   searchBarSpacer: {
