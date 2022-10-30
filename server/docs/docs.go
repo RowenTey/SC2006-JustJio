@@ -424,6 +424,44 @@ const docTemplate = `{
             }
         },
         "/rooms/{roomId}": {
+            "post": {
+                "description": "Invite additional users to a specific room",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invites"
+                ],
+                "summary": "Create new invitations",
+                "parameters": [
+                    {
+                        "description": "Users to invite",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.AddUser.AddUserInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
             "delete": {
                 "description": "Delete a room from database",
                 "consumes": [
@@ -447,10 +485,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.Room"
-                        }
+                        "description": "OK"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -580,6 +615,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handlers.AddUser.AddUserInput": {
+            "type": "object",
+            "properties": {
+                "invitees": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "handlers.CreateRoom.CreateRoomInput": {
             "type": "object",
             "properties": {
