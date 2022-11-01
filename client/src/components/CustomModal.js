@@ -14,14 +14,14 @@ const CustomModal = ({ title, message, type, modalVisible, closeModal }) => {
           style={[
             styles.modalView,
             {
-              shadowColor: type === 'error' ? '#FF0000' : '#00FF00',
-              borderColor: type === 'error' ? '#FF0000' : '#00FF00',
+              shadowColor: type === 'error' ? '#FF0000' : '#29BF12',
+              borderColor: type === 'error' ? '#FF0000' : '#29BF12',
             },
           ]}>
           <Text
             style={[
               styles.modalTitle,
-              { color: type === 'error' ? '#FF0000' : '#00FF00' },
+              { color: type === 'error' ? '#FF0000' : '#29BF12' },
             ]}>
             {title}
           </Text>
@@ -29,7 +29,7 @@ const CustomModal = ({ title, message, type, modalVisible, closeModal }) => {
           <Pressable
             style={[
               styles.button,
-              { backgroundColor: type === 'error' ? '#FF0000' : '#00FF00' },
+              { backgroundColor: type === 'error' ? '#FF0000' : '#29BF12' },
             ]}
             onPress={() => closeModal()}>
             <Text style={styles.textStyle}>

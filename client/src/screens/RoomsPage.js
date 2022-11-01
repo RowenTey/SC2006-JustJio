@@ -219,7 +219,7 @@ const RoomsPage = ({ navigation, route }) => {
                 <Text style={styles.urlText}>URL:</Text>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Text style={styles.link}>
-                    http://www.justjio/{room.name.replaceAll(' ', '-')}.com
+                    http://www.justjio.com/{room.name.replaceAll(' ', '-')}
                   </Text>
                 </TouchableOpacity>
               </View>

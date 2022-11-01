@@ -33,7 +33,7 @@ const Splash = ({ navigation }) => {
     console.log('AuthState: ' + JSON.stringify(authContext.authState));
     setLoading(false);
     if (authContext?.authState.authenticated === true) {
-      navigation.navigate('Home');
+      navigation.navigate('HomeTab');
     } else {
       navigation.navigate('Signin');
     }
