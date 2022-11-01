@@ -32,7 +32,7 @@ const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
   const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
-  const { toPay, toGet, fetchTransactions, isTransactionsLoading } =
+  const { transactions , toPay, toGet, fetchTransactions, isTransactionsLoading } =
     useContext(TransactionContext);
   const { payBill } = useContext(TransactionContext);
   const [modalState, setModalState] = useState({
@@ -40,7 +40,10 @@ const Home = ({ navigation }) => {
     title: '',
     message: '',
   });
-
+  filteredTransactions = [].concat(transactions).sort((a, b) => a.bill.date < b.bill.date ? 1 : -1)
+  filteredTransactions = filteredTransactions.filter(item => !(item.transaction.isPaid != true));
+  global.trans = filteredTransactions;
+  global.userID = user.username;
   const handlePayBill = async ({ transaction }) => {
     let curDate = new Date();
     let billData = {

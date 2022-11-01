@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View , useEffect } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const TransactionHistory = () => {
@@ -27,21 +26,88 @@ const TransactionHistory = () => {
     </View>
   );
 };
+date = 1
+test = 0
+
+
+
+
 
 const TransactionList = props => {
   return (
     <View style={styles.transactionList}>
-      <Text style={styles.date}>{props.date.toUpperCase()}</Text>
       <View>
         <FlatList   
-                  data={restoredArray}
-                  renderItem={({ item }) => (
-                    <TransactionBox
-                       name={item[0]}
-                       amount={item[1]}
-                       isReceive={item[2]}
+                  data={trans}
+                  renderItem={({ item , index}) => {
+                    if (date != item.bill.date &&  item.transaction.payee == userID  ){
+                      date = item.bill.date
+
+                      return (
+                      <View>
+                       <Text style={styles.date}>{date}</Text>
+                      <TransactionBox
+
+                        name={item.transaction.payer}
+                        amount={item.bill.amount}
+                        isReceive={false}
+                       />
+
+                       </View>)
+
+
+
+                    }
+                    
+                    else if(date != item.bill.date && item.transaction.payee != userID ){
+                      date = item.bill.date
+
+                      return (
+
+                          <View>
+                           <Text style={styles.date}>{date}</Text>
+                          <TransactionBox
+    
+                            name={item.transaction.payee}
+                            amount={item.bill.amount}
+                            isReceive={false}
+                           />
+    
+                           </View>)
+    
+    
+    
+                        }
+                        
+                      
+                    
+                    else if (date == item.bill.date &&  item.transaction.payee == userID ){
+                      return(
+                        <TransactionBox
+                       name={item.transaction.payer}
+                       amount={item.bill.amount}
+                       isReceive={true}
                     />
-                  )}
+
+                      )
+                    }
+
+                    else if (date == item.bill.date &&  item.transaction.payee != userID ){
+                      return(
+                        <TransactionBox
+                       name={item.transaction.payee}
+                       amount={item.bill.amount}
+                       isReceive={true}
+                    />
+
+                      )
+                    }
+
+                    
+                    
+                    
+
+                  }}
                   key={'_'}
                 />
 
