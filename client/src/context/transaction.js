@@ -38,15 +38,22 @@ const TransactionProvider = ({ children }) => {
           transactions: response.data ? response.data : [],
           toPay: response.data
             ? response.data.filter(
-                ({ transaction }) =>
-                  transaction?.payer === user.username && !transaction?.isPaid,
+                item =>
+                  item.transaction?.payer === user.username &&
+                  !item.transaction?.isPaid,
               )
             : [],
           toGet: response.data
             ? response.data.filter(
-                ({ transaction }) =>
-                  transaction?.payee === user.username && !transaction?.isPaid,
+                item =>
+                  item.transaction?.payee === user.username &&
+                  !item.transaction?.isPaid,
               )
+            : [],
+          paidTransactions: response.data
+            ? response.data
+                .filter(item => item.transaction?.isPaid)
+                .sort((a, b) => (a.bill.date < b.bill.date ? 1 : -1))
             : [],
         },
       });
@@ -124,51 +131,60 @@ const TransactionProvider = ({ children }) => {
 
       const response = await authAxios.patch('/bills/pay', transactionData);
       if (response.status === 200) {
-        const updatedTransactions = state.transactions.map(
-          ({ transaction }) => {
-            if (
-              transaction?.payer == transactionData.payer &&
-              transaction?.payee == transactionData.payee &&
-              transaction.billID == billId
-            ) {
-              return {
-                ...transaction,
+        const updatedTransactions = state.transactions.map(item => {
+          if (
+            item.transaction.payer == transactionData.payer &&
+            item.transaction.payee == transactionData.payee &&
+            item.transaction.billID == billId
+          ) {
+            return {
+              ...item,
+              transaction: {
+                ID: item.transaction.ID,
+                payer: item.transaction.payer,
+                payee: item.transaction.payee,
+                billID: item.transaction.billID,
                 isPaid: true,
                 paidOn: transactionData.paidOn,
-              };
-            }
-            return transaction;
-          },
-        );
+              },
+            };
+          }
+          return item;
+        });
+
         const updatedToPay = state.toPay.filter(
-          ({ transaction }) => transaction.billID != billId,
+          item => item.transaction.billID != billId,
         );
+
+        const updatedPaidTransactions = updatedTransactions
+          .filter(item => item.transaction.isPaid)
+          .sort((a, b) => (a.bill.date < b.bill.date ? 1 : -1));
 
         dispatch({
           type: SETTLE_TRANSACTION,
           payload: {
             transactions: updatedTransactions,
             toPay: updatedToPay,
+            paidTransactions: updatedPaidTransactions,
           },
         });
       }
 
-      setTimeout(() => {
-        dispatch({
-          type: END_LOADING,
-        });
-      }, 1000);
+      dispatch({
+        type: END_LOADING,
+      });
     } catch (error) {
       dispatch({
         type: END_LOADING,
       });
-      console.log('Failed to pay bill', error);
+      console.log('Failed to pay bill', JSON.stringify(error));
     }
   };
 
   const value = {
     total: state.total,
     transactions: state.transactions,
+    paidTransactions: state.paidTransactions,
     toPay: state.toPay,
     toGet: state.toGet,
     isTransactionsLoading: state.isLoading,

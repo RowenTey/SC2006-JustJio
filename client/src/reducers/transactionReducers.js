@@ -10,6 +10,7 @@ import {
 export const initialTransactionState = {
   isLoading: false,
   transactions: [],
+  paidTransactions: [],
   toPay: [],
   toGet: [],
 };
@@ -31,6 +32,7 @@ const TransactionReducer = (state, action) => {
       return {
         ...state,
         transactions: payload.transactions,
+        paidTransactions: payload.paidTransactions,
         toPay: payload.toPay,
         toGet: payload.toGet,
       };
@@ -45,6 +47,7 @@ const TransactionReducer = (state, action) => {
         ...state,
         transactions: payload.transactions,
         toPay: payload.toPay,
+        paidTransactions: payload.paidTransactions,
       };
     case LOGOUT:
       return initialTransactionState;

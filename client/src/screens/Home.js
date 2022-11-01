@@ -32,18 +32,23 @@ const Home = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const { logout } = useContext(AuthContext);
   const { rooms, isRoomsLoading, fetchRooms } = useContext(RoomContext);
-  const { transactions , toPay, toGet, fetchTransactions, isTransactionsLoading } =
+  const { toPay, toGet, isTransactionsLoading, payBill, fetchTransactions } =
     useContext(TransactionContext);
-  const { payBill } = useContext(TransactionContext);
   const [modalState, setModalState] = useState({
     showModal: false,
     title: '',
     message: '',
   });
-  filteredTransactions = [].concat(transactions).sort((a, b) => a.bill.date < b.bill.date ? 1 : -1)
-  filteredTransactions = filteredTransactions.filter(item => !(item.transaction.isPaid != true));
-  global.trans = filteredTransactions;
-  global.userID = user.username;
+
+  // filteredTransactions = []
+  //   .concat(transactions)
+  //   .sort((a, b) => (a.bill.date < b.bill.date ? 1 : -1));
+  // filteredTransactions = filteredTransactions.filter(
+  //   item => !(item.transaction.isPaid != true),
+  // );
+  // global.trans = filteredTransactions;
+  // global.userID = user.username;
+
   const handlePayBill = async ({ transaction }) => {
     let curDate = new Date();
     let billData = {

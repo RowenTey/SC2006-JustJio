@@ -64,14 +64,14 @@ const Signin = ({ navigation }) => {
     } catch (error) {
       setTimeout(() => setLoading(false), 500);
       console.log('Login failed', error);
-      if (error?.response) {
-        console.log('Error response', error?.response?.data);
-        if (error?.response?.data?.message) {
+      if (error.response) {
+        console.log('Error response', error.response.data);
+        if (error.response.data.message) {
           setModalState(prev => {
             return {
               ...prev,
               title: 'Login failed!',
-              message: error?.response?.data?.message,
+              message: error.response.data.message,
               showModal: true,
             };
           });

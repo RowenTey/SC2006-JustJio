@@ -1,18 +1,13 @@
-import React from 'react';
-import { FlatList, StyleSheet, Text, View , useEffect } from 'react-native';
-
+/* eslint-disable no-unused-vars */
+import React, { useContext } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { TransactionContext } from '../context/transaction';
+import { UserContext } from '../context/user';
 
 const TransactionHistory = () => {
-  const list1 = [
-    ['ammaeudos', '2342', true],
-    ['dobin', '45', false],
-  ];
-  const list2 = [
-    ['ammaeudos', '2342', true],
-    ['dobin', '45', false],
-  ];
+  const [user, setUser] = useContext(UserContext);
+  const { paidTransactions } = useContext(TransactionContext);
 
- 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -20,100 +15,79 @@ const TransactionHistory = () => {
       </View>
 
       <View style={styles.middle}>
-        <TransactionList date="28 aug" list={list1} />
-        <TransactionList date="27 aug" list={list2} />
+        <TransactionList user={user} transactions={paidTransactions} />
       </View>
     </View>
   );
 };
-date = 1
-test = 0
 
+const TransactionList = ({ transactions, user }) => {
+  let date = 1;
 
-
-
-
-const TransactionList = props => {
   return (
     <View style={styles.transactionList}>
-      <View>
-        <FlatList   
-                  data={trans}
-                  renderItem={({ item , index}) => {
-                    if (date != item.bill.date &&  item.transaction.payee == userID  ){
-                      date = item.bill.date
+      <FlatList
+        data={transactions}
+        renderItem={({ item, index }) => {
+          if (
+            date !== item.bill.date &&
+            item.transaction.payee === user.username
+          ) {
+            date = item.bill.date;
 
-                      return (
-                      <View>
-                       <Text style={styles.date}>{date}</Text>
-                      <TransactionBox
-
-                        name={item.transaction.payer}
-                        amount={item.bill.amount}
-                        isReceive={false}
-                       />
-
-                       </View>)
-
-
-
-                    }
-                    
-                    else if(date != item.bill.date && item.transaction.payee != userID ){
-                      date = item.bill.date
-
-                      return (
-
-                          <View>
-                           <Text style={styles.date}>{date}</Text>
-                          <TransactionBox
-    
-                            name={item.transaction.payee}
-                            amount={item.bill.amount}
-                            isReceive={false}
-                           />
-    
-                           </View>)
-    
-    
-    
-                        }
-                        
-                      
-                    
-                    else if (date == item.bill.date &&  item.transaction.payee == userID ){
-                      return(
-                        <TransactionBox
-                       name={item.transaction.payer}
-                       amount={item.bill.amount}
-                       isReceive={true}
-                    />
-
-                      )
-                    }
-
-                    else if (date == item.bill.date &&  item.transaction.payee != userID ){
-                      return(
-                        <TransactionBox
-                       name={item.transaction.payee}
-                       amount={item.bill.amount}
-                       isReceive={true}
-                    />
-
-                      )
-                    }
-
-                    
-                    
-                    
-
-                  }}
-                  key={'_'}
+            return (
+              <View>
+                <Text style={styles.date}>{date}</Text>
+                <TransactionBox
+                  name={item.transaction.payer}
+                  amount={item.bill.amount}
+                  isReceive={false}
                 />
+              </View>
+            );
+          } else if (
+            date !== item.bill.date &&
+            item.transaction.payee !== user.username
+          ) {
+            date = item.bill.date;
 
-
-       
-      </View>
+            return (
+              <View>
+                <Text style={styles.date}>{date}</Text>
+                <TransactionBox
+                  name={item.transaction.payee}
+                  amount={item.bill.amount}
+                  isReceive={false}
+                />
+              </View>
+            );
+          } else if (
+            date === item.bill.date &&
+            item.transaction.payee === user.username
+          ) {
+            return (
+              <TransactionBox
+                name={item.transaction.payer}
+                amount={item.bill.amount}
+                isReceive={true}
+              />
+            );
+          } else if (
+            date === item.bill.date &&
+            item.transaction.payee !== user.username
+          ) {
+            return (
+              <TransactionBox
+                name={item.transaction.payee}
+                amount={item.bill.amount}
+                isReceive={true}
+              />
+            );
+          }
+        }}
+        key={'_'}
+        keyExtractor={(item, index) => index}
+      />
     </View>
   );
 };
@@ -133,7 +107,7 @@ const TransactionBox = props => {
           <Text style={styles.name}>{props.name}</Text>
         </View>
         <View style={styles.down}>
-          <Text style={styleSheet}>SGD {props.amount}</Text>
+          <Text style={styleSheet}>SGD {props.amount.toFixed(2)}</Text>
         </View>
       </View>
     </View>
@@ -198,6 +172,7 @@ const styles = StyleSheet.create({
     left: 3,
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
+    marginTop: 15,
   },
 
   up: {
@@ -223,7 +198,7 @@ const styles = StyleSheet.create({
   amountReceive: {
     fontSize: 20,
     fontFamily: 'Poppins-Medium',
-    color: '#00FF00',
+    color: '#29BF12',
     bottom: 7,
     right: 10,
   },
@@ -247,6 +222,6 @@ const styles = StyleSheet.create({
   },
 
   transactionBox: {
-    marginVertical: 5,
+    marginVertical: 3,
   },
 });
