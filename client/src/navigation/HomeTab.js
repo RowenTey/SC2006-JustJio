@@ -27,7 +27,6 @@ const HomeTab = () => {
             iconName = require('../../assets/images/transaction.png');
           }
 
-          // You can return any component that you like here!
           return <Image source={iconName} />;
         },
         tabBarActiveTintColor: 'tomato',

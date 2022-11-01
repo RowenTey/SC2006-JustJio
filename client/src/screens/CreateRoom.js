@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useForm } from 'react-hook-form';
@@ -24,7 +25,7 @@ const CreateRoom = ({ navigation }) => {
     handleSubmit,
     reset,
     setError,
-    formState: {},
+    formState: { errors },
   } = useForm({ initialCreateRoomState });
   const { createRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
@@ -120,86 +121,90 @@ const CreateRoom = ({ navigation }) => {
         <Text style={styles.header}>Create Room</Text>
       </View>
 
-      <View style={styles.form}>
-        <CustomModal
-          title={modalState.title}
-          message={modalState.message}
-          modalVisible={modalState.showModal}
-          closeModal={onCloseModal}
-          type="success"
-        />
+      <CustomModal
+        title={modalState.title}
+        message={modalState.message}
+        modalVisible={modalState.showModal}
+        closeModal={onCloseModal}
+        type="success"
+      />
 
-        <CustomInput
-          placeholder={'Name of Event:'}
-          placeholderTextColor="#000"
-          name="eventName"
-          rules={{
-            required: 'Event name is required',
-            minLength: {
-              value: 5,
-              message: 'Should be minimum of 5 characters',
-            },
-          }}
-          control={control}
-          textStyles={styles.roomText}
-        />
+      {!modalState.showModal && (
+        <>
+          <View style={styles.form}>
+            <CustomInput
+              placeholder={'Name of Event:'}
+              placeholderTextColor="#000"
+              name="eventName"
+              rules={{
+                required: 'Event name is required',
+                minLength: {
+                  value: 5,
+                  message: 'Should be minimum of 5 characters',
+                },
+              }}
+              control={control}
+              textStyles={styles.roomText}
+            />
 
-        <CustomInput
-          placeholder={'Date: dd/mm/yyyy'}
-          placeholderTextColor="#000"
-          name="date"
-          rules={{
-            required: 'Date is required',
-            pattern: {
-              value: DATE_REGEX,
-              message: 'Invalid date',
-            },
-          }}
-          control={control}
-          textStyles={styles.roomText}
-        />
+            <CustomInput
+              placeholder={'Date: dd/mm/yyyy'}
+              placeholderTextColor="#000"
+              name="date"
+              rules={{
+                required: 'Date is required',
+                pattern: {
+                  value: DATE_REGEX,
+                  message: 'Invalid date',
+                },
+              }}
+              control={control}
+              textStyles={styles.roomText}
+            />
 
-        <CustomInput
-          placeholder={'Time: 08:00pm'}
-          placeholderTextColor="#000"
-          name="time"
-          rules={{
-            required: 'Time is required',
-            pattern: {
-              value: TIME_REGEX,
-              message: 'Invalid time',
-            },
-          }}
-          control={control}
-          textStyles={styles.roomText}
-        />
+            <CustomInput
+              placeholder={'Time: 08:00pm'}
+              placeholderTextColor="#000"
+              name="time"
+              rules={{
+                required: 'Time is required',
+                pattern: {
+                  value: TIME_REGEX,
+                  message: 'Invalid time',
+                },
+              }}
+              control={control}
+              textStyles={styles.roomText}
+            />
 
-        <CustomInput
-          placeholder={'Venue: '}
-          placeholderTextColor="#000"
-          name="venue"
-          rules={{ required: 'Venue is required' }}
-          control={control}
-          textStyles={styles.roomText}
-        />
+            <CustomInput
+              placeholder={'Venue: '}
+              placeholderTextColor="#000"
+              name="venue"
+              rules={{ required: 'Venue is required' }}
+              control={control}
+              textStyles={styles.roomText}
+            />
 
-        <CustomInput
-          placeholder={'Invitees: (username1,username2)'}
-          placeholderTextColor="#000"
-          name="invitees"
-          rules={{ required: 'Invitee is required' }}
-          control={control}
-          textStyles={styles.roomText}
-        />
-      </View>
+            <CustomInput
+              placeholder={'Invitees: (username1,username2)'}
+              placeholderTextColor="#000"
+              name="invitees"
+              rules={{ required: 'Invitee is required' }}
+              control={control}
+              textStyles={styles.roomText}
+            />
+          </View>
 
-      <TouchableOpacity style={styles.confirmationBox}>
-        <Text
-          style={styles.confirmationText}
-          onPress={handleSubmit(onCreateRoom)}>
-          Create Room
-        </Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.confirmationBox}>
+            <Text
+              style={styles.confirmationText}
+              onPress={handleSubmit(onCreateRoom)}>
+              Create Room
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };

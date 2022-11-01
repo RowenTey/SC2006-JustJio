@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingVertical: 8,
-    minHeight: 30,
+    minHeight: 25,
   },
 
   informationContainer: {

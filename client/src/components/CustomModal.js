@@ -8,7 +8,7 @@ const CustomModal = ({ title, message, type, modalVisible, closeModal }) => {
       animationType="slide"
       transparent={true}
       visible={modalVisible}
-      onRequestClose={() => {}}>
+      onRequestClose={() => closeModal()}>
       <View style={styles.centeredView}>
         <View
           style={[

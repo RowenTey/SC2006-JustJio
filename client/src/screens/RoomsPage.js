@@ -79,7 +79,7 @@ const RoomsPage = ({ navigation, route }) => {
   const onCloseRoom = async roomId => {
     setLoading(true);
     await closeRoom(roomId);
-    setLoading(false);
+    setTimeout(() => setLoading(false), 500);
     navigation.navigate('HomeTab');
   };
 
@@ -90,7 +90,7 @@ const RoomsPage = ({ navigation, route }) => {
         `/rooms/attendees/${roomId}`,
       );
       setAttendees(response.data);
-      setLoading(false);
+      setTimeout(() => setLoading(false), 500);
     } catch (error) {
       setLoading(false);
       console.log('Error fetching attendees', error.message);

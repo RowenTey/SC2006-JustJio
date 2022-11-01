@@ -26,7 +26,7 @@ const Signin = ({ navigation }) => {
     control,
     handleSubmit,
     reset,
-    formState: {},
+    formState: { errors },
   } = useForm({ defaultValues: initialLoginState });
   const authContext = useContext(AuthContext);
   const { publicAxios } = useContext(AxiosContext);
@@ -62,20 +62,31 @@ const Signin = ({ navigation }) => {
       setLoading(false);
       navigation.navigate('HomeTab');
     } catch (error) {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 500);
       console.log('Login failed', error);
-      if (error.response) {
-        console.log('Error response', error.response.data);
-        setModalState(prev => {
-          return {
-            ...prev,
-            title: 'Login failed!',
-            message: error.response.data.message,
-            showModal: true,
-          };
-        });
-      } else if (error.request) {
-        console.log('Error request', error.request);
+      if (error?.response) {
+        console.log('Error response', error?.response.data);
+        if (error?.response.data.message) {
+          setModalState(prev => {
+            return {
+              ...prev,
+              title: 'Login failed!',
+              message: error?.response.data.message,
+              showModal: true,
+            };
+          });
+        } else {
+          setModalState(prev => {
+            return {
+              ...prev,
+              title: 'Login failed!',
+              message: 'An unforeseen error occurred',
+              showModal: true,
+            };
+          });
+        }
+      } else if (error?.request) {
+        console.log('Error request', error?.request);
       }
     }
   };
@@ -109,45 +120,51 @@ const Signin = ({ navigation }) => {
         type="error"
       />
 
-      <TextInput style={styles.text}>JustJio</TextInput>
+      {!modalState.showModal && (
+        <>
+          <TextInput style={styles.text}>JustJio</TextInput>
 
-      <CustomInput
-        placeholder={'Enter your username'}
-        placeholderTextColor="#4E1164"
-        name="username"
-        rules={{ required: 'Username is required' }}
-        control={control}
-        textStyles={styles.inputText}
-      />
-      <CustomInput
-        placeholder={'Enter your password'}
-        placeholderTextColor="#4E1164"
-        name="password"
-        rules={{ required: 'Password is required' }}
-        control={control}
-        secureTextEntry={true}
-        textStyles={styles.inputText}
-      />
+          <CustomInput
+            placeholder={'Enter your username'}
+            placeholderTextColor="#4E1164"
+            name="username"
+            rules={{ required: 'Username is required' }}
+            control={control}
+            textStyles={styles.inputText}
+          />
+          <CustomInput
+            placeholder={'Enter your password'}
+            placeholderTextColor="#4E1164"
+            name="password"
+            rules={{ required: 'Password is required' }}
+            control={control}
+            secureTextEntry={true}
+            textStyles={styles.inputText}
+          />
 
-      <TouchableOpacity>
-        <Text style={styles.confirmationBox} onPress={handleSubmit(onLogin)}>
-          Login
-        </Text>
-      </TouchableOpacity>
+          <TouchableOpacity>
+            <Text
+              style={styles.confirmationBox}
+              onPress={handleSubmit(onLogin)}>
+              Login
+            </Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity>
-        <Text style={styles.miniBold}>Forgot password</Text>
-      </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.miniBold}>Forgot password</Text>
+          </TouchableOpacity>
 
-      <View style={styles.smallText}>
-        <Text style={styles.signup}>Don't have an account?</Text>
-        <TouchableOpacity>
-          <Text style={styles.signupLink} onPress={onSignup}>
-            {' '}
-            Sign up
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.smallText}>
+            <Text style={styles.signup}>Don't have an account?</Text>
+            <TouchableOpacity>
+              <Text style={styles.signupLink} onPress={onSignup}>
+                {' '}
+                Sign up
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
   );
 };

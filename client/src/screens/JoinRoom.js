@@ -109,6 +109,7 @@ const InvitationCard = ({ invite, handleClick }) => {
       <Text style={styles.roomText}>Date: {invite.date}</Text>
       <Text style={styles.roomText}>Time: {invite.time}</Text>
       <Text style={styles.roomText}>Venue: {invite.venue}</Text>
+      <Text style={styles.roomText}>Host: {invite.host}</Text>
 
       <View style={styles.invitation}>
         <TouchableOpacity

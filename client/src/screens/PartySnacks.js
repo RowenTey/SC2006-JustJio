@@ -17,16 +17,16 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { getDistance } from 'geolib';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
+import Spinner from '../components/Spinner';
 
 Geocoder.init(Config.GOOGLE_MAPS_API_KEY);
 
 const PartySnacks = () => {
   const ref = useRef();
-
+  const [loading, setLoading] = useState(false);
   const [places, setPlaces] = useState({
     placesArray: [],
   });
-
   const [location, setLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -53,7 +53,6 @@ const PartySnacks = () => {
       '&key=' +
       key;
 
-    //console.log(getSupermarketsUrl);
     await fetch(getSupermarketsUrl)
       .then(res => {
         return res.json();
@@ -83,9 +82,9 @@ const PartySnacks = () => {
     getLocation();
   }, []);
 
-  const getLocation = async () => {
+  const getLocation = () => {
     ref.current?.clear();
-    await Geolocation.getCurrentPosition(async pos => {
+    Geolocation.getCurrentPosition(async pos => {
       const curLat = pos.coords.latitude;
       const curLng = pos.coords.longitude;
       var addrName;
@@ -95,6 +94,7 @@ const PartySnacks = () => {
         var add2 = json.results[0].address_components[2].long_name;
         addrName = add1 + ', ' + add2;
       });
+      setLoading(true);
       setLocation({
         latitude: curLat,
         longitude: curLng,
@@ -102,6 +102,7 @@ const PartySnacks = () => {
       });
       await fetchNearestPlacesFromGoogle(curLat, curLng);
     });
+    setTimeout(() => setLoading(false), 500);
   };
 
   const openMaps = item => {
@@ -127,6 +128,10 @@ const PartySnacks = () => {
     }
     return dist;
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <View style={styles.container}>
@@ -249,6 +254,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     alignItems: 'center',
+    marginTop: 10,
   },
 
   searchBarSpacer: {

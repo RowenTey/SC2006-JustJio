@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   Pressable,
-  Alert,
   Image,
   Modal,
 } from 'react-native';
@@ -14,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import CustomInput from '../components/CustomInput';
 import Spinner from '../components/Spinner';
 import WheelOfFortune from 'react-native-wheel-of-fortune';
+import CustomModal from '../components/CustomModal';
 
 const SpinTheWheel = ({ navigation }) => {
   const wheelRef = useRef(null);
@@ -26,6 +26,11 @@ const SpinTheWheel = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(true);
   const [loading, setLoading] = useState(false);
   const [participants, setParticipants] = useState([]);
+  const [modalState, setModalState] = useState({
+    showModal: false,
+    title: '',
+    message: '',
+  });
   const colors = ['#75F4F4', '#EDDEA4', '#B8B3E9', '#D999B9', '#FF9B42'];
 
   const onEnterPlayers = formData => {
@@ -53,8 +58,26 @@ const SpinTheWheel = ({ navigation }) => {
     }, 500);
   };
 
+  const onCloseModal = () => {
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: '',
+        message: '',
+        showModal: false,
+      };
+    });
+  };
+
   const handleWinner = (value, index) => {
-    Alert.alert(value + ' Won!', value + ' is the lucky winner!');
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: value + ' Won!',
+        message: value + ' is the lucky winner!',
+        showModal: true,
+      };
+    });
   };
 
   const wheelOptions = {
@@ -128,6 +151,14 @@ const SpinTheWheel = ({ navigation }) => {
             </View>
           </View>
         </Modal>
+
+        <CustomModal
+          title={modalState.title}
+          message={modalState.message}
+          modalVisible={modalState.showModal}
+          closeModal={onCloseModal}
+          type="success"
+        />
 
         {participants.length > 0 && (
           <>
