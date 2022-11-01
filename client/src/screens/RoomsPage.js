@@ -9,15 +9,28 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Alert,
+  Modal,
+  Pressable,
 } from 'react-native';
 import Spinner from '../components/Spinner';
+import CustomInput from '../components/CustomInput';
+import { useForm } from 'react-hook-form';
 import { AxiosContext } from '../context/axios';
 import { UserContext } from '../context/user';
 import { RoomContext } from '../context/room';
 
 const RoomsPage = ({ navigation, route }) => {
+  const {
+    control,
+    handleSubmit,
+    setError,
+    reset,
+    formState: {},
+  } = useForm({});
   const [loading, setLoading] = useState(false);
   const [attendees, setAttendees] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const [user, setUser] = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
   const { closeRoom } = useContext(RoomContext);
@@ -27,10 +40,46 @@ const RoomsPage = ({ navigation, route }) => {
   const date = new Date(`${year}-${month}-${day}`);
   const currentDate = new Date();
 
+  const onAddUsers = async formData => {
+    setLoading(true);
+
+    try {
+      let { invitees } = formData;
+      invitees = invitees.split(',');
+
+      let addUserData = {
+        invitees,
+      };
+
+      const response = await authAxios
+        .post(`/rooms/${room.ID}`, addUserData)
+        .catch(error => {
+          throw error;
+        });
+
+      setTimeout(() => {
+        reset({ invitees: '' });
+        setModalVisible(false);
+        setLoading(false);
+      }, 500);
+    } catch (error) {
+      setLoading(false);
+      console.log('Error inviting users', error);
+      switch (error.message) {
+        default:
+          setError('invitees', {
+            type: 'string',
+            message: error.response.data.message,
+          });
+          break;
+      }
+    }
+  };
+
   const onCloseRoom = async roomId => {
     setLoading(true);
     await closeRoom(roomId);
-    setLoading(false);
+    setTimeout(() => setLoading(false), 500);
     navigation.navigate('HomeTab');
   };
 
@@ -41,7 +90,7 @@ const RoomsPage = ({ navigation, route }) => {
         `/rooms/attendees/${roomId}`,
       );
       setAttendees(response.data);
-      setLoading(false);
+      setTimeout(() => setLoading(false), 500);
     } catch (error) {
       setLoading(false);
       console.log('Error fetching attendees', error.message);
@@ -69,56 +118,120 @@ const RoomsPage = ({ navigation, route }) => {
       </View>
 
       <View style={styles.middle}>
-        <View style={styles.event}>
-          <Text style={styles.upcomingEvent}>
-            {currentDate > date ? 'Passed' : 'Upcoming'} Event
-          </Text>
-          <EventDetail room={room} />
-        </View>
-        <View style={styles.memberList}>
-          <Text style={styles.list}>Members</Text>
-          <GuestList list={attendees} />
-        </View>
-        <View style={styles.splitBillCloseRoom}>
-          <TouchableOpacity
-            style={[
-              styles.splitBill,
-              {
-                left: user.username === room.host ? 10 : 0,
-              },
-            ]}
-            onPress={() =>
-              navigation.navigate('SplitBillMembers', {
-                payers: attendees.filter(payee => payee !== user.username),
-                room,
-              })
-            }>
-            <Text style={styles.buttonText}>Split Bill</Text>
-          </TouchableOpacity>
-          {user.username === room.host && (
-            <TouchableOpacity
-              style={styles.closeRoom}
-              onPress={() => onCloseRoom(room.ID)}>
-              <Text style={styles.buttonText}>Close Room</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={styles.urlQrCode}>
-          <View style={styles.url}>
-            <Text style={styles.urlText}>URL:</Text>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.link}>
-                http://www.justjio/{room.name.replaceAll(' ', '-')}.com
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Enter name of users to invite:
               </Text>
-            </TouchableOpacity>
+              <CustomInput
+                placeholder={'Invitees: (username1,username2)'}
+                placeholderTextColor="#000"
+                name="invitees"
+                rules={{ required: 'Invitees are required' }}
+                control={control}
+                textStyles={styles.roomText}
+              />
+              <View flexDirection="row">
+                <Pressable
+                  style={[styles.button, styles.buttonConfirm]}
+                  onPress={handleSubmit(onAddUsers)}>
+                  <Text style={styles.textStyle}>Confirm</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Cancel</Text>
+                </Pressable>
+              </View>
+            </View>
           </View>
-          <View style={styles.qrCode}>
-            <Text style={styles.urlText}>QR Code:</Text>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.QRText}>QRCODE</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </Modal>
+
+        {!modalVisible && (
+          <>
+            <View style={styles.event}>
+              <Text style={styles.upcomingEvent}>
+                {currentDate > date ? 'Passed' : 'Upcoming'} Event
+              </Text>
+              <EventDetail room={room} />
+            </View>
+            <View style={styles.memberList}>
+              <View
+                style={[
+                  styles.memberTitle,
+                  {
+                    justifyContent:
+                      user.username === room.host
+                        ? 'space-between'
+                        : 'flex-start',
+                  },
+                ]}>
+                <Text style={styles.list}>Members</Text>
+                {user.username === room.host && (
+                  <Pressable
+                    style={styles.addButton}
+                    onPress={() => setModalVisible(true)}>
+                    <Image
+                      source={require('../../assets/images/add.png')}
+                      style={{
+                        width: 15,
+                        height: 15,
+                      }}
+                    />
+                  </Pressable>
+                )}
+              </View>
+              <GuestList list={attendees} />
+            </View>
+            <View style={styles.splitBillCloseRoom}>
+              <TouchableOpacity
+                style={[
+                  styles.splitBill,
+                  {
+                    left: user.username === room.host ? 10 : 0,
+                  },
+                ]}
+                onPress={() =>
+                  navigation.navigate('SplitBillMembers', {
+                    payers: attendees.filter(payee => payee !== user.username),
+                    room,
+                  })
+                }>
+                <Text style={styles.buttonText}>Split Bill</Text>
+              </TouchableOpacity>
+              {user.username === room.host && (
+                <TouchableOpacity
+                  style={styles.closeRoom}
+                  onPress={() => onCloseRoom(room.ID)}>
+                  <Text style={styles.buttonText}>Close Room</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View style={styles.urlQrCode}>
+              <View style={styles.url}>
+                <Text style={styles.urlText}>URL:</Text>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Text style={styles.link}>
+                    http://www.justjio.com/{room.name.replaceAll(' ', '-')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.qrCode}>
+                <Text style={styles.urlText}>QR Code:</Text>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Text style={styles.QRText}>QRCODE</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </>
+        )}
       </View>
     </View>
   );
@@ -408,6 +521,25 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
+  memberTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '80%',
+    paddingHorizontal: 10,
+  },
+
+  addButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#4E1164',
+    borderRadius: 40,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    width: 25,
+    bottom: 5,
+  },
+
   memberBox: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -447,7 +579,7 @@ const styles = StyleSheet.create({
   },
 
   upcomingEvent: {
-    fontSize: 13,
+    fontSize: 15,
     color: '#4E1164',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -459,10 +591,6 @@ const styles = StyleSheet.create({
   list: {
     fontSize: 15,
     color: '#4E1164',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    left: -120,
-    top: -5,
     fontFamily: 'Poppins-Medium',
   },
 
@@ -515,6 +643,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
     alignItems: 'center',
+    color: '#000',
   },
 
   QRText: {
@@ -541,6 +670,66 @@ const styles = StyleSheet.create({
 
   urlText: {
     fontSize: 15,
+    fontFamily: 'Poppins-Bold',
+    color: '#4E1164',
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    backfaceVisibility: 'hidden',
+  },
+
+  modalView: {
+    margin: 20,
+    width: 350,
+    height: 300,
+    backgroundColor: '#E9D7FD',
+    borderRadius: 20,
+    padding: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+
+  button: {
+    borderRadius: 25,
+    width: 140,
+    paddingVertical: 5,
+    backgroundColor: '#E9D7FD',
+    elevation: 2,
+    marginTop: 15,
+    marginHorizontal: 10,
+  },
+
+  buttonConfirm: {
+    backgroundColor: '#4E1164',
+  },
+
+  buttonClose: {
+    backgroundColor: '#f26a6a',
+  },
+
+  textStyle: {
+    color: 'white',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 20,
+    textAlign: 'center',
+  },
+
+  modalText: {
+    marginBottom: 10,
+    textAlign: 'center',
+    fontSize: 25,
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
   },

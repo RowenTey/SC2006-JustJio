@@ -43,17 +43,26 @@ func createRoomUser(roomID_str string, username string, userType string) (*model
 	return nil, nil
 }
 
+func validateUser(usernames []string) (error, string) {
+	db := database.DB.Table("users")
+
+	for _, username := range usernames {
+		var user model.User
+		user.Username = username
+		if err := db.Table("users").First(&user).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return err, username
+			}
+		}
+	}
+
+	return nil, ""
+}
+
 func inviteUser(usernames []string, roomID_str string) error {
 	db := database.DB
 
 	for _, username := range usernames {
-		var user model.User
-		if err := db.Table("users").Where("username = ?", username).First(&user).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return err
-			}
-		}
-
 		roomUser, err := createRoomUser(roomID_str, username, "attendee")
 		if err != nil || roomUser == nil {
 			return err
@@ -185,6 +194,14 @@ func CreateRoom(c *fiber.Ctx) error {
 
 	token := c.Locals("user").(*jwt.Token)
 	roomInput.Room.Host = util.GetUser(token, "username")
+	var usernames []string
+	json.Unmarshal([]byte(roomInput.Invitees), &usernames)
+
+	// validate all usernames
+	err, name := validateUser(usernames)
+	if errors.Is(err, gorm.ErrRecordNotFound) && name != "" {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User " + name + " doesn't exist", "data": err})
+	}
 
 	if err := db.Table("rooms").Create(&roomInput.Room).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in rooms table", "data": err})
@@ -194,12 +211,7 @@ func CreateRoom(c *fiber.Ctx) error {
 	roomID_str := strconv.FormatUint(uint64(roomInput.Room.ID), 10)
 
 	// invitees -> create roomUser relationship
-	var usernames []string
-	json.Unmarshal([]byte(roomInput.Invitees), &usernames)
 	if err := inviteUser(usernames, roomID_str); err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User doesn't exist", "data": err})
-		}
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in creating room_user record (invitees)", "data": err})
 	}
 
@@ -224,7 +236,7 @@ func CreateRoom(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Param        roomID   path      int  true  "Room ID"
-// @Success      200  {object}   model.Room
+// @Success      200  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /rooms/{roomId} [delete]
 func CloseRoom(c *fiber.Ctx) error {
@@ -320,4 +332,43 @@ func DeclineRoom(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Declined room successfully", "data": nil})
+}
+
+// AddUser godoc
+// @Summary      Create new invitations
+// @Description  Invite additional users to a specific room
+// @Tags         invites
+// @Accept       json
+// @Produce      json
+// @Param        users   body      handlers.AddUser.AddUserInput  true  "Users to invite"
+// @Success      200  {object}  nil
+// @Failure      400  {object}  nil
+// @Failure      404  {object}  nil
+// @Failure      500  {object}  nil
+// @Router       /rooms/{roomId} [post]
+func AddUser(c *fiber.Ctx) error {
+	type AddUserInput struct {
+		Invitees datatypes.JSON `json:"invitees" swaggertype:"array,string"`
+	}
+
+	roomID_str := c.Params("id")
+	var addUserInput AddUserInput
+	if err := c.BodyParser(&addUserInput); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+
+	// validate all usernames
+	var usernames []string
+	json.Unmarshal([]byte(addUserInput.Invitees), &usernames)
+	err, name := validateUser(usernames)
+	if errors.Is(err, gorm.ErrRecordNotFound) && name != "" {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User " + name + " doesn't exist", "data": err})
+	}
+
+	// invitees -> create roomUser relationship
+	if err := inviteUser(usernames, roomID_str); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create room - error in creating room_user record (invitees)", "data": err})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Invited users successfully", "data": nil})
 }

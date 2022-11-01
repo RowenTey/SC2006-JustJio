@@ -34,6 +34,7 @@ func Initalize(router *fiber.App) {
 	rooms.Get("/invites", middleware.Authenticated(), handlers.GetRoomInvitations)
 	rooms.Get("/attendees/:id", middleware.Authenticated(), handlers.GetRoomAttendees)
 	rooms.Post("/", middleware.Authenticated(), handlers.CreateRoom)
+	rooms.Post("/:id", middleware.Authenticated(), handlers.AddUser)
 	rooms.Patch("/join/:id", middleware.Authenticated(), handlers.JoinRoom)
 	rooms.Delete("/:id", middleware.Authenticated(), handlers.CloseRoom)
 	rooms.Delete("/decline/:id", middleware.Authenticated(), handlers.DeclineRoom)

@@ -10,8 +10,9 @@ import {
   FlatList,
 } from 'react-native';
 import RoomCard from '../components/RoomCard.js';
-import TransactionBar from '../components/TransactionDetails';
+import TransactionBar from '../components/TransactionBar';
 import Spinner from '../components/Spinner.js';
+import CustomModal from '../components/CustomModal';
 import { initialUserState, UserContext } from '../context/user.js';
 import { AuthContext } from '../context/auth.js';
 import { RoomContext } from '../context/room.js';
@@ -34,6 +35,11 @@ const Home = ({ navigation }) => {
   const { toPay, toGet, fetchTransactions, isTransactionsLoading } =
     useContext(TransactionContext);
   const { payBill } = useContext(TransactionContext);
+  const [modalState, setModalState] = useState({
+    showModal: false,
+    title: '',
+    message: '',
+  });
 
   const handlePayBill = async ({ transaction }) => {
     let curDate = new Date();
@@ -46,9 +52,34 @@ const Home = ({ navigation }) => {
 
     try {
       await payBill(billData, transaction.billID);
+      setModalState(prev => {
+        return {
+          ...prev,
+          title: 'Yay!',
+          message: `You paid ${billData.payee} successfully!`,
+          showModal: true,
+        };
+      });
     } catch (error) {
       console.log('Failed to settle transactions', error);
     }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    setUser(initialUserState);
+    navigation.navigate('Signin');
+  };
+
+  const onCloseModal = () => {
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: '',
+        message: '',
+        showModal: false,
+      };
+    });
   };
 
   useEffect(() => {
@@ -59,133 +90,139 @@ const Home = ({ navigation }) => {
     fetchData();
   }, []);
 
-  const handleLogout = async () => {
-    await logout();
-    setUser(initialUserState);
-    navigation.navigate('Signin');
-  };
-
   if (isRoomsLoading || isTransactionsLoading) {
     return <Spinner />;
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.header}>
-          Welcome, {user ? user.username : 'user'}!
-        </Text>
-        <TouchableOpacity onPress={handleLogout}>
-          <Image
-            source={ICONS.logout}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
+      <CustomModal
+        title={modalState.title}
+        message={modalState.message}
+        modalVisible={modalState.showModal}
+        closeModal={onCloseModal}
+        type="success"
+      />
 
-      <View style={styles.middle}>
-        <View flexDirection="row">
-          <View style={styles.box}>
-            <Text style={styles.transactionText}> TO GIVE: </Text>
-            <View style={styles.smallContainer}>
-              {toPay.length > 0 ? (
-                <FlatList
-                  data={toPay}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => handlePayBill(item)}>
-                      <TransactionBar
-                        transactions={item}
-                        icon={ICONS.tick}
-                        navigation={navigation}
-                        name={item.transaction.payee}
-                      />
-                    </TouchableOpacity>
-                  )}
-                  key={'_'}
-                  keyExtractor={(item, index) => index}
-                />
-              ) : (
-                <Text style={styles.noAction}>No one to pay</Text>
-              )}
-            </View>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.transactionText}> TO GET: </Text>
-            <View style={styles.smallContainer}>
-              {toGet.length > 0 ? (
-                <FlatList
-                  data={toGet}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => {}}>
-                      <TransactionBar
-                        transactions={item}
-                        icon={ICONS.bell}
-                        navigation={navigation}
-                        name={item.transaction.payer}
-                      />
-                    </TouchableOpacity>
-                  )}
-                  key={'_'}
-                  keyExtractor={(item, index) => index}
-                />
-              ) : (
-                <Text style={styles.noAction}>No one to get</Text>
-              )}
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.roomFunctions}>
-          <TouchableOpacity
-            style={{ marginStart: 10 }}
-            onPress={() => navigation.navigate('CreateRoom')}>
-            <View style={styles.roomFunctionButtons}>
+      {!modalState.showModal && (
+        <>
+          <View style={styles.top}>
+            <Text style={styles.header}>
+              Welcome, {user ? user.username : 'user'}!
+            </Text>
+            <TouchableOpacity onPress={handleLogout}>
               <Image
-                source={ICONS.add}
+                source={ICONS.logout}
                 style={{
                   width: 30,
                   height: 30,
                 }}
               />
-            </View>
-            <Text style={styles.roomFunctionText}>Create Room</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('JoinRoom')}>
-            <View style={[styles.roomFunctionButtons, { marginStart: 19 }]}>
-              <Image
-                source={ICONS.mail}
-                style={{
-                  width: 40,
-                  height: 30,
-                }}
-              />
-            </View>
-            <Text style={styles.roomFunctionText}>Room Invitations</Text>
-          </TouchableOpacity>
-        </View>
+            </TouchableOpacity>
+          </View>
 
-        <Text style={styles.roomsTitle}>Party Rooms</Text>
-        <View style={{ flex: 1 }}>
-          {rooms.length > 0 ? (
-            <FlatList
-              data={rooms}
-              renderItem={({ item }) => (
-                <RoomCard mainRoom={item} navigation={navigation} />
+          <View style={styles.middle}>
+            <View flexDirection="row">
+              <View style={styles.box}>
+                <Text style={styles.transactionText}> TO GIVE: </Text>
+                <View style={styles.smallContainer}>
+                  {toPay.length > 0 ? (
+                    <FlatList
+                      data={toPay}
+                      renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => handlePayBill(item)}>
+                          <TransactionBar
+                            transactions={item}
+                            icon={ICONS.tick}
+                            navigation={navigation}
+                            name={item.transaction.payee}
+                          />
+                        </TouchableOpacity>
+                      )}
+                      key={'_'}
+                      keyExtractor={(item, index) => index}
+                    />
+                  ) : (
+                    <Text style={styles.noAction}>No one to pay</Text>
+                  )}
+                </View>
+              </View>
+              <View style={styles.box}>
+                <Text style={styles.transactionText}> TO GET: </Text>
+                <View style={styles.smallContainer}>
+                  {toGet.length > 0 ? (
+                    <FlatList
+                      data={toGet}
+                      renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {}}>
+                          <TransactionBar
+                            transactions={item}
+                            icon={ICONS.bell}
+                            navigation={navigation}
+                            name={item.transaction.payer}
+                          />
+                        </TouchableOpacity>
+                      )}
+                      key={'_'}
+                      keyExtractor={(item, index) => index}
+                    />
+                  ) : (
+                    <Text style={styles.noAction}>No one to get</Text>
+                  )}
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.roomFunctions}>
+              <TouchableOpacity
+                style={{ marginStart: 10 }}
+                onPress={() => navigation.navigate('CreateRoom')}>
+                <View style={styles.roomFunctionButtons}>
+                  <Image
+                    source={ICONS.add}
+                    style={{
+                      width: 30,
+                      height: 30,
+                    }}
+                  />
+                </View>
+                <Text style={styles.roomFunctionText}>Create Room</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('JoinRoom')}>
+                <View style={[styles.roomFunctionButtons, { marginStart: 19 }]}>
+                  <Image
+                    source={ICONS.mail}
+                    style={{
+                      width: 40,
+                      height: 30,
+                    }}
+                  />
+                </View>
+                <Text style={styles.roomFunctionText}>Room Invitations</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.roomsTitle}>Party Rooms</Text>
+            <View style={{ flex: 1 }}>
+              {rooms.length > 0 ? (
+                <FlatList
+                  data={rooms}
+                  renderItem={({ item }) => (
+                    <RoomCard mainRoom={item} navigation={navigation} />
+                  )}
+                  numColumns={2}
+                  key={'_'}
+                  keyExtractor={(item, index) => index}
+                />
+              ) : (
+                <Text style={styles.noRooms}>
+                  No rooms to display, create or join a room!
+                </Text>
               )}
-              numColumns={2}
-              key={'_'}
-              keyExtractor={(item, index) => index}
-            />
-          ) : (
-            <Text style={styles.noRooms}>
-              No rooms to display, create or join a room!
-            </Text>
-          )}
-        </View>
-      </View>
+            </View>
+          </View>
+        </>
+      )}
     </View>
   );
 };

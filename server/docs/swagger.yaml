@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  handlers.AddUser.AddUserInput:
+    properties:
+      invitees:
+        items:
+          type: string
+        type: array
+    type: object
   handlers.CreateRoom.CreateRoomInput:
     properties:
       invitees:
@@ -367,13 +374,36 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            $ref: '#/definitions/model.Room'
         "500":
           description: Internal Server Error
       summary: Close a room
       tags:
       - rooms
+    post:
+      consumes:
+      - application/json
+      description: Invite additional users to a specific room
+      parameters:
+      - description: Users to invite
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.AddUser.AddUserInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Create new invitations
+      tags:
+      - invites
   /rooms/attendees/:
     get:
       consumes:

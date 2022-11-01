@@ -10,6 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 import Spinner from '../components/Spinner';
+import CustomModal from '../components/CustomModal';
 import { AxiosContext } from '../context/axios';
 import { RoomContext } from '../context/room';
 
@@ -28,6 +29,11 @@ const JoinRoom = ({ navigation }) => {
   const { joinRoom, declineRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
   const [invitations, setInvitations] = useState(initialInvitationsState);
+  const [modalState, setModalState] = useState({
+    showModal: false,
+    title: '',
+    message: '',
+  });
 
   const fetchInvitations = async () => {
     setLoading(true);
@@ -49,10 +55,38 @@ const JoinRoom = ({ navigation }) => {
 
     if (type === INVITATION_ACTIONS.JOiN) {
       await joinRoom(roomId);
+      setLoading(false);
+      setModalState(prev => {
+        return {
+          ...prev,
+          title: 'Yay!',
+          message: 'Room joined successfully!',
+          showModal: true,
+        };
+      });
     } else if (type === INVITATION_ACTIONS.DECLINE) {
       await declineRoom(roomId);
+      setLoading(false);
+      setModalState(prev => {
+        return {
+          ...prev,
+          title: 'Maybe next time!',
+          message: 'Room declined successfully!',
+          showModal: true,
+        };
+      });
     }
-    setLoading(false);
+  };
+
+  const onCloseModal = () => {
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: '',
+        message: '',
+        showModal: false,
+      };
+    });
     navigation.navigate('HomeTab');
   };
 
@@ -76,27 +110,37 @@ const JoinRoom = ({ navigation }) => {
         <Text style={styles.header}>Room Invitations</Text>
       </View>
 
-      <View
-        style={[
-          styles.middle,
-          {
-            justifyContent:
-              invitations.invites.length > 0 ? 'space-around' : 'center',
-          },
-        ]}>
-        {invitations.invites.length > 0 ? (
-          <FlatList
-            data={invitations.invites}
-            renderItem={({ item }) => (
-              <InvitationCard invite={item} handleClick={onClick} />
-            )}
-            key={'_'}
-            keyExtractor={item => item.ID}
-          />
-        ) : (
-          <Text style={styles.noInvitation}>No invitations</Text>
-        )}
-      </View>
+      <CustomModal
+        title={modalState.title}
+        message={modalState.message}
+        modalVisible={modalState.showModal}
+        closeModal={onCloseModal}
+        type="success"
+      />
+
+      {!modalState.showModal && (
+        <View
+          style={[
+            styles.middle,
+            {
+              justifyContent:
+                invitations.invites.length > 0 ? 'space-around' : 'center',
+            },
+          ]}>
+          {invitations.invites.length > 0 ? (
+            <FlatList
+              data={invitations.invites}
+              renderItem={({ item }) => (
+                <InvitationCard invite={item} handleClick={onClick} />
+              )}
+              key={'_'}
+              keyExtractor={item => item.ID}
+            />
+          ) : (
+            <Text style={styles.noInvitation}>No invitations</Text>
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -109,6 +153,7 @@ const InvitationCard = ({ invite, handleClick }) => {
       <Text style={styles.roomText}>Date: {invite.date}</Text>
       <Text style={styles.roomText}>Time: {invite.time}</Text>
       <Text style={styles.roomText}>Venue: {invite.venue}</Text>
+      <Text style={styles.roomText}>Host: {invite.host}</Text>
 
       <View style={styles.invitation}>
         <TouchableOpacity

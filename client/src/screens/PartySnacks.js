@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -9,16 +10,23 @@ import {
   View,
   Image,
   Linking,
+  TextInput,
 } from 'react-native';
 import Config from 'react-native-config';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { getDistance } from 'geolib';
+import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
+import Spinner from '../components/Spinner';
+
+Geocoder.init(Config.GOOGLE_MAPS_API_KEY);
 
 const PartySnacks = () => {
+  const ref = useRef();
+  const [loading, setLoading] = useState(false);
   const [places, setPlaces] = useState({
     placesArray: [],
   });
-
   const [location, setLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -45,7 +53,6 @@ const PartySnacks = () => {
       '&key=' +
       key;
 
-    console.log(getSupermarketsUrl);
     await fetch(getSupermarketsUrl)
       .then(res => {
         return res.json();
@@ -69,6 +76,33 @@ const PartySnacks = () => {
       locationName: details.formatted_address,
     });
     await fetchNearestPlacesFromGoogle(lat, long);
+  };
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  const getLocation = () => {
+    ref.current?.clear();
+    Geolocation.getCurrentPosition(async pos => {
+      const curLat = pos.coords.latitude;
+      const curLng = pos.coords.longitude;
+      var addrName;
+      await Geocoder.from(curLat, curLng).then(json => {
+        var addressComponent = json.results[0].address_components[0];
+        var add1 = json.results[0].address_components[1].long_name;
+        var add2 = json.results[0].address_components[2].long_name;
+        addrName = add1 + ', ' + add2;
+      });
+      setLoading(true);
+      setLocation({
+        latitude: curLat,
+        longitude: curLng,
+        locationName: addrName,
+      });
+      await fetchNearestPlacesFromGoogle(curLat, curLng);
+    });
+    setTimeout(() => setLoading(false), 500);
   };
 
   const openMaps = item => {
@@ -95,35 +129,55 @@ const PartySnacks = () => {
     return dist;
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.bigText}>Party Snacks</Text>
-        <Text
-          style={{
-            textAlign: 'center',
-            flexWrap: 'wrap',
-            width: 350,
-            color: '#4E1164',
-            fontWeight: '400',
-          }}>
-          Current location: {location.locationName}
+        <Text style={styles.locationText}>
+          {' '}
+          Current location: {location.locationName}{' '}
         </Text>
       </View>
-      <GooglePlacesAutocomplete
-        placeholder="Search"
-        fetchDetails={true}
-        onPress={(data, details) => onSearch(details)}
-        query={{
-          key: Config.GOOGLE_MAPS_API_KEY,
-          language: 'en',
-          components: 'country:sg',
-        }}
-        styles={{
-          container: { flex: 0, width: '90%', zIndex: 1, marginTop: 10 },
-          listView: { backgroundColor: 'white' },
-        }}
-      />
+
+      <View style={styles.searchBar}>
+        <TextInput editable={false} style={styles.searchBarSpacer} />
+        <GooglePlacesAutocomplete
+          ref={ref}
+          placeholder="Search"
+          fetchDetails={true}
+          onPress={(data, details) => onSearch(details)}
+          query={{
+            key: Config.GOOGLE_MAPS_API_KEY,
+            language: 'en',
+            components: 'country:sg',
+          }}
+          styles={{
+            container: { flex: 0, width: 350, marginTop: 5 },
+            listView: { backgroundColor: 'white' },
+            textInputContainer: { width: 315 },
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            top: 10,
+            right: 25,
+          }}
+          onPress={getLocation}>
+          <Image
+            style={styles.images}
+            source={{
+              width: 20,
+              height: 20,
+              uri: 'https://static.thenounproject.com/png/2819186-200.png',
+            }}
+          />
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         data={places.placesArray.results}
@@ -185,6 +239,33 @@ const styles = StyleSheet.create({
     minHeight: '10%',
     maxHeight: '10%',
     width: '100%',
+  },
+
+  locationText: {
+    textAlign: 'center',
+    flexWrap: 'wrap',
+    width: 350,
+    color: '#4E1164',
+    fontWeight: '400',
+  },
+
+  searchBar: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+
+  searchBarSpacer: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    height: 44,
+    zIndex: 0,
+    right: 23,
+    width: 40,
+    top: 5,
   },
 
   box: {

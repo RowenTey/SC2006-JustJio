@@ -32,6 +32,9 @@ const RoomProvider = ({ children }) => {
         type: END_LOADING,
       });
     } catch (error) {
+      dispatch({
+        type: END_LOADING,
+      });
       console.log('Failed to fetch rooms', error);
       if (error.response) {
         console.log('Error response', error.response.data);
@@ -62,14 +65,15 @@ const RoomProvider = ({ children }) => {
         type: END_LOADING,
       });
     } catch (error) {
-      console.log('Failed to create room', error);
-      if (error.response) {
-        console.log('Error response', error.response.data);
-        if (error.response.data.message === "User doesn't exist") {
-          throw new Error("User doesn't exist");
-        }
-      } else if (error.request) {
-        console.log('Error request', error.request);
+      dispatch({
+        type: END_LOADING,
+      });
+      console.log('Failed to create room', JSON.stringify(error));
+      switch (error.status) {
+        case '404':
+          throw new Error(error.response.data.message);
+        default:
+          throw new Error(error.response.data.message);
       }
     }
   };
@@ -95,6 +99,9 @@ const RoomProvider = ({ children }) => {
         type: END_LOADING,
       });
     } catch (error) {
+      dispatch({
+        type: END_LOADING,
+      });
       console.log('Failed to join room', error);
       if (error.response) {
         console.log('Error response', error.response.data);
@@ -119,6 +126,9 @@ const RoomProvider = ({ children }) => {
         type: END_LOADING,
       });
     } catch (error) {
+      dispatch({
+        type: END_LOADING,
+      });
       console.log('Failed to decline room', error);
       if (error.response) {
         console.log('Error response', error.response.data);
@@ -149,6 +159,9 @@ const RoomProvider = ({ children }) => {
         type: END_LOADING,
       });
     } catch (error) {
+      dispatch({
+        type: END_LOADING,
+      });
       console.log('Failed to close room', error);
       if (error.response) {
         console.log('Error response', error.response.data);
