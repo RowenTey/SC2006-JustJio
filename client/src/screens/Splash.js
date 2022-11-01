@@ -23,7 +23,7 @@ const Splash = ({ navigation }) => {
         });
       }
     } catch (error) {
-      console.log(`Keychain error: ${error.message}`);
+      console.log(`Keychain error: ${error?.message}`);
       authContext.setAuthState({
         accessToken: null,
         authenticated: false,
