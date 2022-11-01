@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View , useEffect } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const TransactionHistory = () => {
   const list1 = [
@@ -11,6 +13,7 @@ const TransactionHistory = () => {
     ['dobin', '45', false],
   ];
 
+ 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -30,14 +33,20 @@ const TransactionList = props => {
     <View style={styles.transactionList}>
       <Text style={styles.date}>{props.date.toUpperCase()}</Text>
       <View>
-        {props.list.map(listItem => (
-          <TransactionBox
-            key={listItem[0]}
-            name={listItem[0]}
-            amount={listItem[1]}
-            isReceive={listItem[2]}
-          />
-        ))}
+        <FlatList   
+                  data={restoredArray}
+                  renderItem={({ item }) => (
+                    <TransactionBox
+                       name={item[0]}
+                       amount={item[1]}
+                       isReceive={item[2]}
+                    />
+                  )}
+                  key={'_'}
+                />
+
+
+       
       </View>
     </View>
   );
