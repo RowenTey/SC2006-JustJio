@@ -1,147 +1,63 @@
 package handlers
 
 import (
+	"io"
+	"net/http"
 	"testing"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetRooms(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
 	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+		description   string
+		route         string // input route
+		method        string // input method
+		body          io.Reader
+		stringToken   string
+		expectedError bool
+		expectedCode  int
 	}{
-		// TODO: Add test cases.
+		{
+			description:   "Fetch rooms for authenticated user",
+			route:         "https://justjio-server-o44bmvzlsa-as.a.run.app/rooms",
+			method:        "GET",
+			body:          nil,
+			stringToken:   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Njc2NTk0NDgsInVzZXJfZW1haWwiOiJrczEyM0B0ZXN0LmNvbSIsInVzZXJfaWQiOjUsInVzZXJuYW1lIjoia3MxMjMifQ.wIO4ErYQm_2zmeUgwe3YxvV0X2mHJ3-xCFTXrKMs0rs",
+			expectedError: false,
+			expectedCode:  200,
+		},
+		{
+			description:   "Fetch rooms for unauthenticated user - missing token",
+			route:         "https://justjio-server-o44bmvzlsa-as.a.run.app/rooms",
+			method:        "GET",
+			body:          nil,
+			stringToken:   "",
+			expectedError: true,
+			expectedCode:  400,
+		},
+		{
+			description:   "Fetch rooms for unauthenticated user - expired token",
+			route:         "https://justjio-server-o44bmvzlsa-as.a.run.app/rooms",
+			method:        "GET",
+			body:          nil,
+			stringToken:   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjcwMTcwMzIsInVzZXJfZW1haWwiOiJhbWFiZWwxMjNAdGVzdC5jb20iLCJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImFtYWJlbDEyMyJ9.hrx4oHGYEIUffouXhg98euDwuhKvwS3YhSZ2jw9R5ck",
+			expectedError: true,
+			expectedCode:  401,
+		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := GetRooms(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("GetRooms() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
 
-func TestGetRoomInvitations(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := GetRoomInvitations(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("GetRoomInvitations() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
+	// Iterate through test single test cases
+	for _, test := range tests {
+		// Create a new http request with the route from the test case
+		req, _ := http.NewRequest(test.method, test.route, test.body)
+		req.Header.Add("content-type", "multipart/form-data; boundary=---011000010111000001101001")
+		req.Header.Set("Authorization", test.stringToken)
+		res, _ := http.DefaultClient.Do(req)
 
-func TestGetRoomAttendees(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := GetRoomAttendees(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("GetRoomAttendees() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
+		// Verify, if the status code is as expected.
+		assert.Equalf(t, test.expectedCode, res.StatusCode, test.description)
 
-func TestCreateRoom(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := CreateRoom(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("CreateRoom() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
-func TestCloseRoom(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := CloseRoom(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("CloseRoom() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
-func TestJoinRoom(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := JoinRoom(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("JoinRoom() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
-func TestDeclineRoom(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := DeclineRoom(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("DeclineRoom() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+		defer res.Body.Close()
 	}
 }

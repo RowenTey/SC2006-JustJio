@@ -1,47 +1,100 @@
 package handlers
 
 import (
+	"io"
+	"net/http"
+	"strings"
 	"testing"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLogin(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
 	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+		description   string
+		route         string // input route
+		method        string // input method
+		body          io.Reader
+		expectedError bool
+		expectedCode  int
 	}{
-		// TODO: Add test cases.
+		{
+			description:   "Login successfully",
+			route:         "https://justjio-server-o44bmvzlsa-as.a.run.app/auth",
+			method:        "POST",
+			body:          strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\nks123\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\nks123\r\n-----011000010111000001101001--\r\n"),
+			expectedError: false,
+			expectedCode:  200,
+		},
+		{
+			description:   "Invalid user",
+			route:         "https://justjio-server-o44bmvzlsa-as.a.run.app/auth",
+			method:        "POST",
+			body:          strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\njoe\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\nks123\r\n-----011000010111000001101001--\r\n"),
+			expectedError: true,
+			expectedCode:  401,
+		},
+		{
+			description:   "Invalid password",
+			route:         "https://justjio-server-o44bmvzlsa-as.a.run.app/auth",
+			method:        "POST",
+			body:          strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\nks123\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\ntest\r\n-----011000010111000001101001--\r\n"),
+			expectedError: true,
+			expectedCode:  401,
+		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := Login(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("Login() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	// Iterate through test single test cases
+	for _, test := range tests {
+		// Create a new http request with the route from the test case
+		req, _ := http.NewRequest(test.method, test.route, test.body)
+		req.Header.Add("content-type", "multipart/form-data; boundary=---011000010111000001101001")
+		res, _ := http.DefaultClient.Do(req)
+
+		// Verify, if the status code is as expected.
+		assert.Equalf(t, test.expectedCode, res.StatusCode, test.description)
+
+		defer res.Body.Close()
 	}
 }
 
 func TestSignUp(t *testing.T) {
-	type args struct {
-		c *fiber.Ctx
-	}
 	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+		description   string
+		route         string // input route
+		method        string // input method
+		body          io.Reader
+		expectedError bool
+		expectedCode  int
 	}{
-		// TODO: Add test cases.
+		{
+			description:   "Username already in use",
+			route:         "https://justjio-server-o44bmvzlsa-as.a.run.app/auth/signup",
+			method:        "POST",
+			body:          strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\njospeh@gmail.com\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\nks123\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\nbrad123\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"phoneNum\"\r\n\r\n99947033\r\n-----011000010111000001101001--\r\n"),
+			expectedError: true,
+			expectedCode:  400,
+		},
+		{
+			description:   "Email already in use",
+			route:         "https://justjio-server-o44bmvzlsa-as.a.run.app/auth/signup",
+			method:        "POST",
+			body:          strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\nks123@test.com\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\nbond\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\nbrad123\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"phoneNum\"\r\n\r\n99947033\r\n-----011000010111000001101001--\r\n"),
+			expectedError: true,
+			expectedCode:  400,
+		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := SignUp(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("SignUp() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	// Iterate through test single test cases
+	for _, test := range tests {
+		// Create a new http request with the route from the test case
+		req, _ := http.NewRequest(test.method, test.route, test.body)
+		req.Header.Add("content-type", "multipart/form-data; boundary=---011000010111000001101001")
+		res, _ := http.DefaultClient.Do(req)
+
+		// Verify, if the status code is as expected.
+		assert.Equalf(t, test.expectedCode, res.StatusCode, test.description)
+
+		defer res.Body.Close()
 	}
 }

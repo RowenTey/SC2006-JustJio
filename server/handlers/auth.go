@@ -46,7 +46,7 @@ func getUserByUsername(username string) (*model.User, error) {
 // @Accept       json
 // @Produce      json
 // @Param        newUser   body      model.User  true  "New User"
-// @Success      200  {object}   handlers.SignUp.NewUser
+// @Success      201  {object}   handlers.SignUp.NewUser
 // @Failure      400  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /auth/signup [post]
@@ -97,6 +97,7 @@ func SignUp(c *fiber.Ctx) error {
 // @Success      200  {object}   handlers.Login.UserData
 // @Failure      400  {object}  nil
 // @Failure      401  {object}  nil
+// @Failure      404  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /auth [post]
 func Login(c *fiber.Ctx) error {
