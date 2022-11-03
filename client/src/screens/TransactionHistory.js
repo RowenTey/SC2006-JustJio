@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
@@ -14,8 +15,21 @@ const TransactionHistory = () => {
         <Text style={styles.header}>Transaction History</Text>
       </View>
 
-      <View style={styles.middle}>
-        <TransactionList user={user} transactions={paidTransactions} />
+      <View
+        style={[
+          styles.middle,
+          {
+            justifyContent:
+              paidTransactions.length > 0 ? 'flex-start' : 'center',
+          },
+        ]}>
+        {paidTransactions.length > 0 ? (
+          <TransactionList user={user} transactions={paidTransactions} />
+        ) : (
+          <Text style={styles.noTransaction}>
+            No transaction history to show
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -41,7 +55,7 @@ const TransactionList = ({ transactions, user }) => {
                 <TransactionBox
                   name={item.transaction.payer}
                   amount={item.bill.amount}
-                  isReceive={false}
+                  isReceive={true}
                 />
               </View>
             );
@@ -80,7 +94,7 @@ const TransactionList = ({ transactions, user }) => {
               <TransactionBox
                 name={item.transaction.payee}
                 amount={item.bill.amount}
-                isReceive={true}
+                isReceive={false}
               />
             );
           }
@@ -151,7 +165,6 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
     backgroundColor: '#f0ecec',
     width: 500,
     minHeight: '90%',
@@ -223,5 +236,12 @@ const styles = StyleSheet.create({
 
   transactionBox: {
     marginVertical: 3,
+  },
+
+  noTransaction: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 25,
+    textAlign: 'center',
+    width: '60%',
   },
 });
