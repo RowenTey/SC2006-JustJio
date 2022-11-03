@@ -44,16 +44,16 @@ func createRoomUser(roomID_str string, username string, userType string) (*model
 }
 
 func validateUser(usernames []string) (error, string) {
-	db := database.DB.Table("users")
+	db := database.DB
 
 	for _, username := range usernames {
-		var user model.User
-		user.Username = username
-		if err := db.Table("users").First(&user).Error; err != nil {
+		user := new(model.User)
+		if err := db.Model(&model.User{}).Where("username = ?", username).First(&user).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return err, username
 			}
 		}
+		fmt.Println(user)
 	}
 
 	return nil, ""
@@ -177,6 +177,7 @@ func GetRoomAttendees(c *fiber.Ctx) error {
 // @Param        invites   body      handlers.CreateRoom.CreateRoomInput  true  "Invites"
 // @Success      200  {object}   model.Room
 // @Failure      400  {object}  nil
+// @Failure      404  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /rooms [post]
 func CreateRoom(c *fiber.Ctx) error {
@@ -199,7 +200,7 @@ func CreateRoom(c *fiber.Ctx) error {
 
 	// validate all usernames
 	err, name := validateUser(usernames)
-	if errors.Is(err, gorm.ErrRecordNotFound) && name != "" {
+	if errors.Is(err, gorm.ErrRecordNotFound) || name != "" {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User " + name + " doesn't exist", "data": err})
 	}
 
