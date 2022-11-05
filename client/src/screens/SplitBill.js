@@ -118,25 +118,31 @@ const SplitBill = ({ navigation, route }) => {
           </View>
           <View style={styles.topLineStyle} />
 
-          <Text style={styles.billText}>Bill name: </Text>
-          <CustomInput
-            placeholder={''}
-            placeholderTextColor="#4E1164"
-            name="billName"
-            rules={{ required: 'Bill name is required' }}
-            control={control}
-            textStyles={styles.input}
-          />
+          <View style={styles.form}>
+            <Text style={styles.billText}>Bill name: </Text>
+            <CustomInput
+              placeholder={''}
+              placeholderTextColor="#4E1164"
+              name="billName"
+              rules={{ required: 'Bill name is required' }}
+              control={control}
+              textStyles={styles.input}
+            />
 
-          <Text style={styles.billText}>Amount to split: </Text>
-          <CustomInput
-            placeholder={''}
-            placeholderTextColor="#4E1164"
-            name="amount"
-            rules={{ required: 'Amount is required' }}
-            control={control}
-            textStyles={styles.input}
-          />
+            <Text style={styles.billText}>Amount to split: </Text>
+            <CustomInput
+              placeholder={''}
+              placeholderTextColor="#4E1164"
+              name="amount"
+              rules={{
+                required: 'Amount is required, please enter a number',
+                valueAsNumber: true,
+              }}
+              control={control}
+              textStyles={styles.input}
+            />
+          </View>
+
           <View style={styles.confirm}>
             <TouchableOpacity onPress={handleSubmit(onSplitBill)}>
               <Text style={styles.buttonText}>Split Bill</Text>
@@ -165,9 +171,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#f0ecec',
-    width: 350,
     height: 250,
-    bottom: -10,
+    top: 10,
   },
 
   containerMain: {
@@ -192,14 +197,20 @@ const styles = StyleSheet.create({
     right: 90,
   },
 
+  form: {
+    flexDirection: 'column',
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: '12%',
+  },
+
   billText: {
     fontSize: 20,
     top: 10,
     fontFamily: 'Poppins',
-    alignItems: 'center',
+    alignSelf: 'flex-start',
     justifyContent: 'center',
     color: '#4E1164',
-    marginLeft: 45,
     marginVertical: 8,
   },
 
@@ -207,7 +218,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
-    left: 45,
   },
 
   billTop: {
@@ -284,7 +294,6 @@ const styles = StyleSheet.create({
     top: 25,
     backgroundColor: '#4E1164',
     borderRadius: 10,
-    left: 23,
   },
 
   buttonText: {
