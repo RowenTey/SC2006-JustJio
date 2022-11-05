@@ -123,7 +123,7 @@ func Login(c *fiber.Ctx) error {
 
 	user, err := getUserByUsername(username)
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
 	userData = UserData{
