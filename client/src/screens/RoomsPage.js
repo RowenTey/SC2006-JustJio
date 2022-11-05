@@ -136,7 +136,7 @@ const RoomsPage = ({ navigation, route }) => {
                 name="invitees"
                 rules={{ required: 'Invitees are required' }}
                 control={control}
-                textStyles={styles.roomText}
+                textStyles={styles.inputText}
               />
               <View flexDirection="row">
                 <Pressable
@@ -651,6 +651,7 @@ const styles = StyleSheet.create({
     marginTop: -5,
     fontFamily: 'Poppins-Bold',
     alignItems: 'center',
+    color: '#808080',
   },
 
   urlQrCode: {
@@ -672,6 +673,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
+  },
+
+  link: {
+    color: '#808080',
   },
 
   centeredView: {
@@ -731,6 +736,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     fontFamily: 'Poppins-Bold',
+    color: '#4E1164',
+  },
+
+  inputText: {
     color: '#4E1164',
   },
 });

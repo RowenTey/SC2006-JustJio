@@ -296,6 +296,7 @@ const styles = StyleSheet.create({
   roomFunctionText: {
     fontWeight: 'bold',
     marginTop: 3,
+    color: '#000',
   },
 
   roomFunctionButtons: {

@@ -134,7 +134,7 @@ const SpinTheWheel = ({ navigation }) => {
                 name="players"
                 rules={{ required: 'Players are required' }}
                 control={control}
-                textStyles={styles.roomText}
+                textStyles={styles.inputText}
               />
               <View flexDirection="row">
                 <Pressable
@@ -295,6 +295,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     fontFamily: 'Poppins-Bold',
+    color: '#4E1164',
+  },
+
+  inputText: {
     color: '#4E1164',
   },
 });
