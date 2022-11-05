@@ -48,12 +48,12 @@ func ConnectDB() {
 
 func seedDB(db *gorm.DB) error {
 	users := []model.User{
-		{Username: "harish123", Password: "harish123", Email: "harish123@test.com"},
-		{Username: "amabel123", Password: "amabel123", Email: "amabel123@test.com"},
-		{Username: "zh123", Password: "zh123", Email: "zh123@test.com"},
-		{Username: "eldrick123", Password: "eldrick123", Email: "eldrick123@test.com"},
-		{Username: "ks123", Password: "ks123", Email: "ks123@test.com"},
-		{Username: "aloysius123", Password: "aloysius123", Email: "aloysius123@test.com"},
+		{Username: "harish", Password: "Harish12345!", Email: "harish123@test.com"},
+		{Username: "amabel", Password: "Amabel12345!", Email: "amabel123@test.com"},
+		{Username: "zhiheng", Password: "Zh12345!", Email: "zh123@test.com"},
+		{Username: "eldrick", Password: "Eldrick123!", Email: "eldrick123@test.com"},
+		{Username: "kaiseong", Password: "Ks12345!", Email: "ks123@test.com"},
+		{Username: "aloysius", Password: "Aloysius12345!", Email: "aloysius123@test.com"},
 	}
 	for _, u := range users {
 		hash, err := util.HashPassword(u.Password)
@@ -65,9 +65,9 @@ func seedDB(db *gorm.DB) error {
 	}
 
 	rooms := []model.Room{
-		{Name: "ks birthday", Date: "04/09/2022", Time: "5:00pm", Venue: "ntu hall 9", Host: "ks123"},
-		{Name: "harish birthday", Date: "04/10/2022", Time: "6:00pm", Venue: "clementi mall", Host: "harish123"},
-		{Name: "amabel birthday", Date: "04/11/2022", Time: "9:00am", Venue: "marina bay sand", Host: "amabel123"},
+		{Name: "ks birthday", Date: "04/09/2022", Time: "5:00pm", Venue: "ntu hall 9", Host: "kaiseong"},
+		{Name: "harish birthday", Date: "04/10/2022", Time: "6:00pm", Venue: "clementi mall", Host: "harish"},
+		{Name: "amabel birthday", Date: "04/11/2022", Time: "9:00am", Venue: "marina bay sand", Host: "amabel"},
 	}
 	for _, r := range rooms {
 		db.Create(&r)
@@ -76,7 +76,7 @@ func seedDB(db *gorm.DB) error {
 
 	userDB := db.Table("users")
 	var allUsers []model.User
-	userDB.Not("Username = ?", "ks123").Find(&allUsers)
+	userDB.Not("Username = ?", "kaiseong").Find(&allUsers)
 
 	for _, u := range allUsers {
 		fmt.Println(" user: ", u)
@@ -84,15 +84,15 @@ func seedDB(db *gorm.DB) error {
 
 	roomDB := db.Table("rooms")
 	var allRooms []model.Room
-	roomDB.Find(&allRooms, "Host = ?", "ks123")
+	roomDB.Find(&allRooms, "Host = ?", "kaiseong")
 
 	room_users := []model.RoomUser{
 		{User: allUsers[0].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
 		{User: allUsers[1].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
 		{User: allUsers[2].Username, RoomID: allRooms[0].ID, IsAttendee: true, Accepted: false},
-		{User: "ks123", RoomID: 1, IsHost: true, Accepted: true},
-		{User: "harish123", RoomID: 2, IsHost: true, Accepted: true},
-		{User: "amabel123", RoomID: 3, IsHost: true, Accepted: true},
+		{User: "kaiseong", RoomID: 1, IsHost: true, Accepted: true},
+		{User: "harish", RoomID: 2, IsHost: true, Accepted: true},
+		{User: "amabel", RoomID: 3, IsHost: true, Accepted: true},
 	}
 
 	for _, r_u := range room_users {

@@ -32,7 +32,7 @@ const Splash = ({ navigation }) => {
 
     console.log('AuthState: ' + JSON.stringify(authContext.authState));
     setLoading(false);
-    if (authContext?.authState.authenticated === true) {
+    if (authContext.authState.authenticated === true) {
       navigation.navigate('HomeTab');
     } else {
       navigation.navigate('Signin');
@@ -40,7 +40,7 @@ const Splash = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    loadJWT();
+    setTimeout(() => loadJWT(), 1000);
   }, []);
 
   if (loading) {
