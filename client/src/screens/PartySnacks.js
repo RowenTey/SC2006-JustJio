@@ -156,9 +156,25 @@ const PartySnacks = () => {
             components: 'country:sg',
           }}
           styles={{
-            container: { flex: 0, width: 350, marginTop: 5 },
-            listView: { backgroundColor: 'white' },
-            textInputContainer: { width: 315 },
+            container: {
+              flex: 0,
+              width: 350,
+              marginTop: 5,
+            },
+            listView: {
+              backgroundColor: 'white',
+            },
+            textInputContainer: {
+              width: 315,
+            },
+            textInput: {
+              color: '#4E1164',
+              fontSize: 12,
+              fontFamily: 'Poppins-Bold',
+            },
+            description: {
+              color: '#4E1164',
+            },
           }}
         />
         <TouchableOpacity

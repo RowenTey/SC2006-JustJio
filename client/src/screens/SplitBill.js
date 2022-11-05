@@ -204,6 +204,9 @@ const styles = StyleSheet.create({
   },
 
   input: {
+    fontSize: 13,
+    fontFamily: 'Poppins-Bold',
+    color: '#4E1164',
     left: 45,
   },
 

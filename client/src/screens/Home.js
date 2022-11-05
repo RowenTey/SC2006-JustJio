@@ -372,6 +372,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 35,
     paddingHorizontal: 30,
+    color: '#808080',
   },
 
   noAction: {
@@ -379,6 +380,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     alignSelf: 'center',
     marginStart: 25,
+    color: '#808080',
   },
 
   smallContainer: {

@@ -332,5 +332,6 @@ const styles = StyleSheet.create({
   noInvitation: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 25,
+    color: '#808080',
   },
 });

@@ -66,12 +66,13 @@ const Signin = ({ navigation }) => {
       console.log('Login failed', error);
       if (error.response) {
         console.log('Error response', error.response.data);
-        if (error.response.data.message) {
+        const errorMsg = error.response.data.message;
+        if (errorMsg) {
           setModalState(prev => {
             return {
               ...prev,
               title: 'Login failed!',
-              message: error.response.data.message,
+              message: errorMsg,
               showModal: true,
             };
           });
@@ -85,7 +86,7 @@ const Signin = ({ navigation }) => {
             };
           });
         }
-      } else if (error?.request) {
+      } else if (error.request) {
         console.log('Error request', error?.request);
       }
     }
@@ -206,8 +207,8 @@ const styles = StyleSheet.create({
   },
 
   inputText: {
-    color: '#6C6C6B',
-    fontFamily: 'Poppins',
+    color: '#4E1164',
+    fontFamily: 'Poppins-Bold',
     fontSize: 13,
   },
 
