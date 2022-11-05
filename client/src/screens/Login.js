@@ -150,9 +150,9 @@ const Signin = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Text style={styles.miniBold}>Forgot password</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.smallText}>
             <Text style={styles.signup}>Don't have an account?</Text>
