@@ -135,8 +135,11 @@ const SplitBill = ({ navigation, route }) => {
               placeholderTextColor="#4E1164"
               name="amount"
               rules={{
-                required: 'Amount is required, please enter a number',
-                valueAsNumber: true,
+                required: 'Amount is required',
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: 'Please enter a number',
+                },
               }}
               control={control}
               textStyles={styles.input}
