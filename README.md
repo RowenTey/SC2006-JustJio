@@ -72,13 +72,10 @@ cd <PROJECT-PATH>
 
 ## 📖 References
 
-### React Native
-
-- Deployment: https://blog.logrocket.com/fastlane-build-test-ship-react-native-apps/
-- Authentication: https://blog.logrocket.com/react-native-jwt-authentication-using-axios-interceptors/
-- Maps: https://blog.logrocket.com/react-native-maps-introduction/
-
-### Go - Fiber & GORM, MySQL
-
+- React Native: https://reactnative.dev/docs/getting-started
+- Fiber: https://docs.gofiber.io/
+- MySQL: https://dev.mysql.com/doc/
+- Planetscale: https://planetscale.com/docs
 - Database: https://app.planetscale.com/rowen/sc2006-justjio
 - Documentation: https://justjio-server-o44bmvzlsa-as.a.run.app/swagger
+- Video Demo: https://www.youtube.com/watch?v=ivcDZ1EqElk
