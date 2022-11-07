@@ -1,15 +1,13 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-unused-vars */
+import React, { useContext } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { TransactionContext } from '../context/transaction';
+import { UserContext } from '../context/user';
 
 const TransactionHistory = () => {
-  const list1 = [
-    ['ammaeudos', '2342', true],
-    ['dobin', '45', false],
-  ];
-  const list2 = [
-    ['ammaeudos', '2342', true],
-    ['dobin', '45', false],
-  ];
+  const [user, setUser] = useContext(UserContext);
+  const { paidTransactions } = useContext(TransactionContext);
 
   return (
     <View style={styles.container}>
@@ -17,28 +15,93 @@ const TransactionHistory = () => {
         <Text style={styles.header}>Transaction History</Text>
       </View>
 
-      <View style={styles.middle}>
-        <TransactionList date="28 aug" list={list1} />
-        <TransactionList date="27 aug" list={list2} />
+      <View
+        style={[
+          styles.middle,
+          {
+            justifyContent:
+              paidTransactions.length > 0 ? 'flex-start' : 'center',
+          },
+        ]}>
+        {paidTransactions.length > 0 ? (
+          <TransactionList user={user} transactions={paidTransactions} />
+        ) : (
+          <Text style={styles.noTransaction}>
+            No transaction history to show
+          </Text>
+        )}
       </View>
     </View>
   );
 };
 
-const TransactionList = props => {
+const TransactionList = ({ transactions, user }) => {
+  let date = 1;
+
   return (
     <View style={styles.transactionList}>
-      <Text style={styles.date}>{props.date.toUpperCase()}</Text>
-      <View>
-        {props.list.map(listItem => (
-          <TransactionBox
-            key={listItem[0]}
-            name={listItem[0]}
-            amount={listItem[1]}
-            isReceive={listItem[2]}
-          />
-        ))}
-      </View>
+      <FlatList
+        data={transactions}
+        renderItem={({ item, index }) => {
+          if (
+            date !== item.bill.date &&
+            item.transaction.payee === user.username
+          ) {
+            date = item.bill.date;
+
+            return (
+              <View>
+                <Text style={styles.date}>{date}</Text>
+                <TransactionBox
+                  name={item.transaction.payer}
+                  amount={item.bill.amount}
+                  isReceive={true}
+                />
+              </View>
+            );
+          } else if (
+            date !== item.bill.date &&
+            item.transaction.payee !== user.username
+          ) {
+            date = item.bill.date;
+
+            return (
+              <View>
+                <Text style={styles.date}>{date}</Text>
+                <TransactionBox
+                  name={item.transaction.payee}
+                  amount={item.bill.amount}
+                  isReceive={false}
+                />
+              </View>
+            );
+          } else if (
+            date === item.bill.date &&
+            item.transaction.payee === user.username
+          ) {
+            return (
+              <TransactionBox
+                name={item.transaction.payer}
+                amount={item.bill.amount}
+                isReceive={true}
+              />
+            );
+          } else if (
+            date === item.bill.date &&
+            item.transaction.payee !== user.username
+          ) {
+            return (
+              <TransactionBox
+                name={item.transaction.payee}
+                amount={item.bill.amount}
+                isReceive={false}
+              />
+            );
+          }
+        }}
+        key={'_'}
+        keyExtractor={(item, index) => index}
+      />
     </View>
   );
 };
@@ -58,7 +121,7 @@ const TransactionBox = props => {
           <Text style={styles.name}>{props.name}</Text>
         </View>
         <View style={styles.down}>
-          <Text style={styleSheet}>SGD {props.amount}</Text>
+          <Text style={styleSheet}>SGD {props.amount.toFixed(2)}</Text>
         </View>
       </View>
     </View>
@@ -102,7 +165,6 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
     backgroundColor: '#f0ecec',
     width: 500,
     minHeight: '90%',
@@ -123,15 +185,16 @@ const styles = StyleSheet.create({
     left: 3,
     fontFamily: 'Poppins-Bold',
     color: '#4E1164',
+    marginTop: 15,
   },
 
-  up:{
+  up: {
     alignItems: 'flex-start',
     justifyContent: 'center',
     height: '50%',
   },
 
-  down:{
+  down: {
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     height: '50%',
@@ -148,7 +211,7 @@ const styles = StyleSheet.create({
   amountReceive: {
     fontSize: 20,
     fontFamily: 'Poppins-Medium',
-    color: '#00FF00',
+    color: '#29BF12',
     bottom: 7,
     right: 10,
   },
@@ -172,6 +235,14 @@ const styles = StyleSheet.create({
   },
 
   transactionBox: {
-    marginVertical: 5,
+    marginVertical: 3,
+  },
+
+  noTransaction: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 25,
+    textAlign: 'center',
+    width: '60%',
+    color: '#808080',
   },
 });

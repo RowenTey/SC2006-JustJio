@@ -156,7 +156,7 @@ func GetTransactions(c *fiber.Ctx) error {
 // @Tags         transactions
 // @Accept       json
 // @Produce      json
-// @Param        payBillRequest   body      int  true  "Pay Bill Details"
+// @Param        payBillRequest   body      handlers.PayBill.PayBillInput  true  "Pay Bill Details"
 // @Success      200  {object}  nil
 // @Failure      400  {object}  nil
 // @Failure      500  {object}  nil
@@ -165,6 +165,7 @@ func PayBill(c *fiber.Ctx) error {
 	db := database.DB
 
 	type PayBillInput struct {
+		BillID string `json:"billId"`
 		Payer  string `json:"payer"`
 		Payee  string `json:"payee"`
 		PaidOn string `json:"paidOn"`
@@ -176,7 +177,7 @@ func PayBill(c *fiber.Ctx) error {
 	}
 
 	// update isPaid -> true & paidOn
-	if err := db.Table("transactions").Where("payer = ? AND payee = ?", payBillInput.Payer, payBillInput.Payee).Updates(map[string]interface{}{"is_paid": true, "paid_on": payBillInput.PaidOn}).Error; err != nil {
+	if err := db.Table("transactions").Where("payer = ? AND payee = ? AND bill_id = ?", payBillInput.Payer, payBillInput.Payee, payBillInput.BillID).Updates(map[string]interface{}{"is_paid": true, "paid_on": payBillInput.PaidOn}).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't pay bill - error in room_users table", "data": err})
 	}
 

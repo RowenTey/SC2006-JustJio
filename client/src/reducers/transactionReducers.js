@@ -4,11 +4,15 @@ import {
   CREATE_TRANSACTION,
   START_LOADING,
   LOGOUT,
+  SETTLE_TRANSACTION,
 } from '../constants/actionTypes';
 
 export const initialTransactionState = {
   isLoading: false,
   transactions: [],
+  paidTransactions: [],
+  toPay: [],
+  toGet: [],
 };
 
 const TransactionReducer = (state, action) => {
@@ -27,12 +31,23 @@ const TransactionReducer = (state, action) => {
     case FETCH_TRANSACTION:
       return {
         ...state,
-        transactions: payload.data,
+        transactions: payload.transactions,
+        paidTransactions: payload.paidTransactions,
+        toPay: payload.toPay,
+        toGet: payload.toGet,
       };
     case CREATE_TRANSACTION:
       return {
         ...state,
         transactions: payload.transactions,
+        toGet: payload.toGet,
+      };
+    case SETTLE_TRANSACTION:
+      return {
+        ...state,
+        transactions: payload.transactions,
+        toPay: payload.toPay,
+        paidTransactions: payload.paidTransactions,
       };
     case LOGOUT:
       return initialTransactionState;

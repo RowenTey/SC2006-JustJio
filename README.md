@@ -62,6 +62,14 @@ cd <PROJECT-PATH>
 └── README.md
 ```
 
+## 🧪 Tech Stack
+<p>
+  <img src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white" >
+  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" >
+  <img src="https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white" >
+  <img src="https://img.shields.io/badge/Google_Cloud-FF8552?style=for-the-badge&logo=google-cloud&logoColor=white" >
+</p>
+
 ## 📖 References
 
 ### React Native
@@ -73,8 +81,4 @@ cd <PROJECT-PATH>
 ### Go - Fiber & GORM, MySQL
 
 - Database: https://app.planetscale.com/rowen/sc2006-justjio
-- Documentation: https://rapidapi.com/RowenTey/api/sc2006-justjio
-- Dynamic Links: https://pagepro.co/blog/react-native-firebase-dynamic-links/
-- https://www.karanpratapsingh.com/
-- https://gowebexamples.com/
-- OAuth https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth
+- Documentation: https://justjio-server-o44bmvzlsa-as.a.run.app/swagger

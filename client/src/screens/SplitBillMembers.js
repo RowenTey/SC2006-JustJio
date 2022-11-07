@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +10,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
+import { UserContext } from '../context/user';
 
 const ICONS = {
   tick: require('../../assets/images/tick.png'),
@@ -25,7 +27,6 @@ const SplitBillMembers = ({ navigation, route }) => {
     } else {
       toPay = toPay.concat(name);
     }
-    console.log(toPay);
   };
 
   return (

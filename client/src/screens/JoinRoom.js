@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Alert,
 } from 'react-native';
 import Spinner from '../components/Spinner';
+import CustomModal from '../components/CustomModal';
 import { AxiosContext } from '../context/axios';
 import { RoomContext } from '../context/room';
 
@@ -19,11 +19,21 @@ const initialInvitationsState = {
   invites: [],
 };
 
+const INVITATION_ACTIONS = {
+  JOiN: 'join',
+  DECLINE: 'decline',
+};
+
 const JoinRoom = ({ navigation }) => {
   const { authAxios } = useContext(AxiosContext);
   const { joinRoom, declineRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
   const [invitations, setInvitations] = useState(initialInvitationsState);
+  const [modalState, setModalState] = useState({
+    showModal: false,
+    title: '',
+    message: '',
+  });
 
   const fetchInvitations = async () => {
     setLoading(true);
@@ -43,14 +53,40 @@ const JoinRoom = ({ navigation }) => {
   const onClick = async (roomId, type) => {
     setLoading(true);
 
-    if (type == 'join') {
-      console.log('join room');
+    if (type === INVITATION_ACTIONS.JOiN) {
       await joinRoom(roomId);
-    } else if (type == 'decline') {
-      console.log('decline room');
+      setLoading(false);
+      setModalState(prev => {
+        return {
+          ...prev,
+          title: 'Yay!',
+          message: 'Room joined successfully!',
+          showModal: true,
+        };
+      });
+    } else if (type === INVITATION_ACTIONS.DECLINE) {
       await declineRoom(roomId);
+      setLoading(false);
+      setModalState(prev => {
+        return {
+          ...prev,
+          title: 'Maybe next time!',
+          message: 'Room declined successfully!',
+          showModal: true,
+        };
+      });
     }
-    setLoading(false);
+  };
+
+  const onCloseModal = () => {
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: '',
+        message: '',
+        showModal: false,
+      };
+    });
     navigation.navigate('HomeTab');
   };
 
@@ -74,27 +110,37 @@ const JoinRoom = ({ navigation }) => {
         <Text style={styles.header}>Room Invitations</Text>
       </View>
 
-      <View
-        style={[
-          styles.middle,
-          {
-            justifyContent:
-              invitations.invites.length > 0 ? 'space-around' : 'center',
-          },
-        ]}>
-        {invitations.invites.length > 0 ? (
-          <FlatList
-            data={invitations.invites}
-            renderItem={({ item }) => (
-              <InvitationCard invite={item} handleClick={onClick} />
-            )}
-            key={'_'}
-            keyExtractor={item => item.ID}
-          />
-        ) : (
-          <Text style={styles.noInvitation}>No invitations</Text>
-        )}
-      </View>
+      <CustomModal
+        title={modalState.title}
+        message={modalState.message}
+        modalVisible={modalState.showModal}
+        closeModal={onCloseModal}
+        type="success"
+      />
+
+      {!modalState.showModal && (
+        <View
+          style={[
+            styles.middle,
+            {
+              justifyContent:
+                invitations.invites.length > 0 ? 'space-around' : 'center',
+            },
+          ]}>
+          {invitations.invites.length > 0 ? (
+            <FlatList
+              data={invitations.invites}
+              renderItem={({ item }) => (
+                <InvitationCard invite={item} handleClick={onClick} />
+              )}
+              key={'_'}
+              keyExtractor={item => item.ID}
+            />
+          ) : (
+            <Text style={styles.noInvitation}>No invitations</Text>
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -107,11 +153,12 @@ const InvitationCard = ({ invite, handleClick }) => {
       <Text style={styles.roomText}>Date: {invite.date}</Text>
       <Text style={styles.roomText}>Time: {invite.time}</Text>
       <Text style={styles.roomText}>Venue: {invite.venue}</Text>
+      <Text style={styles.roomText}>Host: {invite.host}</Text>
 
       <View style={styles.invitation}>
         <TouchableOpacity
           style={styles.greenBox}
-          onPress={() => handleClick(invite.ID, 'join')}>
+          onPress={() => handleClick(invite.ID, INVITATION_ACTIONS.JOiN)}>
           <Text style={[styles.confirmationBoxText, { color: '#71C291' }]}>
             Accept
           </Text>
@@ -119,7 +166,7 @@ const InvitationCard = ({ invite, handleClick }) => {
         <View style={styles.gap} />
         <TouchableOpacity
           style={styles.redBox}
-          onPress={() => handleClick(invite.ID, 'decline')}>
+          onPress={() => handleClick(invite.ID, INVITATION_ACTIONS.DECLINE)}>
           <Text style={[styles.confirmationBoxText, { color: '#D2644B' }]}>
             Decline
           </Text>
@@ -285,5 +332,6 @@ const styles = StyleSheet.create({
   noInvitation: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 25,
+    color: '#808080',
   },
 });

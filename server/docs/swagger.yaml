@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  handlers.AddUser.AddUserInput:
+    properties:
+      invitees:
+        items:
+          type: string
+        type: array
+    type: object
   handlers.CreateRoom.CreateRoomInput:
     properties:
       invitees:
@@ -17,7 +24,7 @@ definitions:
   handlers.GenerateTransactions.BillReq:
     properties:
       amountToPay:
-        type: integer
+        type: number
       date:
         type: string
       name:
@@ -56,6 +63,42 @@ definitions:
       room:
         $ref: '#/definitions/model.Room'
     type: object
+  handlers.Login.LoginInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.Login.UserData:
+    properties:
+      email:
+        type: string
+      uid:
+        type: integer
+      username:
+        type: string
+    type: object
+  handlers.PayBill.PayBillInput:
+    properties:
+      billId:
+        type: string
+      paidOn:
+        type: string
+      payee:
+        type: string
+      payer:
+        type: string
+    type: object
+  handlers.SignUp.NewUser:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
   handlers.UpdateUser.UpdateUserInput:
     properties:
       field:
@@ -66,7 +109,7 @@ definitions:
   model.Bill:
     properties:
       amount:
-        type: integer
+        type: number
       date:
         type: string
       id:
@@ -142,6 +185,62 @@ info:
   title: JustJio API
   version: "1.0"
 paths:
+  /auth:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates the user
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: loginInput
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.Login.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Login.UserData'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Log a user into the application
+      tags:
+      - auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Create an account for a user
+      parameters:
+      - description: New User
+        in: body
+        name: newUser
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.SignUp.NewUser'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Signs up a user
+      tags:
+      - auth
   /bills:
     get:
       consumes:
@@ -198,7 +297,7 @@ paths:
         name: payBillRequest
         required: true
         schema:
-          type: integer
+          $ref: '#/definitions/handlers.PayBill.PayBillInput'
       produces:
       - application/json
       responses:
@@ -256,6 +355,8 @@ paths:
             $ref: '#/definitions/model.Room'
         "400":
           description: Bad Request
+        "404":
+          description: Not Found
         "500":
           description: Internal Server Error
       summary: Create a room
@@ -277,13 +378,36 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            $ref: '#/definitions/model.Room'
         "500":
           description: Internal Server Error
       summary: Close a room
       tags:
       - rooms
+    post:
+      consumes:
+      - application/json
+      description: Invite additional users to a specific room
+      parameters:
+      - description: Users to invite
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.AddUser.AddUserInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Create new invitations
+      tags:
+      - invites
   /rooms/attendees/:
     get:
       consumes:

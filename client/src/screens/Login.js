@@ -7,7 +7,6 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Alert,
 } from 'react-native';
 import { AuthContext } from '../context/auth';
 import { AxiosContext } from '../context/axios';
@@ -15,6 +14,7 @@ import { UserContext } from '../context/user';
 import * as KeyChain from 'react-native-keychain';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
+import CustomModal from '../components/CustomModal';
 
 const initialLoginState = {
   username: '',
@@ -26,12 +26,17 @@ const Signin = ({ navigation }) => {
     control,
     handleSubmit,
     reset,
-    formState: {},
+    formState: { errors },
   } = useForm({ defaultValues: initialLoginState });
   const authContext = useContext(AuthContext);
   const { publicAxios } = useContext(AxiosContext);
   const [user, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [modalState, setModalState] = useState({
+    showModal: false,
+    title: '',
+    message: '',
+  });
 
   const onLogin = async formData => {
     setLoading(true);
@@ -57,19 +62,32 @@ const Signin = ({ navigation }) => {
       setLoading(false);
       navigation.navigate('HomeTab');
     } catch (error) {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 500);
       console.log('Login failed', error);
       if (error.response) {
         console.log('Error response', error.response.data);
-        Alert.alert('Login failed', error.response.data.message, [
-          {
-            text: 'Retry',
-            onPress: () => reset(initialLoginState),
-            style: 'cancel',
-          },
-        ]);
+        const errorMsg = error.response.data.message;
+        if (errorMsg) {
+          setModalState(prev => {
+            return {
+              ...prev,
+              title: 'Login failed!',
+              message: errorMsg,
+              showModal: true,
+            };
+          });
+        } else {
+          setModalState(prev => {
+            return {
+              ...prev,
+              title: 'Login failed!',
+              message: 'An unforeseen error occurred',
+              showModal: true,
+            };
+          });
+        }
       } else if (error.request) {
-        console.log('Error request', error.request);
+        console.log('Error request', error?.request);
       }
     }
   };
@@ -78,51 +96,76 @@ const Signin = ({ navigation }) => {
     navigation.navigate('Signup');
   };
 
+  const onCloseModal = () => {
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: '',
+        message: '',
+        showModal: false,
+      };
+    });
+  };
+
   if (loading) {
     return <Spinner />;
   }
 
   return (
     <View style={styles.container}>
-      <TextInput style={styles.text}>JustJio</TextInput>
-
-      <CustomInput
-        placeholder={'Enter your username'}
-        placeholderTextColor="#4E1164"
-        name="username"
-        rules={{ required: 'Username is required' }}
-        control={control}
-        textStyles={styles.inputText}
-      />
-      <CustomInput
-        placeholder={'Enter your password'}
-        placeholderTextColor="#4E1164"
-        name="password"
-        rules={{ required: 'Password is required' }}
-        control={control}
-        secureTextEntry={true}
-        textStyles={styles.inputText}
+      <CustomModal
+        title={modalState.title}
+        message={modalState.message}
+        modalVisible={modalState.showModal}
+        closeModal={onCloseModal}
+        type="error"
       />
 
-      <TouchableOpacity>
-        <Text style={styles.confirmationBox} onPress={handleSubmit(onLogin)}>
-          Login
-        </Text>
-      </TouchableOpacity>
+      {!modalState.showModal && (
+        <>
+          <TextInput style={styles.text}>JustJio</TextInput>
 
-      <TouchableOpacity>
-        <Text style={styles.miniBold}>Forgot password</Text>
-      </TouchableOpacity>
+          <CustomInput
+            placeholder={'Enter your username'}
+            placeholderTextColor="#4E1164"
+            name="username"
+            rules={{ required: 'Username is required' }}
+            control={control}
+            textStyles={styles.inputText}
+          />
+          <CustomInput
+            placeholder={'Enter your password'}
+            placeholderTextColor="#4E1164"
+            name="password"
+            rules={{ required: 'Password is required' }}
+            control={control}
+            secureTextEntry={true}
+            textStyles={styles.inputText}
+          />
 
-      <View style={styles.smallText}>
-        <Text style={styles.signup}>Don't have an account?</Text>
-        <TouchableOpacity>
-          <Text style={styles.signupLink} onPress={onSignup}>
-            {' '}
-            Sign up
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity>
+            <Text
+              style={styles.confirmationBox}
+              onPress={handleSubmit(onLogin)}>
+              Login
+            </Text>
+          </TouchableOpacity>
+
+          {/* <TouchableOpacity>
+            <Text style={styles.miniBold}>Forgot password</Text>
+          </TouchableOpacity> */}
+
+          <View style={styles.smallText}>
+            <Text style={styles.signup}>Don't have an account?</Text>
+            <TouchableOpacity>
+              <Text style={styles.signupLink} onPress={onSignup}>
+                {' '}
+                Sign up
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -164,8 +207,8 @@ const styles = StyleSheet.create({
   },
 
   inputText: {
-    color: '#6C6C6B',
-    fontFamily: 'Poppins',
+    color: '#4E1164',
+    fontFamily: 'Poppins-Bold',
     fontSize: 13,
   },
 

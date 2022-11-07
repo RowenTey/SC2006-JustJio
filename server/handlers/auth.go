@@ -39,7 +39,17 @@ func getUserByUsername(username string) (*model.User, error) {
 	return &user, nil
 }
 
-// SignUp -> new user
+// SignUp godoc
+// @Summary      Signs up a user
+// @Description  Create an account for a user
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        newUser   body      model.User  true  "New User"
+// @Success      201  {object}   handlers.SignUp.NewUser
+// @Failure      400  {object}  nil
+// @Failure      500  {object}  nil
+// @Router       /auth/signup [post]
 func SignUp(c *fiber.Ctx) error {
 	type NewUser struct {
 		Username string `json:"username"`
@@ -50,7 +60,7 @@ func SignUp(c *fiber.Ctx) error {
 	db := database.DB.Table("users")
 	user := new(model.User)
 	if err := c.BodyParser(user); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
 	hash, err := util.HashPassword(user.Password)
@@ -77,7 +87,19 @@ func SignUp(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Created user", "data": newUser})
 }
 
-// Login get user and password
+// Login godoc
+// @Summary      Log a user into the application
+// @Description  Authenticates the user
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        loginInput   body      handlers.Login.LoginInput  true  "Login Credentials"
+// @Success      200  {object}   handlers.Login.UserData
+// @Failure      400  {object}  nil
+// @Failure      401  {object}  nil
+// @Failure      404  {object}  nil
+// @Failure      500  {object}  nil
+// @Router       /auth [post]
 func Login(c *fiber.Ctx) error {
 	type LoginInput struct {
 		Username string `json:"username"`
@@ -101,7 +123,7 @@ func Login(c *fiber.Ctx) error {
 
 	user, err := getUserByUsername(username)
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
 	userData = UserData{

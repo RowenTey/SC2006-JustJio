@@ -1,13 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable eqeqeq */
 import React, { createContext, useContext, useReducer } from 'react';
 import {
   END_LOADING,
   FETCH_TRANSACTION,
   CREATE_TRANSACTION,
   START_LOADING,
-  END_TRANSACTION,
+  SETTLE_TRANSACTION,
 } from '../constants/actionTypes';
 
 import { AxiosContext } from './axios';
+import { UserContext } from './user';
 import TransactionReducer, {
   initialTransactionState,
 } from '../reducers/transactionReducers';
@@ -21,6 +24,7 @@ const TransactionProvider = ({ children }) => {
     initialTransactionState,
   );
   const { authAxios } = useContext(AxiosContext);
+  const [user, setUser] = useContext(UserContext);
 
   const fetchTransactions = async () => {
     try {
@@ -28,16 +32,40 @@ const TransactionProvider = ({ children }) => {
         type: START_LOADING,
       });
       const { data: response } = await authAxios.get('/bills');
-      console.log('Transactions fetched', response);
       dispatch({
         type: FETCH_TRANSACTION,
-        payload: response,
+        payload: {
+          transactions: response.data ? response.data : [],
+          toPay: response.data
+            ? response.data.filter(
+                item =>
+                  item.transaction?.payer === user.username &&
+                  !item.transaction?.isPaid,
+              )
+            : [],
+          toGet: response.data
+            ? response.data.filter(
+                item =>
+                  item.transaction?.payee === user.username &&
+                  !item.transaction?.isPaid,
+              )
+            : [],
+          paidTransactions: response.data
+            ? response.data
+                .filter(item => item.transaction?.isPaid)
+                .sort((a, b) => (a.bill.date < b.bill.date ? 1 : -1))
+            : [],
+        },
       });
+
       dispatch({
         type: END_LOADING,
       });
     } catch (error) {
       console.log('Failed to fetch transactions', error);
+      dispatch({
+        type: END_LOADING,
+      });
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
@@ -56,7 +84,6 @@ const TransactionProvider = ({ children }) => {
         `/bills/${roomId}`,
         transactionData,
       );
-      console.log('Split bill successfully!', JSON.stringify(response));
       const responseTransactions = response.data.transactions;
       const responseBill = response.data.bill;
       const currentTransaction = [];
@@ -65,16 +92,18 @@ const TransactionProvider = ({ children }) => {
           transaction: responseTransactions[i],
           bill: responseBill,
         };
-        console.log('Entry', JSON.stringify(entry));
         currentTransaction.push(entry);
       }
-      console.log('currentTransaction', currentTransaction);
-      const updatedTransactions = state.transactions.concat(currentTransaction);
-      console.log('updatedTransactions', updatedTransactions);
+      const updatedTransactions = [
+        ...state.transactions,
+        ...currentTransaction,
+      ];
+      const updatedToGet = [...state.toGet, ...currentTransaction];
       dispatch({
         type: CREATE_TRANSACTION,
         payload: {
           transactions: updatedTransactions,
+          toGet: updatedToGet,
         },
       });
 
@@ -83,6 +112,9 @@ const TransactionProvider = ({ children }) => {
       });
     } catch (error) {
       console.log('Failed to split bill', error);
+      dispatch({
+        type: END_LOADING,
+      });
       if (error.response) {
         console.log('Error response', error.response.data);
       } else if (error.request) {
@@ -91,43 +123,70 @@ const TransactionProvider = ({ children }) => {
     }
   };
 
-  const payBill = async (transactionData, roomId) => {
-    try {2
+  const payBill = async (transactionData, billId) => {
+    try {
       dispatch({
         type: START_LOADING,
       });
 
-      await authAxios.delete(`/bills/${roomId}`,transactionData);
-      console.log(transactions);
-      
-  
-      
-      dispatch({
-        type: END_TRANSACTION,
-        payload: {
-          transactions: transactions,
-        },
-      });
+      const response = await authAxios.patch('/bills/pay', transactionData);
+      if (response.status === 200) {
+        const updatedTransactions = state.transactions.map(item => {
+          if (
+            item.transaction.payer == transactionData.payer &&
+            item.transaction.payee == transactionData.payee &&
+            item.transaction.billID == billId
+          ) {
+            return {
+              ...item,
+              transaction: {
+                ID: item.transaction.ID,
+                payer: item.transaction.payer,
+                payee: item.transaction.payee,
+                billID: item.transaction.billID,
+                isPaid: true,
+                paidOn: transactionData.paidOn,
+              },
+            };
+          }
+          return item;
+        });
+
+        const updatedToPay = state.toPay.filter(
+          item => item.transaction.billID != billId,
+        );
+
+        const updatedPaidTransactions = updatedTransactions
+          .filter(item => item.transaction.isPaid)
+          .sort((a, b) => (a.bill.date < b.bill.date ? 1 : -1));
+
+        dispatch({
+          type: SETTLE_TRANSACTION,
+          payload: {
+            transactions: updatedTransactions,
+            toPay: updatedToPay,
+            paidTransactions: updatedPaidTransactions,
+          },
+        });
+      }
 
       dispatch({
         type: END_LOADING,
       });
     } catch (error) {
-      console.log('Failed to pay bill', error);
-      if (error.response) {
-        console.log('Error response', error.response.data);
-        if (error.response.data.message === "User doesn't exist") {
-          throw new Error("User doesn't exist");
-        }
-      } else if (error.request) {
-        console.log('Error request', error.request);
-      }
+      dispatch({
+        type: END_LOADING,
+      });
+      console.log('Failed to pay bill', JSON.stringify(error));
     }
   };
 
   const value = {
     total: state.total,
     transactions: state.transactions,
+    paidTransactions: state.paidTransactions,
+    toPay: state.toPay,
+    toGet: state.toGet,
     isTransactionsLoading: state.isLoading,
     createTransactions,
     fetchTransactions,

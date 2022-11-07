@@ -23,7 +23,7 @@ const Splash = ({ navigation }) => {
         });
       }
     } catch (error) {
-      console.log(`Keychain error: ${error.message}`);
+      console.log(`Keychain error: ${error?.message}`);
       authContext.setAuthState({
         accessToken: null,
         authenticated: false,
@@ -32,15 +32,15 @@ const Splash = ({ navigation }) => {
 
     console.log('AuthState: ' + JSON.stringify(authContext.authState));
     setLoading(false);
-    if (authContext?.authState.authenticated === true) {
-      navigation.navigate('Home');
+    if (authContext.authState.authenticated === true) {
+      navigation.navigate('HomeTab');
     } else {
       navigation.navigate('Signin');
     }
   }, []);
 
   useEffect(() => {
-    loadJWT();
+    setTimeout(() => loadJWT(), 1000);
   }, []);
 
   if (loading) {

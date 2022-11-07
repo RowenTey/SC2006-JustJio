@@ -1,18 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import CustomInput from '../components/CustomInput';
+import CustomModal from '../components/CustomModal';
 import { RoomContext } from '../context/room';
-//for images being imported in no need to specify dimensions
-//for images online need to specify dimensions such as width: height: uri:(image url)
 
 const initialCreateRoomState = {
   eventName: '',
@@ -36,6 +29,11 @@ const CreateRoom = ({ navigation }) => {
   } = useForm({ initialCreateRoomState });
   const { createRoom } = useContext(RoomContext);
   const [loading, setLoading] = useState(false);
+  const [modalState, setModalState] = useState({
+    showModal: false,
+    title: '',
+    message: '',
+  });
 
   const onCreateRoom = async formData => {
     setLoading(true);
@@ -65,29 +63,46 @@ const CreateRoom = ({ navigation }) => {
         throw error;
       });
       setLoading(false);
+      setModalState(prev => {
+        return {
+          ...prev,
+          title: 'Room created!',
+          message: 'Your room has been created successfully',
+          showModal: true,
+        };
+      });
       reset(initialCreateRoomState);
-      Alert.alert('Room created successfully');
-      navigation.navigate('HomeTab');
     } catch (error) {
       setLoading(false);
-      console.log('Error creating room', error.message);
+      console.log('Error creating room', error);
       switch (error.message) {
-        case "User doesn't exist":
-          setError('invitees', {
-            type: 'string',
-            message: 'Username entered is not valid!',
-          });
-          break;
         case 'Date entered has passed':
           setError('date', {
             type: 'string',
             message: 'Date entered has passed',
           });
           break;
+        // TODO: should find a better way to handle
         default:
+          setError('invitees', {
+            type: 'string',
+            message: error.message,
+          });
           break;
       }
     }
+  };
+
+  const onCloseModal = () => {
+    setModalState(prev => {
+      return {
+        ...prev,
+        title: '',
+        message: '',
+        showModal: false,
+      };
+    });
+    navigation.navigate('HomeTab');
   };
 
   if (loading) {
@@ -106,78 +121,90 @@ const CreateRoom = ({ navigation }) => {
         <Text style={styles.header}>Create Room</Text>
       </View>
 
-      <View style={styles.form}>
-        <CustomInput
-          placeholder={'Name of Event:'}
-          placeholderTextColor="#000"
-          name="eventName"
-          rules={{
-            required: 'Event name is required',
-            minLength: {
-              value: 5,
-              message: 'Should be minimum of 5 characters',
-            },
-          }}
-          control={control}
-          textStyles={styles.roomText}
-        />
+      <CustomModal
+        title={modalState.title}
+        message={modalState.message}
+        modalVisible={modalState.showModal}
+        closeModal={onCloseModal}
+        type="success"
+      />
 
-        <CustomInput
-          placeholder={'Date: dd/mm/yyyy'}
-          placeholderTextColor="#000"
-          name="date"
-          rules={{
-            required: 'Date is required',
-            pattern: {
-              value: DATE_REGEX,
-              message: 'Invalid date',
-            },
-          }}
-          control={control}
-          textStyles={styles.roomText}
-        />
+      {!modalState.showModal && (
+        <>
+          <View style={styles.form}>
+            <CustomInput
+              placeholder={'Name of Event:'}
+              placeholderTextColor="#000"
+              name="eventName"
+              rules={{
+                required: 'Event name is required',
+                minLength: {
+                  value: 5,
+                  message: 'Should be minimum of 5 characters',
+                },
+              }}
+              control={control}
+              textStyles={styles.roomText}
+            />
 
-        <CustomInput
-          placeholder={'Time: 08:00pm'}
-          placeholderTextColor="#000"
-          name="time"
-          rules={{
-            required: 'Time is required',
-            pattern: {
-              value: TIME_REGEX,
-              message: 'Invalid time',
-            },
-          }}
-          control={control}
-          textStyles={styles.roomText}
-        />
+            <CustomInput
+              placeholder={'Date: dd/mm/yyyy'}
+              placeholderTextColor="#000"
+              name="date"
+              rules={{
+                required: 'Date is required',
+                pattern: {
+                  value: DATE_REGEX,
+                  message: 'Invalid date',
+                },
+              }}
+              control={control}
+              textStyles={styles.roomText}
+            />
 
-        <CustomInput
-          placeholder={'Venue: '}
-          placeholderTextColor="#000"
-          name="venue"
-          rules={{ required: 'Venue is required' }}
-          control={control}
-          textStyles={styles.roomText}
-        />
+            <CustomInput
+              placeholder={'Time: 08:00pm'}
+              placeholderTextColor="#000"
+              name="time"
+              rules={{
+                required: 'Time is required',
+                pattern: {
+                  value: TIME_REGEX,
+                  message: 'Invalid time',
+                },
+              }}
+              control={control}
+              textStyles={styles.roomText}
+            />
 
-        <CustomInput
-          placeholder={'Invitees: (username1,username2)'}
-          placeholderTextColor="#000"
-          name="invitees"
-          rules={{ required: 'Invitee is required' }}
-          control={control}
-          textStyles={styles.roomText}
-        />
-      </View>
+            <CustomInput
+              placeholder={'Venue: '}
+              placeholderTextColor="#000"
+              name="venue"
+              rules={{ required: 'Venue is required' }}
+              control={control}
+              textStyles={styles.roomText}
+            />
 
-      <TouchableOpacity style={styles.confirmationBox}>
-        <Text
-          style={styles.confirmationText}
-          onPress={handleSubmit(onCreateRoom)}>
-          Create Room
-        </Text>
-      </TouchableOpacity>
+            <CustomInput
+              placeholder={'Invitees: (username1,username2)'}
+              placeholderTextColor="#000"
+              name="invitees"
+              rules={{ required: 'Invitee is required' }}
+              control={control}
+              textStyles={styles.roomText}
+            />
+          </View>
+
+          <TouchableOpacity style={styles.confirmationBox}>
+            <Text
+              style={styles.confirmationText}
+              onPress={handleSubmit(onCreateRoom)}>
+              Create Room
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };

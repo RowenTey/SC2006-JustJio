@@ -1,15 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
-
+import { StyleSheet, View, Text, FlatList } from 'react-native';
 import RuleCard from '../components/RuleCard.js';
 import Rules from '../constants/Rules.js';
 
-const IMAGES = {
-  mafia: require('../../assets/images/mafia.png'),
-};
-
 const PartyGames = ({ navigation }) => {
-
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -17,19 +11,20 @@ const PartyGames = ({ navigation }) => {
       </View>
 
       <View style={styles.middle}>
-
-        <FlatList 
+        <FlatList
           data={Rules}
           renderItem={({ item }) => (
-            <RuleCard mainRule={item} navigation={navigation} />
+            <RuleCard
+              mainRule={item}
+              navigation={navigation}
+              isStatic={item.isStatic}
+            />
           )}
           numColumns={1}
           key={'_'}
-          keyExtractor={ (item, index) => index }
+          keyExtractor={(item, index) => index}
         />
-        
       </View>
-
     </View>
   );
 };
