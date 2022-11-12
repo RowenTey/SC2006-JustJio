@@ -1,4 +1,4 @@
-# SC2006-JustJio
+# SC2006-JustJio 🍺
 
 > Project for SC2006 -> Invite your friends to hangout easily 🀄
 
@@ -76,6 +76,5 @@ cd <PROJECT-PATH>
 - Fiber: https://docs.gofiber.io/
 - MySQL: https://dev.mysql.com/doc/
 - Planetscale: https://planetscale.com/docs
-- Database: https://app.planetscale.com/rowen/sc2006-justjio
-- Documentation: https://justjio-server-o44bmvzlsa-as.a.run.app/swagger
+- API Documentation: https://justjio-server-o44bmvzlsa-as.a.run.app/swagger
 - Video Demo: https://www.youtube.com/watch?v=ivcDZ1EqElk
