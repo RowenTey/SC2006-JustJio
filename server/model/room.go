@@ -17,7 +17,7 @@ type Room struct {
 	UpdatedAt      time.Time `gorm:"autoUpdateTime" json:"-"`
 }
 
-// juntion table to model user & room relationships
+// junction table to model user & room relationships
 type RoomUser struct {
 	ID         uint   `gorm:"primaryKey"`
 	User       string `gorm:"not null" json:"user"`
