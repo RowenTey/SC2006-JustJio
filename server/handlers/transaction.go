@@ -11,48 +11,46 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
-	"gorm.io/datatypes"
 )
 
-func createBill(billName string, amount float32, date string, roomID_str string) (*model.Bill, error) {
-	db := database.DB
+func createBill(billName string, amount float32, date string, roomID_str string) (model.Bill, error) {
+	db := database.DB.Table("bills")
 
 	roomID_uint32, err := strconv.ParseUint(roomID_str, 10, 32)
 	if err != nil {
-		return nil, err
+		return model.Bill{}, err
 	}
-	roomID := uint(roomID_uint32)
 
+	roomID := uint(roomID_uint32)
 	bill := model.Bill{
 		Name:   billName,
 		Amount: amount,
 		Date:   date,
 		RoomID: roomID,
 	}
-	if err := db.Table("bills").Create(&bill).Error; err != nil {
-		return nil, err
+	if err := db.Create(&bill).Error; err != nil {
+		return model.Bill{}, err
 	}
-
-	return &bill, nil
+	return bill, nil
 }
 
-func createTransactions(payer []string, payee string, billID uint) (*[]model.Transaction, error) {
-	db := database.DB
+func createTransactions(payer []string, payee string, billID uint) ([]model.Transaction, error) {
+	db := database.DB.Table("transactions")
 
-	var toReturn []model.Transaction
+	var output []model.Transaction
 	for _, user := range payer {
 		transaction := model.Transaction{
 			BillID: billID,
 			Payee:  payee,
 			Payer:  user,
 		}
-		if err := db.Table("transactions").Create(&transaction).Error; err != nil {
+		if err := db.Create(&transaction).Error; err != nil {
 			return nil, err
 		}
-		toReturn = append(toReturn, transaction)
+		output = append(output, transaction)
 	}
 
-	return &toReturn, nil
+	return output, nil
 }
 
 // GenerateTransactions godoc
@@ -61,50 +59,50 @@ func createTransactions(payer []string, payee string, billID uint) (*[]model.Tra
 // @Tags         transactions
 // @Accept       json
 // @Produce      json
-// @Param        billRequest   body      handlers.GenerateTransactions.BillReq  true  "Bill Details"
-// @Success      200  {object}   handlers.GenerateTransactions.TransactionResponse
+// @Param        billRequest   body      model.GenerateTransactionInput  true  "Bill Details"
+// @Success      200  {object}   model.GenerateTransactionResponse
 // @Failure      400  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /bills/{roomId} [post]
 func GenerateTransactions(c *fiber.Ctx) error {
-	type BillReq struct {
-		Name        string         `json:"name"`
-		ShouldPay   string         `json:"shouldPay"`
-		Payers      datatypes.JSON `json:"payers" swaggertype:"array,string"`
-		AmountToPay float32        `json:"amountToPay"`
-		Date        string         `json:"date"`
-		RoomID      string         `json:"roomId"`
+	var bills model.GenerateTransactionInput
+	if err := c.BodyParser(&bills); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Review your input",
+			"data":    err,
+		})
 	}
 
-	var bills BillReq
-	if err := c.BodyParser(&bills); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
-	}
 	bills.RoomID = c.Params("id")
 	var payers []string
 	json.Unmarshal([]byte(bills.Payers), &payers)
 
-	// create bill & transaction
+	// create bill & transactions
 	bill, err := createBill(bills.Name, bills.AmountToPay, bills.Date, bills.RoomID)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't generate transaction - error in creating bill", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Couldn't generate transaction - error in creating bill",
+			"data":    err,
+		})
 	}
 	transactions, err := createTransactions(payers, bills.ShouldPay, bill.ID)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't generate transaction - error in creating transactions", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Couldn't generate transaction - error in creating transactions",
+			"data":    err,
+		})
 	}
 
-	type TransactionResponse struct {
-		Transactions []model.Transaction `json:"transactions"`
-		Bill         model.Bill          `json:"bill"`
-	}
-	transactionResponse := TransactionResponse{
-		Transactions: *transactions,
-		Bill:         *bill,
+	response := model.GenerateTransactionResponse{
+		Transactions: transactions,
+		Bill:         bill,
 	}
 
 	fmt.Println("Transaction generated for roomID " + bills.RoomID + ", everyone should pay $" + fmt.Sprintf("%f", bills.AmountToPay) + " to " + bills.ShouldPay)
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions generated succesfully", "data": transactionResponse})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Transactions generated succesfully",
+		"data":    response,
+	})
 }
 
 // GetTransactions godoc
@@ -113,73 +111,75 @@ func GenerateTransactions(c *fiber.Ctx) error {
 // @Tags         transactions
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}   handlers.GetTransactions.TransactionResponse
+// @Success      200  {array}   []model.GetTransactionResponse
 // @Failure      500  {object}  nil
 // @Router       /bills [get]
 func GetTransactions(c *fiber.Ctx) error {
 	db := database.DB
 
 	token := c.Locals("user").(*jwt.Token)
-	username := util.GetUser(token, "username")
+	username := util.GetUserInfoFromToken(token, "username")
 
 	var transactions []model.Transaction
 	if err := db.Table("transactions").Find(&transactions, "payer = ? OR payee = ?", username, username).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get transactions - error in transactions table", "data": err})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Couldn't get transactions - error in transactions table",
+			"data":    err,
+		})
 	}
 
-	type TransactionResponse struct {
-		Transaction model.Transaction `json:"transaction"`
-		Bill        model.Bill        `json:"bill"`
-	}
-
-	var transactionResponse []TransactionResponse
+	var response []model.GetTransactionResponse
 	for _, transaction := range transactions {
-		var transactionResponseElement TransactionResponse
-		transactionResponseElement.Transaction = transaction
+		var temp model.GetTransactionResponse
+		temp.Transaction = transaction
 		billID := transaction.BillID
-		if err := db.Table("bills").Find(&transactionResponseElement.Bill, "id = ?", billID).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't get transactions - error in bills table", "data": err})
+		if err := db.Table("bills").Find(&temp.Bill, "id = ?", billID).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Couldn't get transactions - error in bills table",
+				"data":    err,
+			})
 		}
-		transactionResponse = append(transactionResponse, transactionResponseElement)
+		response = append(response, temp)
 	}
 
-	if len(transactionResponse) == 0 {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "No transactions", "data": nil})
-	}
-
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Transactions found", "data": transactionResponse})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Retrived response successfully",
+		"data":    response,
+	})
 }
 
 // PayBill godoc
 // @Summary      Pay a bill
-// @Description  User pays a unsettled bill
+// @Description  User pays an unsettled bill
 // @Tags         transactions
 // @Accept       json
 // @Produce      json
-// @Param        payBillRequest   body      handlers.PayBill.PayBillInput  true  "Pay Bill Details"
+// @Param        payBillRequest   body      model.PayBillInput  true  "Pay Bill Details"
 // @Success      200  {object}  nil
 // @Failure      400  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /bills/pay [patch]
 func PayBill(c *fiber.Ctx) error {
-	db := database.DB
+	db := database.DB.Table("transactions")
 
-	type PayBillInput struct {
-		BillID string `json:"billId"`
-		Payer  string `json:"payer"`
-		Payee  string `json:"payee"`
-		PaidOn string `json:"paidOn"`
-	}
-
-	var payBillInput PayBillInput
+	var payBillInput model.PayBillInput
 	if err := c.BodyParser(&payBillInput); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Review your input",
+			"data":    err,
+		})
 	}
 
 	// update isPaid -> true & paidOn
-	if err := db.Table("transactions").Where("payer = ? AND payee = ? AND bill_id = ?", payBillInput.Payer, payBillInput.Payee, payBillInput.BillID).Updates(map[string]interface{}{"is_paid": true, "paid_on": payBillInput.PaidOn}).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't pay bill - error in room_users table", "data": err})
+	if err := db.Where("payer = ? AND payee = ? AND bill_id = ?", payBillInput.Payer, payBillInput.Payee, payBillInput.BillID).Updates(map[string]interface{}{"is_paid": true, "paid_on": payBillInput.PaidOn}).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Couldn't pay bill - error in room_users table",
+			"data":    err,
+		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Paid bill successfully", "data": nil})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Paid bill successfully",
+		"data":    nil,
+	})
 }

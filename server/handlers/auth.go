@@ -2,42 +2,17 @@ package handlers
 
 import (
 	"errors"
-	"fmt"
-	"time"
+	"log"
 
-	"sc2006-JustJio/config"
-	"sc2006-JustJio/database"
 	"sc2006-JustJio/model"
+	"sc2006-JustJio/model/request"
+	"sc2006-JustJio/model/response"
+	"sc2006-JustJio/services"
 	"sc2006-JustJio/util"
 
-	"gorm.io/gorm"
-
-	"github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt"
+	"gorm.io/gorm"
 )
-
-func getUserByEmail(email string) (*model.User, error) {
-	db := database.DB.Table("users")
-	var user model.User
-	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, err
-		}
-	}
-	return &user, nil
-}
-
-func getUserByUsername(username string) (*model.User, error) {
-	db := database.DB.Table("users")
-	var user model.User
-	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, err
-		}
-	}
-	return &user, nil
-}
 
 // SignUp godoc
 // @Summary      Signs up a user
@@ -46,45 +21,49 @@ func getUserByUsername(username string) (*model.User, error) {
 // @Accept       json
 // @Produce      json
 // @Param        newUser   body      model.User  true  "New User"
-// @Success      201  {object}   handlers.SignUp.NewUser
+// @Success      201  {object}  model.AuthResponse
 // @Failure      400  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /auth/signup [post]
 func SignUp(c *fiber.Ctx) error {
-	type NewUser struct {
-		Username string `json:"username"`
-		Email    string `json:"email"`
-		UID      uint   `json:"id"`
+	var user model.User
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Review your input",
+			"data":    err,
+		})
 	}
 
-	db := database.DB.Table("users")
-	user := new(model.User)
-	if err := c.BodyParser(user); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
-	}
-
-	hash, err := util.HashPassword(user.Password)
+	userPtr, err := services.AuthService{}.SignUp(&user)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
-	}
-	user.Password = hash
-
-	var mysqlErr *mysql.MySQLError
-	if err := db.Create(&user).Error; err != nil {
-		if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "User already exists", "data": err})
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"status":  "error",
+				"message": "Username or email already exists",
+				"data":    err,
+			})
 		}
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
+		log.Println("Error occurred in server:", err)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Error occurred in server",
+			"data":    err,
+		})
 	}
 
-	newUser := NewUser{
-		Email:    user.Email,
-		Username: user.Username,
-		UID:      user.ID,
+	newUser := response.AuthResponse{
+		Email:    userPtr.Email,
+		Username: userPtr.Username,
+		UID:      userPtr.ID,
 	}
 
-	fmt.Println("User " + newUser.Username + " signed up successfully.")
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Created user", "data": newUser})
+	log.Println("User " + newUser.Username + " signed up successfully.")
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
+		"status":  "success",
+		"message": "User signed up successfully",
+		"data":    newUser,
+	})
 }
 
 // Login godoc
@@ -93,66 +72,69 @@ func SignUp(c *fiber.Ctx) error {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        loginInput   body      handlers.Login.LoginInput  true  "Login Credentials"
-// @Success      200  {object}   handlers.Login.UserData
+// @Param        LoginRequest   body      model.LoginRequest  true  "Login Credentials"
+// @Success      200  {object}   model.AuthResponse
 // @Failure      400  {object}  nil
 // @Failure      401  {object}  nil
 // @Failure      404  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /auth [post]
 func Login(c *fiber.Ctx) error {
-	type LoginInput struct {
-		Username string `json:"username"`
-		Password string `json:"password"`
-	}
-	type UserData struct {
-		UID      uint   `json:"uid"`
-		Username string `json:"username"`
-		Email    string `json:"email"`
-	}
-
-	var input LoginInput
-	var userData UserData
-
+	var input request.LoginRequest
 	if err := c.BodyParser(&input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on login request", "data": err})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Review your input",
+			"data":    err,
+		})
 	}
 
 	username := input.Username
-	pass := input.Password
-
-	user, err := getUserByUsername(username)
+	user, err := services.UserService{}.GetUserByUsername(username)
 	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"status":  "error",
+				"message": "User not found",
+				"data":    err,
+			})
+		}
+		log.Println("Error occurred in server:", err)
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Error occurred in server",
+			"data":    err,
+		})
 	}
 
-	userData = UserData{
-		UID:      user.ID,
+	password := input.Password
+	if !util.CheckPasswordHash(password, user.Password) {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Invalid password",
+			"data":    "Password does not match the user's password",
+		})
+	}
+
+	token, err := services.AuthService{}.CreateToken(user)
+	if err != nil {
+		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Couldn't create token",
+			"data":    err,
+		})
+	}
+
+	response := response.AuthResponse{
 		Username: user.Username,
 		Email:    user.Email,
+		UID:      user.ID,
 	}
-
-	if !util.CheckPasswordHash(pass, user.Password) {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
-	}
-
-	token := jwt.New(jwt.SigningMethodHS256)
-
-	/*
-		Create JWT token
-		expires in 3 days
-	*/
-	claims := token.Claims.(jwt.MapClaims)
-	claims["username"] = userData.Username
-	claims["user_id"] = userData.UID
-	claims["user_email"] = userData.Email
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	t, err := token.SignedString([]byte(config.Config("JWT_SECRET")))
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Failed to create token", "data": nil})
-	}
-
-	fmt.Println("User " + userData.Username + " logged in successfully.")
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Login successfully", "data": userData, "token": t})
+	log.Println("User " + response.Username + " logged in successfully.")
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  "success",
+		"message": "Login successfully",
+		"data":    response,
+		"token":   token,
+	})
 }

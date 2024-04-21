@@ -10,7 +10,8 @@ type User struct {
 	Email        string    `gorm:"unique; not null" json:"email"`
 	Password     string    `gorm:"not null" json:"password"`
 	Name         string    `json:"name"`
-	Phone_Num    string    `gorm:"default:null" json:"phoneNum"`
-	RegisteredAt time.Time `gorm:"autoCreateTime" json:"registeredAt"`
+	PhoneNum     string    `gorm:"default:null" json:"phone_num"`
+	Rooms        []Room    `gorm:"many2many:room_users"`
+	RegisteredAt time.Time `gorm:"autoCreateTime" json:"registered_at"`
 	UpdatedAt    time.Time `gorm:"autoUpdateTime" json:"-"`
 }

@@ -5,41 +5,42 @@ import (
 	"sc2006-JustJio/middleware"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/swagger"
+	"github.com/gofiber/websocket/v2"
 )
 
 func Initalize(router *fiber.App) {
-
-	router.Use(middleware.Json)
-	router.Use(logger.New())
-
 	router.Get("/", func(c *fiber.Ctx) error {
 		return c.Status(200).SendString("Hello, World!")
 	})
 
-	router.Get("/swagger/*", swagger.HandlerDefault)
+	v1 := router.Group("/v1")
+	v1.Get("/swagger/*", swagger.HandlerDefault)
 
-	auth := router.Group("/auth")
-	auth.Post("/signup", handlers.SignUp)
+	auth := v1.Group("/auth")
 	auth.Post("/", handlers.Login)
+	auth.Post("/signup", handlers.SignUp)
 
-	users := router.Group("/users")
+	users := v1.Group("/users")
 	users.Get("/:id", handlers.GetUser)
 	users.Delete("/:id", middleware.Authenticated(), handlers.DeleteUser)
 	users.Patch("/:id", middleware.Authenticated(), handlers.UpdateUser)
 
-	rooms := router.Group("/rooms")
+	rooms := v1.Group("/rooms")
 	rooms.Get("/", middleware.Authenticated(), handlers.GetRooms)
 	rooms.Get("/invites", middleware.Authenticated(), handlers.GetRoomInvitations)
 	rooms.Get("/attendees/:id", middleware.Authenticated(), handlers.GetRoomAttendees)
 	rooms.Post("/", middleware.Authenticated(), handlers.CreateRoom)
-	rooms.Post("/:id", middleware.Authenticated(), handlers.AddUser)
-	rooms.Patch("/join/:id", middleware.Authenticated(), handlers.JoinRoom)
-	rooms.Delete("/:id", middleware.Authenticated(), handlers.CloseRoom)
-	rooms.Delete("/decline/:id", middleware.Authenticated(), handlers.DeclineRoom)
+	rooms.Post("/:id", middleware.Authenticated(), handlers.InviteUser)
+	rooms.Patch("/:id", middleware.Authenticated(), handlers.RespondToRoomInvite)
+	rooms.Patch("/close/:id", middleware.Authenticated(), handlers.CloseRoom)
+	rooms.Patch("/leave/:id", middleware.Authenticated(), handlers.LeaveRoom)
 
-	bills := router.Group("/bills")
+	handlers.InitChatHub()
+	// router.Get("/ws/:roomId", middleware.Authenticated(), websocket.New(handlers.RegisterChatWS))
+	router.Get("/ws/:roomId", websocket.New(handlers.RegisterChatWS))
+
+	bills := v1.Group("/bills")
 	bills.Get("/", middleware.Authenticated(), handlers.GetTransactions)
 	bills.Post("/:id", middleware.Authenticated(), handlers.GenerateTransactions)
 	bills.Patch("/pay", middleware.Authenticated(), handlers.PayBill)
@@ -50,5 +51,4 @@ func Initalize(router *fiber.App) {
 			"message": "404: Not Found",
 		})
 	})
-
 }
