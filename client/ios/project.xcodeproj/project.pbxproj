@@ -38,7 +38,11 @@
 /* Begin PBXContainerItemProxy section */
 		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
+<<<<<<< HEAD
 			containerPortal = 83CBB9F71A601CBA00E9B192;
+=======
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = project;
@@ -151,7 +155,11 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		83CBB9F61A601CBA00E9B192 /* PBXGroup */ = {
+=======
+		83CBB9F61A601CBA00E9B192 = {
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 			isa = PBXGroup;
 			children = (
 				13B07FAE1A68108700A75B9A /* project */,
@@ -188,7 +196,11 @@
 			sourceTree = "<group>";
 		};
 		F9D05093F2004B46B9667FBD /* Resources */ = {
+<<<<<<< HEAD
 			isa = PBXGroup;
+=======
+			isa = "PBXGroup";
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 			children = (
 				224F5DAE2F4C444084838B48 /* OleoScript-Bold.ttf */,
 				19CC11E20B764F90B5062EFF /* Poppins-Black.ttf */,
@@ -263,14 +275,22 @@
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
+<<<<<<< HEAD
 		83CBB9F71A601CBA00E9B192 = {
+=======
+		83CBB9F71A601CBA00E9B192 /* Project object */ = {
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+<<<<<<< HEAD
 						TestTargetID = 13B07F861A680F5B00A75B9A /* project */;
+=======
+						TestTargetID = 13B07F861A680F5B00A75B9A;
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
@@ -285,7 +305,11 @@
 				en,
 				Base,
 			);
+<<<<<<< HEAD
 			mainGroup = 83CBB9F61A601CBA00E9B192 /* PBXGroup */;
+=======
+			mainGroup = 83CBB9F61A601CBA00E9B192;
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -523,7 +547,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = projectTests/Info.plist;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -547,7 +575,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = projectTests/Info.plist;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -663,7 +695,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -727,7 +763,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -781,5 +821,9 @@
 		};
 /* End XCConfigurationList section */
 	};
+<<<<<<< HEAD
 	rootObject = 83CBB9F71A601CBA00E9B192;
+=======
+	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 }

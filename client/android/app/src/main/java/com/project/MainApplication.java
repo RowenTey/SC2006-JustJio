@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import android.content.res.Configuration;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
+=======
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 package com.project;
 
 import android.app.Application;
@@ -19,7 +22,11 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
+<<<<<<< HEAD
       new ReactNativeHostWrapper(this, new ReactNativeHost(this) {
+=======
+      new ReactNativeHost(this) {
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
@@ -38,10 +45,17 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
+<<<<<<< HEAD
       });
 
   private final ReactNativeHost mNewArchitectureNativeHost =
       new ReactNativeHostWrapper(this, new MainApplicationReactNativeHost(this));
+=======
+      };
+
+  private final ReactNativeHost mNewArchitectureNativeHost =
+      new MainApplicationReactNativeHost(this);
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 
   @Override
   public ReactNativeHost getReactNativeHost() {
@@ -59,7 +73,10 @@ public class MainApplication extends Application implements ReactApplication {
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+<<<<<<< HEAD
     ApplicationLifecycleDispatcher.onApplicationCreate(this);
+=======
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
   }
 
   /**
@@ -92,10 +109,13 @@ public class MainApplication extends Application implements ReactApplication {
       }
     }
   }
+<<<<<<< HEAD
 
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
+=======
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 }

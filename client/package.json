@@ -31,8 +31,12 @@
     "react-native-screens": "^3.17.0",
     "react-native-svg": "^9.9.5",
     "react-native-wheel-of-fortune": "^1.5.4",
+<<<<<<< HEAD
     "react-navigation-material-bottom-tabs": "^2.3.5",
     "expo": "^47.0.0"
+=======
+    "react-navigation-material-bottom-tabs": "^2.3.5"
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

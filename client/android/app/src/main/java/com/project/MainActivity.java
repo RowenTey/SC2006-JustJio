@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import expo.modules.ReactActivityDelegateWrapper;
+=======
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
 package com.project;
 
 import com.facebook.react.ReactActivity;
@@ -28,7 +31,11 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
+<<<<<<< HEAD
     return new ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, new MainActivityDelegate(this, getMainComponentName()));
+=======
+    return new MainActivityDelegate(this, getMainComponentName());
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
   }
 
   public static class MainActivityDelegate extends ReactActivityDelegate {

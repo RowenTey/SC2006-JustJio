@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
@@ -14,6 +15,15 @@ target 'project' do
       Pod::UI.warn e
     end
   end
+=======
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '12.4'
+install! 'cocoapods', :deterministic_uuids => false
+
+target 'project' do
+>>>>>>> 34226c19dd787c180f03fef7162e245ad45e8cd8
   config = use_native_modules!
 
   # Flags change depending on the env values.
