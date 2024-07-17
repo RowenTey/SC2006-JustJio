@@ -1,0 +1,94 @@
+version: "3"
+name: justjio-backend
+
+services:
+  api-server:
+    build:
+      context: ./server-api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DSN: postgresql://postgres:NUv5oMuh1EWV@postgres:5432/postgres?sslmode=disable
+      PORT: 8080
+      JWT_SECRET: sc2006-justjio
+      OUTLOOK_PASSWORD: sc2006Onestart
+    depends_on:
+      kafka:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+      # - redis
+
+  ws-server:
+    build:
+      context: ./server-ws
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      JWT_SECRET: sc2006-justjio
+    depends_on:
+      kafka:
+        condition: service_started
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    restart: always
+    environment:
+      KAFKA_BROKER_ID: 0
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # Bob is internal docker network listener
+      # Fred is external listener
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_BOB://kafka:29092,LISTENER_FRED://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_BOB:PLAINTEXT,LISTENER_FRED:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_BOB
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
+      # KAFKA_LISTENERS: LISTENER_BOB://kafka:29092,LISTENER_FRED://kafka:9092
+      # KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - "6379:6379"
+
+  postgres:
+    image: postgres:15
+    environment:
+      PG_USER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: NUv5oMuh1EWV
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - justjio-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   ports:
+  #     - "5050:80"
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@test.com
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+
+volumes:
+  justjio-postgres-data:
