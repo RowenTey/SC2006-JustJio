@@ -10,7 +10,7 @@ env:
   IMAGE_NAME_API: ${{ github.repository }}/api
   IMAGE_NAME_WS: ${{ github.repository }}/ws
 
-# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
+# There are 2 jobs in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   build-and-push-api-image:
     runs-on: ubuntu-latest
