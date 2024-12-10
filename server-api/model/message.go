@@ -2,11 +2,13 @@ package model
 
 import (
 	"time"
+
+	"github.com/oklog/ulid/v2"
 )
 
 type Message struct {
 	ID       uint      `gorm:"primaryKey" json:"id"`
-	RoomID   uint      `gorm:"primaryKey; autoIncrement:false" json:"room_id"`
+	RoomID   ulid.ULID `gorm:"primaryKey; autoIncrement:false; type:varbinary(255)" json:"room_id"`
 	Room     Room      `gorm:"not null" json:"room"`
 	SenderID uint      `gorm:"not null" json:"sender_id"`
 	Sender   User      `gorm:"not null" json:"sender"`

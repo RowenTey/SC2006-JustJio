@@ -24,14 +24,14 @@ type Room struct {
 
 type RoomInvite struct {
 	ID        uint      `gorm:"primaryKey" json:"id"`
-	RoomID    uint      `gorm:"not null" json:"room_id"` // Foreign key to Room table
-	Room      Room      `gorm:"not null" json:"room"`
-	UserID    uint      `gorm:"not null" json:"user_id"` // Foreign key to User table
-	User      User      `gorm:"not null" json:"user"`
-	InviterID uint      `gorm:"not null" json:"inviter_id"` // Foreign key to User table (who sent the invite)
-	Inviter   User      `gorm:"not null; foreignKey:inviter_id" json:"inviter"`
-	Status    string    `gorm:"not null; default:'pending'" json:"status"` // Invite status (pending, accepted, rejected)
-	Message   string    `json:"message"`                                   // Optional message from the inviter
+	RoomID    ulid.ULID `gorm:"not null;type:varbinary(255)" json:"room_id"`    // Foreign key to Room table
+	Room      Room      `gorm:"not null" json:"room"`                           // gorm feature -> not actually stored in DB
+	UserID    uint      `gorm:"not null" json:"user_id"`                        // Foreign key to User table
+	User      User      `gorm:"not null" json:"user"`                           // gorm feature -> not actually stored in DB
+	InviterID uint      `gorm:"not null" json:"inviter_id"`                     // Foreign key to User table (who sent the invite)
+	Inviter   User      `gorm:"not null; foreignKey:inviter_id" json:"inviter"` // gorm feature -> not actually stored in DB
+	Status    string    `gorm:"not null; default:'pending'" json:"status"`      // Invite status (pending, accepted, rejected)
+	Message   string    `json:"message"`                                        // Optional message from the inviter
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 }
 

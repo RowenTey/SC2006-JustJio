@@ -91,7 +91,7 @@ func SeedDB(db *gorm.DB) error {
 
 		// invite users to room
 		invites, err := roomService.InviteUserToRoom(
-			strconv.Itoa(int(rooms[i].ID)), &host, &invitees, "Join my party!")
+			rooms[i].ID.String(), &host, &invitees, "Join my party!")
 		if err != nil {
 			return err
 		}

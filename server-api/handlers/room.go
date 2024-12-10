@@ -166,7 +166,7 @@ func CreateRoom(c *fiber.Ctx) error {
 		return util.HandleInternalServerError(c, err)
 	}
 
-	roomIdStr := strconv.FormatUint(uint64(room.ID), 10)
+	roomIdStr := room.ID.String()
 	invites, err := roomService.InviteUserToRoom(
 		roomIdStr, user, invitees, request.Message)
 	if err != nil {
